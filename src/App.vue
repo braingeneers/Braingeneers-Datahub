@@ -5,11 +5,14 @@
   </div>
 </template>
 <script>
+
 import Plates from "./components/Plates";
+import Wells from "./components/Wells";
 export default {
   name: "App",
   components: {
-    Plates
+    Plates,
+    Wells
   },
 };
 </script>
