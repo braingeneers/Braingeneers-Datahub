@@ -27,7 +27,7 @@ export default {
         <div v-bind:key="well.id" v-for="well in wells">
           <b-col l="4">
             <b-card
-              v-bind:img-src="`https://via.placeholder.com/150`"
+              v-bind:img-src="`https://via.placeholder.com/200`"
               v-bind:title="well.attributes.name"
               img-alt="Image"
               img-top

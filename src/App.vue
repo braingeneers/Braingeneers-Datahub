@@ -1,19 +1,24 @@
 <template>
-  <div>
+    <div>
     <br />
-    <Plates />
+    <Navbar />
+    <Wells />
   </div>
 </template>
-<script>
 
-import Plates from "./components/Plates";
+<script>
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+// import Plates from "./components/Plates";
 import Wells from "./components/Wells";
+import Navbar from "./components/Navbar";
+
 export default {
   name: "App",
   components: {
-    Plates,
+    Navbar,
     Wells
-  },
+  }
 };
 </script>
 

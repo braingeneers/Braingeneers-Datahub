@@ -25,9 +25,9 @@ export default {
     <div v-if="plates.length">
       <b-row>
         <div v-bind:key="plate.id" v-for="plate in plates">
-          <b-col l="4">
+          <b-col l="1">
             <b-card
-              v-bind:img-src="`https://via.placeholder.com/150`"
+              v-bind:img-src="`https://via.placeholder.com/10`"
               v-bind:title="plate.attributes.name"
               img-alt="Image"
               img-top
