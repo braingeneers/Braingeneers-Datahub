@@ -12,26 +12,18 @@ export default {
     }
 
   },
-  watch: {
-    plate_name: function() {
-      // console.log(newVal, oldVal)
-      // console.log("testProp got hit")
-    //   this.loader("newest")
+  
+  async mounted () {
+    try {
+      console.log(this.filter_params)
+      console.log(this.plate_name)
+      const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}${this.plate_name}`)
+      this.wells = response.data.data
+    } catch (error) {
+      this.error = error;
     }
-  },
-    async mounted() {
-        try {
-            console.log(this.filter_params)
-            console.log(this.plate_name)
-            const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}`)
-            this.wells = response.data.data
-        } 
-        catch (error) {
-            this.error = error;
-        }
-    }
+  }
 }
-
 </script>
 
 

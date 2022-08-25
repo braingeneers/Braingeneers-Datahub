@@ -1,10 +1,4 @@
-<template>
-  <div class="wells">
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-    <Navbar />
-    <Wells ref="wells" v-bind:plate_name="plate" v-bind:loadTrigger="loadTrigger"/>
-  </div>
-</template>
+
 
 <script>
 // @ is an alias to /src
@@ -21,18 +15,25 @@ export default {
  },
  data: function () {
     return {
-      plate: "f",
-      loadTrigger: 0,
+    //   plate: "",
+    //   loadTrigger: 0,
     }
   },
   methods:{
-    mounted() {
-    //load list of uuids
-        if (this.plate_name_from_url){
-            this.plate = this.plate_name_from_url
-            this.loadTrigger++
-        }
-    },
+    // mounted() {
+    // //load list of uuids
+    //     if (this.plate_name_from_url){
+    //         this.plate = this.plate_name_from_url
+    //     }
+    // },
   }
 }
 </script>
+
+<template>
+  <div class="wells">
+    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
+    <Navbar />
+    <Wells ref="wells" v-bind:plate_name="plate_name_from_url"/>
+  </div>
+</template>

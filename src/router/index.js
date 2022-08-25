@@ -13,7 +13,7 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/wells/:plate_name',
+    path: '/wells/:plate_name_from_url',
     name: 'wells',
     component: WellsView,
     props: true
