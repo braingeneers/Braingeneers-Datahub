@@ -1,30 +1,13 @@
 <template>
-    <div>
-    <br />
-    <Navbar />
-    <Plates />
-    <!-- <Wells /> -->
+  <div id="app">
+    <!-- <nav>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/wells">Wells</router-link>
+      <router-link to="/about">About</router-link>
+    </nav> -->
+    <router-view/>
   </div>
 </template>
-
-<script>
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
-import Plates from "./components/Plates";
-// import Wells from "./components/Wells";
-import Navbar from "./components/Navbar";
-
-export default {
-  name: "App",
-  components: {
-    Navbar,
-    Plates
-    // Wells
-    ,
-}
-};
-</script>
-
 
 <style>
 #app {
@@ -33,6 +16,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
