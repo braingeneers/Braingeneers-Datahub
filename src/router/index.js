@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import WellsView from '../views/WellsView.vue'
+import ExperimentsView from '../views/ExperimentsView.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/wells',
     name: 'wells',
     component: WellsView
+  },
+  {
+    path: '/experiments',
+    name: 'experiments',
+    component: ExperimentsView
   },
   {
     path: '/about',

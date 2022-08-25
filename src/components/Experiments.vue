@@ -1,0 +1,52 @@
+<script>
+import axios from 'axios'
+
+export default {
+  data () {
+    return {
+      experiments: [],
+      error: null
+    }
+  },
+  async mounted () {
+    try {
+      const response = await axios.get('http://localhost:1337/api/experiments')
+      this.experiments = response.data.data
+    } catch (error) {
+      this.error = error;
+    }
+  }
+}
+</script>
+
+
+<template>
+  <b-container>
+    <div v-if="experiments.length">
+      <b-row>
+        <div v-bind:key="experiment.id" v-for="experiment in experiments">
+          <b-col l="4">
+            <b-card
+              v-bind:img-src="`https://via.placeholder.com/200`"
+              v-bind:title="experiment.attributes.name"
+              img-alt="Image"
+              img-top
+              tag="article"
+              style="max-width: 20rem;"
+              class="mb-2"
+            >
+              <b-card-text>{{ `${experiment.attributes.description}` }}</b-card-text>
+              <!-- <span>
+                <strong>Price: ${{ `${experiment.price}` }} </strong>
+              </span> -->
+              <b-button @click="placeOrder" variant="primary">Order experiment</b-button>
+            </b-card>
+          </b-col>
+        </div>
+      </b-row>
+    </div>
+    <div v-else>
+      <h5>Fetching experiments . . .</h5>
+    </div>
+  </b-container>
+</template>
