@@ -41,6 +41,7 @@ export default {
                   <strong>{{ `${well.attributes.name}` }}</strong>
                 </div>
               </span>
+              <router-link to="/wells">Wells</router-link> 
               <b-button @click="placeOrder" variant="primary">Order plate</b-button>
             </b-card>
           </b-col>

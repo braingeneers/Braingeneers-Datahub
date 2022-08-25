@@ -40,6 +40,7 @@ export default {
               <!-- <span>
                 <strong>Price: ${{ `${well.price}` }} </strong>
               </span> -->
+              
               <b-button @click="placeOrder" variant="primary">Order well</b-button>
             </b-card>
           </b-col>
