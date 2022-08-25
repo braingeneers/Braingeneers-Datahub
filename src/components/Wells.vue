@@ -5,12 +5,13 @@ export default {
   data () {
     return {
       wells: [],
+      filter_string: '?filters[plate][name][$eq]=test-plate-1',
       error: null
     }
   },
   async mounted () {
     try {
-      const response = await axios.get('http://localhost:1337/api/wells')
+      const response = await axios.get('http://localhost:1337/api/wells'+this.filter_string)
       this.wells = response.data.data
     } catch (error) {
       this.error = error;
