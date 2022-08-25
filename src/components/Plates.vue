@@ -37,17 +37,14 @@ export default {
             >
               <b-card-text>{{ `${plate.attributes.description}` }}</b-card-text>
               <span>
-                <div v-bind:key="well.id" v-for="well in plate.attributes.wells.data">
+                <!-- <div v-bind:key="well.id" v-for="well in plate.attributes.wells.data">
                   <strong>{{ `${well.attributes.name}` }}</strong>
-                </div>
+                </div> -->
               </span>
-              <router-link to="/wells">Wells</router-link> 
+              <router-link to="/wells/">Wells</router-link> 
               <b-button @click="placeOrder" variant="primary">Order plate</b-button>
             </b-card>
           </b-col>
-          <div v-bind:key="well.id" v-for="well in plate.attributes.wells.data">
-            {{well.name}}
-          </div>
         </div>
       </b-row>
     </div>

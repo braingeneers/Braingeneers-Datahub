@@ -13,10 +13,17 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/wells',
+    path: '/wells/:plate_name',
     name: 'wells',
-    component: WellsView
+    component: WellsView,
+    props: true
   },
+//   {
+//     path: '/wells',
+//     name: 'wells',
+//     component: WellsView
+//   },
+
   {
     path: '/experiments',
     name: 'experiments',

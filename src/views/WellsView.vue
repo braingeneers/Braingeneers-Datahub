@@ -2,7 +2,7 @@
   <div class="wells">
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <Navbar />
-    <Wells />
+    <Wells ref="wells" v-bind:plate_name="plate" v-bind:loadTrigger="loadTrigger"/>
   </div>
 </template>
 
@@ -14,9 +14,25 @@ import Wells from '@/components/Wells.vue'
 
 export default {
   name: 'WellsView',
+  props: ['plate_name_from_url'],
   components: {
     Navbar,
     Wells,
- }
+ },
+ data: function () {
+    return {
+      plate: "f",
+      loadTrigger: 0,
+    }
+  },
+  methods:{
+    mounted() {
+    //load list of uuids
+        if (this.plate_name_from_url){
+            this.plate = this.plate_name_from_url
+            this.loadTrigger++
+        }
+    },
+  }
 }
 </script>

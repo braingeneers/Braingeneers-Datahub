@@ -2,22 +2,36 @@
 import axios from 'axios'
 
 export default {
+  props: ["plate_name"],  
   data () {
     return {
       wells: [],
-      filter_string: '?filters[plate][name][$eq]=test-plate-1',
+    //   filter_string: '?filters[plate][name][$eq]=test-plate-1',
+      filter_params: "?filters[plate][name][$contains]=",
       error: null
     }
+
   },
-  async mounted () {
-    try {
-      const response = await axios.get('http://localhost:1337/api/wells'+this.filter_string)
-      this.wells = response.data.data
-    } catch (error) {
-      this.error = error;
+  watch: {
+    plate_name: function() {
+      // console.log(newVal, oldVal)
+      // console.log("testProp got hit")
+    //   this.loader("newest")
     }
-  }
+  },
+    async mounted() {
+        try {
+            console.log(this.filter_params)
+            console.log(this.plate_name)
+            const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}`)
+            this.wells = response.data.data
+        } 
+        catch (error) {
+            this.error = error;
+        }
+    }
 }
+
 </script>
 
 
@@ -41,7 +55,7 @@ export default {
                 <strong>Price: ${{ `${well.price}` }} </strong>
               </span> -->
               
-              <b-button @click="placeOrder" variant="primary">Order well</b-button>
+              <!-- <b-button @click="placeOrder" variant="primary">Order well</b-button> -->
             </b-card>
           </b-col>
         </div>
