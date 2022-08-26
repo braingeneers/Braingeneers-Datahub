@@ -16,27 +16,28 @@ export default {
  data: function () {
     return {
     //   plate: "",
-      loadTrigger: 0,
+    //   loadTrigger: 0,
     }
   },
   methods:{
     mounted() {
-    //load list of uuids
+    //from console log this appears to never run
     //   this.loadTrigger = 1
         console.log("mounted wellview")
-        if (this.plate_name_from_url){
-            this.plate = this.plate_name_from_url
-            this.loadTrigger++
-        }
+    //     if (this.plate_name_from_url){
+    //         this.plate = this.plate_name_from_url
+    //         this.loadTrigger++
+    //     }
     },
   }
 }
+
 </script>
 
 <template>
   <div class="wells">
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <Navbar />
-    <Wells ref="wells" v-bind:plate_name="plate_name_from_url" v-bind:loadTrigger="loadTrigger"/>
+    <Wells ref="wells" v-bind:plate_name="plate_name_from_url"/>
   </div>
 </template>

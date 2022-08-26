@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 export default {
-    props: ["plate_name", "loadTrigger"],
+    props: ["plate_name"],
     data() {
         return {
             wells: [],
@@ -12,44 +12,32 @@ export default {
         }
 
     },
-    watch: {
-        loadTrigger: async function () {
-            console.log("loadTrigger changed")
-            // console.log(newVal, oldVal)
-            // console.log("testProp got hit")
-            try {
-                console.log(this.filter_params)
-                console.log(this.plate_name)
-                const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}${this.plate_name}`)
-                this.wells = response.data.data
-                console.log("fartbarfed")
-            }
-            catch (error) {
-                this.error = error;
-                console.log("shit the bed")
-            }
-        }
-    },
     async mounted() {
         try {
             console.log(this.filter_params)
             console.log(this.plate_name)
-            const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}${this.plate_name}`)
+            if (!this.plate_name) {
+                this.filter_params = ""
+            } else {
+                this.filter_params = this.filter_params + this.plate_name
+            }
+            // ${this.plate_name}
+            const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}`)
             this.wells = response.data.data
         } catch (error) {
             this.error = error;
         }
     },
-    async loader() {
-        try {
-            console.log(this.filter_params)
-            console.log(this.plate_name)
-            const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}${this.plate_name}`)
-            this.wells = response.data.data
-        } catch (error) {
-            this.error = error;
-        }
-    }
+    // async loader() {
+    //     try {
+    //         console.log(this.filter_params)
+    //         console.log(this.plate_name)
+    //         const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}${this.plate_name}`)
+    //         this.wells = response.data.data
+    //     } catch (error) {
+    //         this.error = error;
+    //     }
+    // }
 }
 </script>
 
@@ -75,7 +63,7 @@ export default {
             </b-row>
         </div>
         <div v-else>
-            <h5>Fetching wells . . .</h5>
+            <h5>No wells found . . .</h5>
         </div>
     </b-container>
 </template>

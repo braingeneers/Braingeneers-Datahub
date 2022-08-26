@@ -18,11 +18,11 @@ const routes = [
     component: WellsView,
     props: true
   },
-//   {
-//     path: '/wells',
-//     name: 'wells',
-//     component: WellsView
-//   },
+  {
+    path: '/wells',
+    name: 'all_wells',
+    component: WellsView
+  },
 
   {
     path: '/experiments',
