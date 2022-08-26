@@ -8,6 +8,11 @@ export default {
       error: null
     }
   },
+  methods:{
+    redirectToURL(plate_name){
+      this.$router.push({ path: '/wells/'+plate_name });
+    },
+  },
   async mounted () {
     try {
       const response = await axios.get('http://localhost:1337/api/plates?populate=%2A')
@@ -35,14 +40,14 @@ export default {
               style="max-width: 20rem;"
               class="mb-2"
             >
-              <b-card-text>{{ `${plate.attributes.description}` }}</b-card-text>
+              <b-card-text>{{` ${plate.attributes.description}` }}</b-card-text>
               <span>
                 <!-- <div v-bind:key="well.id" v-for="well in plate.attributes.wells.data">
                   <strong>{{ `${well.attributes.name}` }}</strong>
                 </div> -->
               </span>
-              <router-link to="/wells/">Wells</router-link> 
-              <b-button @click="placeOrder" variant="primary">Order plate</b-button>
+              <button v-on:click="redirectToURL(plate.attributes.name)"> Wells </button>
+              <!-- <router-link to="/wells/" + ${plate.attributes.name} >Wells</router-link>  -->
             </b-card>
           </b-col>
         </div>
