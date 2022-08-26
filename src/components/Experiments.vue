@@ -10,7 +10,7 @@ export default {
   },
   methods:{
     redirectToURL(experiment_name){
-      this.$router.push({ path: '/wells/'+experiment_name });
+      this.$router.push({ path: '/plates/'+experiment_name });
     },
   },
   async mounted () {
@@ -46,7 +46,7 @@ export default {
                   <strong>{{ `${well.attributes.name}` }}</strong>
                 </div> -->
               </span>
-              <button v-on:click="redirectToURL(experiment.attributes.name)"> Wells </button>
+              <button v-on:click="redirectToURL(experiment.attributes.name)"> Plates </button>
               <!-- <router-link to="/wells/" + ${experiment.attributes.name} >Wells</router-link>  -->
             </b-card>
           </b-col>

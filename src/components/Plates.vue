@@ -2,9 +2,11 @@
 import axios from 'axios'
 
 export default {
+  props: ["experiment_name"],
   data () {
     return {
       plates: [],
+      filter_params: "?filters[experiment][name][$contains]=",
       error: null
     }
   },
@@ -13,14 +15,30 @@ export default {
       this.$router.push({ path: '/wells/'+plate_name });
     },
   },
-  async mounted () {
-    try {
-      const response = await axios.get('http://localhost:1337/api/plates?populate=%2A')
-      this.plates = response.data.data
-    } catch (error) {
-      this.error = error;
-    }
-  }
+//   async mounted () {
+//     try {
+//       const response = await axios.get('http://localhost:1337/api/plates?populate=%2A')
+//       this.plates = response.data.data
+//     } catch (error) {
+//       this.error = error;
+//     }
+//   }
+    async mounted() {
+        try {
+            console.log(this.filter_params)
+            console.log(this.experiment_name)
+            if (!this.experiment_name) {
+                this.filter_params = ""
+            } else {
+                this.filter_params = this.filter_params + this.plate_name
+            }
+            // ${this.plate_name}
+            const response = await axios.get(`http://localhost:1337/api/plates${this.filter_params}`)
+            this.plates = response.data.data
+        } catch (error) {
+            this.error = error;
+        }
+    },
 }
 </script>
 
