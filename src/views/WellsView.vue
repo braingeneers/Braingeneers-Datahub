@@ -16,16 +16,19 @@ export default {
  data: function () {
     return {
     //   plate: "",
-    //   loadTrigger: 0,
+      loadTrigger: 0,
     }
   },
   methods:{
-    // mounted() {
-    // //load list of uuids
-    //     if (this.plate_name_from_url){
-    //         this.plate = this.plate_name_from_url
-    //     }
-    // },
+    mounted() {
+    //load list of uuids
+    //   this.loadTrigger = 1
+        console.log("mounted wellview")
+        if (this.plate_name_from_url){
+            this.plate = this.plate_name_from_url
+            this.loadTrigger++
+        }
+    },
   }
 }
 </script>
@@ -34,6 +37,6 @@ export default {
   <div class="wells">
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <Navbar />
-    <Wells ref="wells" v-bind:plate_name="plate_name_from_url"/>
+    <Wells ref="wells" v-bind:plate_name="plate_name_from_url" v-bind:loadTrigger="loadTrigger"/>
   </div>
 </template>
