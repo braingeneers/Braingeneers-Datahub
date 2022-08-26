@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import PlatesView from '../views/PlatesView.vue'
 import WellsView from '../views/WellsView.vue'
 import ExperimentsView from '../views/ExperimentsView.vue'
 
@@ -10,7 +10,13 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: PlatesView
+  },
+  {
+    path: '/plates/:experiment_name_from_url',
+    name: 'plates',
+    component: PlatesView,
+    props: true
   },
   {
     path: '/wells/:plate_name_from_url',

@@ -8,9 +8,14 @@ export default {
       error: null
     }
   },
+  methods:{
+    redirectToURL(experiment_name){
+      this.$router.push({ path: '/wells/'+experiment_name });
+    },
+  },
   async mounted () {
     try {
-      const response = await axios.get('http://localhost:1337/api/experiments')
+      const response = await axios.get('http://localhost:1337/api/experiments?populate=%2A')
       this.experiments = response.data.data
     } catch (error) {
       this.error = error;
@@ -27,7 +32,7 @@ export default {
         <div v-bind:key="experiment.id" v-for="experiment in experiments">
           <b-col l="4">
             <b-card
-              v-bind:img-src="`https://via.placeholder.com/200`"
+              v-bind:img-src="`https://via.placeholder.com/150`"
               v-bind:title="experiment.attributes.name"
               img-alt="Image"
               img-top
@@ -35,11 +40,14 @@ export default {
               style="max-width: 20rem;"
               class="mb-2"
             >
-              <b-card-text>{{ `${experiment.attributes.description}` }}</b-card-text>
-              <!-- <span>
-                <strong>Price: ${{ `${experiment.price}` }} </strong>
-              </span> -->
-              <b-button @click="placeOrder" variant="primary">Order experiment</b-button>
+              <b-card-text>{{` ${experiment.attributes.description}` }}</b-card-text>
+              <span>
+                <!-- <div v-bind:key="well.id" v-for="well in experiment.attributes.wells.data">
+                  <strong>{{ `${well.attributes.name}` }}</strong>
+                </div> -->
+              </span>
+              <button v-on:click="redirectToURL(experiment.attributes.name)"> Wells </button>
+              <!-- <router-link to="/wells/" + ${experiment.attributes.name} >Wells</router-link>  -->
             </b-card>
           </b-col>
         </div>

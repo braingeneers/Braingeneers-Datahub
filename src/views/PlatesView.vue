@@ -2,7 +2,7 @@
   <div class="home">
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <Navbar />
-    <Plates />
+    <Plates ref="plates" v-bind:experiment_name="experiment_name_from_url"/>/>
   </div>
 </template>
 
@@ -13,7 +13,8 @@ import Navbar from '@/components/Navbar.vue'
 import Plates from '@/components/Plates.vue'
 
 export default {
-  name: 'HomeView',
+  name: 'PlatesView',
+  props: ['experiment_name_from_url'],
   components: {
     Navbar,
     Plates,
