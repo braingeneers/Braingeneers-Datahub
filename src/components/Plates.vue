@@ -6,7 +6,7 @@ export default {
   data () {
     return {
       plates: [],
-      filter_params: "?filters[experiment][name][$contains]=",
+      filter_params: "?filters[experiments][name][$contains]=",
       error: null
     }
   },
@@ -30,7 +30,7 @@ export default {
             if (!this.experiment_name) {
                 this.filter_params = ""
             } else {
-                this.filter_params = this.filter_params + this.plate_name
+                this.filter_params = this.filter_params + this.experiment_name
             }
             // ${this.plate_name}
             const response = await axios.get(`http://localhost:1337/api/plates${this.filter_params}`)

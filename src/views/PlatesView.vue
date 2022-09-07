@@ -2,7 +2,7 @@
   <div class="home">
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <Navbar />
-    <Plates ref="plates" v-bind:experiment_name="experiment_name_from_url"/>/>
+    <Plates ref="plates" v-bind:experiment_name="experiment_name_from_url"/>
   </div>
 </template>
 
