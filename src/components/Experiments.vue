@@ -12,6 +12,9 @@ export default {
     redirectToURL(experiment_name){
       this.$router.push({ path: '/plates/'+experiment_name });
     },
+    redirectToURL_wells(plate_name){
+      this.$router.push({ path: '/wells/'+plate_name });
+    },
   },
   async mounted () {
     try {
@@ -40,13 +43,21 @@ export default {
               style="max-width: 20rem;"
               class="mb-2"
             >
-              <b-card-text>{{` ${experiment.attributes.description}` }}</b-card-text>
+              <b-card-text>{{` ${experiment.attributes.plates.data[0].attributes.name}` }}</b-card-text>
+              <b-button v-b-toggle="'collapse-' + experiment.id" variant="primary">Plates</b-button>
+                            <b-collapse v-bind:id="'collapse-' + experiment.id" class="mt-2">
+                                <b-card>Hello!
+                                    <div v-bind:key="plate.id" v-for="plate in experiment.attributes.plates.data">
+                                        <b-button v-on:click="redirectToURL_wells(plate.attributes.name)">{{plate.attributes.name}}</b-button>
+                                    </div>
+                                </b-card>
+                            </b-collapse> 
               <span>
                 <!-- <div v-bind:key="well.id" v-for="well in experiment.attributes.wells.data">
                   <strong>{{ `${well.attributes.name}` }}</strong>
                 </div> -->
               </span>
-              <button v-on:click="redirectToURL(experiment.attributes.name)"> Plates </button>
+              <!-- <button v-on:click="redirectToURL(experiment.attributes.name)"> Plates </button> -->
               <!-- <router-link to="/wells/" + ${experiment.attributes.name} >Wells</router-link>  -->
             </b-card>
           </b-col>

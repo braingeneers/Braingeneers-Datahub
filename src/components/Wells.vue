@@ -44,10 +44,14 @@ export default {
 
 <template>
     <b-container>
+        <!-- display plate name header -->
+        <b-row>
+            <h1>Plate: {{plate_name}}</h1>
+        </b-row>
         <div v-if="wells.length">
             <b-row>
                 <div v-bind:key="well.id" v-for="well in wells">
-                    <b-col l="4">
+                    <b-col l="1">
                         <b-card 
                             v-bind:img-src="`https://via.placeholder.com/200`" 
                             v-bind:title="well.attributes.name"
