@@ -63,7 +63,7 @@ export default {
                                 style="max-width: 20rem;" 
                                 class="mb-2">
                                 <b-card-text>fart</b-card-text>
-                                <b-card-text>{{ `${well.attributes.description}` }}</b-card-text>
+                                <b-card-text>{{ `${wells[0].attributes.description}` }}</b-card-text>
                                 <!-- create unique collapse toggle for each card in for loop -->
                                 <!-- <b-button v-b-toggle="'collapse-' + well.id" variant="primary">Toggle</b-button>
                                 <b-collapse v-bind:id="'collapse-' + well.id" class="mt-2">
@@ -74,26 +74,6 @@ export default {
                     </td>
                     </tr>
                 </table>
-                
-                <div v-bind:key="well.id" v-for="well in wells">
-                    <b-col l="1">
-                        <b-card 
-                            v-bind:img-src="`https://via.placeholder.com/200`" 
-                            v-bind:title="well.attributes.name"
-                            img-alt="Image" 
-                            img-top 
-                            tag="article" 
-                            style="max-width: 20rem;" 
-                            class="mb-2">
-                            <b-card-text>{{ `${well.attributes.description}` }}</b-card-text>
-                            <!-- create unique collapse toggle for each card in for loop -->
-                            <b-button v-b-toggle="'collapse-' + well.id" variant="primary">Toggle</b-button>
-                            <b-collapse v-bind:id="'collapse-' + well.id" class="mt-2">
-                                <b-card>Hello!</b-card>
-                            </b-collapse> 
-                        </b-card>
-                    </b-col>
-                </div>
             </b-row>
         </div>
         <div v-else>
