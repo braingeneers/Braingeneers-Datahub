@@ -56,7 +56,7 @@ export default {
                         <b-col l="1">
                             <b-card 
                                 v-bind:img-src="`https://via.placeholder.com/200`" 
-                                v-bind:title="wells[0].attributes.name"
+                                v-bind:title="wells[((row-1)*6+col)-1].attributes.name"
                                 img-alt="Image" 
                                 img-top 
                                 tag="article" 
@@ -65,10 +65,10 @@ export default {
                                 <b-card-text>fart</b-card-text>
                                 <b-card-text>{{ `${wells[0].attributes.description}` }}</b-card-text>
                                 <!-- create unique collapse toggle for each card in for loop -->
-                                <!-- <b-button v-b-toggle="'collapse-' + well.id" variant="primary">Toggle</b-button>
-                                <b-collapse v-bind:id="'collapse-' + well.id" class="mt-2">
+                                <b-button v-b-toggle="'collapse-' + wells[0].id" variant="primary">Toggle</b-button>
+                                <b-collapse v-bind:id="'collapse-' + wells[0].id" class="mt-2">
                                     <b-card>Hello!</b-card>
-                                </b-collapse>  -->
+                                </b-collapse> 
                             </b-card>
                         </b-col>
                     </td>
