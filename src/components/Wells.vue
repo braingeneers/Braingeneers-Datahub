@@ -63,7 +63,7 @@ export default {
                     <td v-for="col in 6" :key="row * 10 + col">
                         <b-col l="1">
                             <b-card 
-                                v-bind:img-src="`https://via.placeholder.com/200`"
+                                v-bind:img-src="`https://placekitten.com/g/200/200`"
                                 img-alt="Image" 
                                 img-top 
                                 tag="article" 
