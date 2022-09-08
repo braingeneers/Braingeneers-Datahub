@@ -44,14 +44,11 @@ export default {
                 <b-card>
                 
                 <div class="text-left">
-                    <b-col md="6" class="text-properties">
-                <div class="text-properties">
                     <h4 class="text-properties">{{experiment.attributes.name}}  </h4>
-                </div>
-                </b-col>
+
                     <!-- horizontal white space -->
 
-                    <b-card-text class="text-properties float-center">Date {{experiment.attributes.updatedAt}}</b-card-text>
+                    <b-card-text class="text-properties text-center">Date {{experiment.attributes.updatedAt}}</b-card-text>
                     <b-button class="float-right" v-b-toggle="'collapse-' + experiment.id" variant="primary">...</b-button>
                 </div>
                 <b-collapse v-bind:id="'collapse-' + experiment.id" class="mt-2">
