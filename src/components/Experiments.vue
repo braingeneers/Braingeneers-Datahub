@@ -53,44 +53,41 @@ export default {
                 </div>
                 <b-collapse v-bind:id="'collapse-' + experiment.id" class="mt-2">
                     <div>
-  <b-card-group>
-    <b-card title="Title" img-src="https://placekitten.com/g/200/200" img-alt="Image" img-top>
-      <b-card-text>
-        This is a wider card with supporting text below as a natural lead-in to additional content.
-        This content is a little bit longer.
-      </b-card-text>
-      <template #footer>
-        <small class="text-muted">Last updated 3 mins ago</small>
-      </template>
-    </b-card>
+                        <b-card-group>
+                            <b-card title="Interaction-Things">
+                            <b-card-text>
+                                This is where we list interaction things
+                            </b-card-text>
+                            <div v-bind:key="interaction_thing.id" v-for="interaction_thing in experiment.attributes.interaction_things.data">
+                                    <b-button v-on:click="redirectToURL_wells(interaction_thing.attributes.name)">{{interaction_thing.attributes.name}}</b-button>
+                                </div>
+                            <template #footer>
+                                <small class="text-muted">footer</small>
+                            </template>
+                            </b-card>
 
-    <b-card title="Title" img-src="https://placekitten.com/g/300/450" img-alt="Image" img-top>
-      <b-card-text>
-        This card has supporting text below as a natural lead-in to additional content.
-      </b-card-text>
-      <template #footer>
-        <small class="text-muted">Last updated 3 mins ago</small>
-      </template>
-    </b-card>
+                            <b-card title="Experiment-Notes">
+                            <b-card-text class="text-left">
+                                {{experiment.attributes.description}}
+                            </b-card-text>
+                            <template #footer>
+                                <small class="text-muted">Last updated 3 mins ago</small>
+                            </template>
+                            </b-card>
 
-    <b-card title="Title" img-src="https://placekitten.com/g/300/450" img-alt="Image" img-top>
-      <b-card-text>
-        This is a wider card with supporting text below as a natural lead-in to additional content.
-        This card has even longer content than the first to show that equal height action.
-      </b-card-text>
-      <template #footer>
-        <small class="text-muted">Last updated 3 mins ago</small>
-      </template>
-    </b-card>
-  </b-card-group>
-</div>
-                    <b-card>Hello!
-                        <!-- <b-card-text class="text-properties">{{` ${experiment.attributes.plates.data[0].attributes.name}` }} </b-card-text> -->
-                        <b-card-text class="text-properties text-center">placehjolder </b-card-text>
-                        <div v-bind:key="plate.id" v-for="plate in experiment.attributes.plates.data">
-                            <b-button v-on:click="redirectToURL_wells(plate.attributes.name)">{{plate.attributes.name}}</b-button>
-                        </div>
-                    </b-card>
+                            <b-card title="Plates">
+                            <b-card-text>
+                                This is where we list plates
+                            </b-card-text>
+                                <div v-bind:key="plate.id" v-for="plate in experiment.attributes.plates.data">
+                                    <b-button v-on:click="redirectToURL_wells(plate.attributes.name)">{{plate.attributes.name}}</b-button>
+                                </div>
+                            <template #footer>
+                                <small class="text-muted">Last updated 3 mins ago</small>
+                            </template>
+                            </b-card>
+                        </b-card-group>
+                    </div>
                 </b-collapse> 
                 <!-- <span> -->
                     <!-- <div v-bind:key="well.id" v-for="well in experiment.attributes.wells.data">
