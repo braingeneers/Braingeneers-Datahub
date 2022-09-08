@@ -40,6 +40,14 @@ export default {
     // }
 }
 </script>
+<style>
+    #my-button{
+        height:0px;
+        width:0px
+        /* opacity: .0001; */
+        /* display: none; */
+    }
+</style>
 
 
 <template>
@@ -55,20 +63,22 @@ export default {
                     <td v-for="col in 6" :key="row * 10 + col">
                         <b-col l="1">
                             <b-card 
-                                v-bind:img-src="`https://via.placeholder.com/200`" 
-                                v-bind:title="wells[((row-1)*6+col)-1].attributes.name"
+                                v-bind:img-src="`https://via.placeholder.com/200`"
                                 img-alt="Image" 
                                 img-top 
                                 tag="article" 
-                                style="max-width: 20rem;" 
+                                style="max-width: 20rem; min-width = 5rem;" 
                                 class="mb-2">
-                                <b-card-text>fart</b-card-text>
-                                <b-card-text>{{ `${wells[0].attributes.description}` }}</b-card-text>
+                                <!-- <b-card-text>{{ `${wells[((row-1)*6+col)-1].attributes.description}` }}</b-card-text> -->
                                 <!-- create unique collapse toggle for each card in for loop -->
-                                <b-button v-b-toggle="'collapse-' + wells[0].id" variant="primary">Toggle</b-button>
-                                <b-collapse v-bind:id="'collapse-' + wells[0].id" class="mt-2">
-                                    <b-card>Hello!</b-card>
-                                </b-collapse> 
+                                <!-- <img v-on:click="bkl" class="capture" :src="`https://via.placeholder.com/200`"/> -->
+                                <b-button id="my-button" v-b-toggle="'collapse-' + wells[((row-1)*6+col)-1].id" variant="primary" class="stretched-link"></b-button>
+                                <b-collapse v-bind:id="'collapse-' + wells[((row-1)*6+col)-1].id" class="mt-2">
+                                    <h>Hello!</h>
+                                </b-collapse>
+                                 <!-- elements removed from card
+                                    v-bind:title="wells[((row-1)*6+col)-1].attributes.name"
+                                -->
                             </b-card>
                         </b-col>
                     </td>
