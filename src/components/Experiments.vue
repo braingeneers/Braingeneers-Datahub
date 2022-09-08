@@ -40,17 +40,19 @@ export default {
       <!-- <b-row> -->
         <div v-bind:key="experiment.id" v-for="experiment in experiments">
             <!-- <b-row> -->
-                <b-card
-                v-bind:title="experiment.attributes.name"
-                class="text-center"
-                >
-                <div class="text-properties">
-                    <b-card-text class="text-properties">{{` ${experiment.attributes.plates.data[0].attributes.name}` }} </b-card-text>
-                    <b-card-text class="text-properties"> biiiiiiif </b-card-text>
-                    <b-button v-b-toggle="'collapse-' + experiment.id" variant="primary">Plates</b-button>
+                <b-card>
+                
+                <div class="text-left">
+                    <h4 class="text-properties">{{experiment.attributes.name}}  </h4>
+                    <!-- horizontal white space -->
+
+                    <b-card-text class="text-properties float-center">Date</b-card-text>
+                    <b-button class="float-right" v-b-toggle="'collapse-' + experiment.id" variant="primary">...</b-button>
                 </div>
                 <b-collapse v-bind:id="'collapse-' + experiment.id" class="mt-2">
                     <b-card>Hello!
+                        <b-card-text class="text-properties">{{` ${experiment.attributes.plates.data[0].attributes.name}` }} </b-card-text>
+                        <b-card-text class="text-properties text-center"> biiiiiiif </b-card-text>
                         <div v-bind:key="plate.id" v-for="plate in experiment.attributes.plates.data">
                             <b-button v-on:click="redirectToURL_wells(plate.attributes.name)">{{plate.attributes.name}}</b-button>
                         </div>
@@ -63,6 +65,10 @@ export default {
                 <!-- </span> -->
                 <!-- <button v-on:click="redirectToURL(experiment.attributes.name)"> Plates </button> -->
                 <!-- <router-link to="/wells/" + ${experiment.attributes.name} >Wells</router-link>  -->
+
+                <!-- removed bits
+                v-bind:title="experiment.attributes.name"
+             -->
                 </b-card>
             <!-- </b-row> -->
         </div>
