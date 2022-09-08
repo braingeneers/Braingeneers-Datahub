@@ -26,43 +26,47 @@ export default {
   }
 }
 </script>
+<style>
+    .text-properties{
+        display: inline;
+    }
+</style>
 
 
 <template>
   <b-container>
+
     <div v-if="experiments.length">
-      <b-row>
+      <!-- <b-row> -->
         <div v-bind:key="experiment.id" v-for="experiment in experiments">
-          <b-col l="4">
-            <b-card
-              v-bind:img-src="`https://via.placeholder.com/150`"
-              v-bind:title="experiment.attributes.name"
-              img-alt="Image"
-              img-top
-              tag="article"
-              style="max-width: 20rem;"
-              class="mb-2"
-            >
-              <b-card-text>{{` ${experiment.attributes.plates.data[0].attributes.name}` }}</b-card-text>
-              <b-button v-b-toggle="'collapse-' + experiment.id" variant="primary">Plates</b-button>
-                            <b-collapse v-bind:id="'collapse-' + experiment.id" class="mt-2">
-                                <b-card>Hello!
-                                    <div v-bind:key="plate.id" v-for="plate in experiment.attributes.plates.data">
-                                        <b-button v-on:click="redirectToURL_wells(plate.attributes.name)">{{plate.attributes.name}}</b-button>
-                                    </div>
-                                </b-card>
-                            </b-collapse> 
-              <span>
-                <!-- <div v-bind:key="well.id" v-for="well in experiment.attributes.wells.data">
-                  <strong>{{ `${well.attributes.name}` }}</strong>
-                </div> -->
-              </span>
-              <!-- <button v-on:click="redirectToURL(experiment.attributes.name)"> Plates </button> -->
-              <!-- <router-link to="/wells/" + ${experiment.attributes.name} >Wells</router-link>  -->
-            </b-card>
-          </b-col>
+            <!-- <b-row> -->
+                <b-card
+                v-bind:title="experiment.attributes.name"
+                class="text-center"
+                >
+                <div class="text-properties">
+                    <b-card-text class="text-properties">{{` ${experiment.attributes.plates.data[0].attributes.name}` }} </b-card-text>
+                    <b-card-text class="text-properties"> biiiiiiif </b-card-text>
+                    <b-button v-b-toggle="'collapse-' + experiment.id" variant="primary">Plates</b-button>
+                </div>
+                <b-collapse v-bind:id="'collapse-' + experiment.id" class="mt-2">
+                    <b-card>Hello!
+                        <div v-bind:key="plate.id" v-for="plate in experiment.attributes.plates.data">
+                            <b-button v-on:click="redirectToURL_wells(plate.attributes.name)">{{plate.attributes.name}}</b-button>
+                        </div>
+                    </b-card>
+                </b-collapse> 
+                <!-- <span> -->
+                    <!-- <div v-bind:key="well.id" v-for="well in experiment.attributes.wells.data">
+                    <strong>{{ `${well.attributes.name}` }}</strong>
+                    </div> -->
+                <!-- </span> -->
+                <!-- <button v-on:click="redirectToURL(experiment.attributes.name)"> Plates </button> -->
+                <!-- <router-link to="/wells/" + ${experiment.attributes.name} >Wells</router-link>  -->
+                </b-card>
+            <!-- </b-row> -->
         </div>
-      </b-row>
+      <!-- </b-row> -->
     </div>
     <div v-else>
       <h5>Fetching experiments . . .</h5>
