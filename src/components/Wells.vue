@@ -28,16 +28,14 @@ export default {
             this.error = error;
         }
     },
-    // async loader() {
-    //     try {
-    //         console.log(this.filter_params)
-    //         console.log(this.plate_name)
-    //         const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}${this.plate_name}`)
-    //         this.wells = response.data.data
-    //     } catch (error) {
-    //         this.error = error;
-    //     }
-    // }
+    methods: {
+            showModal(id) {
+                this.$refs[id].show();
+            },
+            hideModal(id) {
+                this.$refs[id].hide();
+            },
+        }
 }
 </script>
 <style>
@@ -72,11 +70,18 @@ export default {
                                 <!-- <b-card-text>{{ `${wells[((row-1)*6+col)-1].attributes.description}` }}</b-card-text> -->
                                 <!-- create unique collapse toggle for each card in for loop -->
                                 <!-- <img v-on:click="bkl" class="capture" :src="`https://via.placeholder.com/200`"/> -->
-                                <b-button id="my-button" v-b-toggle="'collapse-' + wells[((row-1)*6+col)-1].id" variant="primary" class="stretched-link"></b-button>
-                                <b-collapse v-bind:id="'collapse-' + wells[((row-1)*6+col)-1].id" class="mt-2">
+                                <div>
+                                        <b-button v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
+                                        <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered title="BootstrapVue">
+                                            <p class="my-4">Vertically centered modal!</p>
+                                        </b-modal>
+                                </div>                               
+                                <b-button id="my-button" v-b-toggle="'collapse-' + wells[((row-1)*6+col)-1].id" variant="primary" ></b-button>
+                                <b-collapse v-bind:ref="'collapse-' + wells[((row-1)*6+col)-1].id" class="mt-2">
                                     <h>Hello!</h>
                                 </b-collapse>
                                  <!-- elements removed from card
+                                    
                                     v-bind:title="wells[((row-1)*6+col)-1].attributes.name"
                                 -->
                             </b-card>
