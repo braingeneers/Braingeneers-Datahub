@@ -34,20 +34,18 @@ export default {
                 console.log("#"+id)
                 $("#"+id).click();
             },
-            hideModal(id) {
-                this.$refs[id].hide();
-            },
+            // hideModal(id) {
+            //     this.$refs[id].hide();
+            // },
         }
 }
 </script>
 
 <style>
-    #my-button{
+    /* #my-button{
         height:0px;
         width:0px
-        /* opacity: .0001; */
-        /* display: none; */
-    }
+    }  */
 </style>
 
 
@@ -58,23 +56,20 @@ export default {
             <h1>Plate: {{plate_name}}</h1>
         </b-row>
         <div v-if="wells.length">
-            <b-row>
+            <!-- <b-row> -->
                 <table id="picture-grid">
                     <tr v-for="row in 4" :key="row">
                     <td v-for="col in 6" :key="row * 10 + col">
                         <b-col l="1">
                             <b-card 
-                                v-bind:img-src="`https://placekitten.com/g/200/200`"
-                                img-alt="Image" 
-                                img-top 
                                 tag="article" 
-                                style="max-width: 20rem; min-width = 5rem;" 
+                                
                                 class="mb-2">
                                 <!-- <b-card-text>{{ `${wells[((row-1)*6+col)-1].attributes.description}` }}</b-card-text> -->
                                 <!-- create unique collapse toggle for each card in for loop -->
-                                <!-- <img v-on:click="bkl" class="capture" :src="`https://via.placeholder.com/200`"/> -->
+                                <img v-on:click="showModal('boof' + wells[((row-1)*6+col)-1].id)"  :src="`https://placekitten.com/g/200/200`"/>
                                 <div>
-                                        <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button>
+                                        <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button> -->
                                         <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
                                         <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered title="BootstrapVue">
                                             <p class="my-4">Vertically centered modal!</p>
@@ -88,13 +83,16 @@ export default {
                                     @click="showModal('modal-centere' + wells[((row-1)*6+col)-1].id)"
                                      @click="showModal('modal-centere' + wells[((row-1)*6+col)-1].id)"
                                     v-bind:title="wells[((row-1)*6+col)-1].attributes.name"
+                                v-bind:img-src="`https://placekitten.com/g/200/200`"
+                                img-alt="Image" 
+                                img-top 
                                 -->
                             </b-card>
                         </b-col>
                     </td>
                     </tr>
                 </table>
-            </b-row>
+            <!-- </b-row> -->
         </div>
         <div v-else>
             <h5>No wells found . . .</h5>
