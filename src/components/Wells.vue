@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios'
+import $ from 'jquery'
 
 export default {
     props: ["plate_name"],
@@ -30,7 +31,8 @@ export default {
     },
     methods: {
             showModal(id) {
-                this.$refs[id].show();
+                console.log("#"+id)
+                $('#boof').click();
             },
             hideModal(id) {
                 this.$refs[id].hide();
@@ -38,6 +40,7 @@ export default {
         }
 }
 </script>
+
 <style>
     #my-button{
         height:0px;
@@ -71,17 +74,19 @@ export default {
                                 <!-- create unique collapse toggle for each card in for loop -->
                                 <!-- <img v-on:click="bkl" class="capture" :src="`https://via.placeholder.com/200`"/> -->
                                 <div>
-                                        <b-button v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
+                                        <b-button  id="indirect-button" @click="showModal('modal-centere' + wells[((row-1)*6+col)-1].id)" > indirect</b-button>
+                                        <b-button id="boof" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
                                         <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered title="BootstrapVue">
                                             <p class="my-4">Vertically centered modal!</p>
                                         </b-modal>
                                 </div>                               
                                 <b-button id="my-button" v-b-toggle="'collapse-' + wells[((row-1)*6+col)-1].id" variant="primary" ></b-button>
-                                <b-collapse v-bind:ref="'collapse-' + wells[((row-1)*6+col)-1].id" class="mt-2">
+                                <b-collapse v-bind:id="'collapse-' + wells[((row-1)*6+col)-1].id" class="mt-2">
                                     <h>Hello!</h>
                                 </b-collapse>
                                  <!-- elements removed from card
-                                    
+                                    @click="showModal('modal-centere' + wells[((row-1)*6+col)-1].id)"
+                                     @click="showModal('modal-centere' + wells[((row-1)*6+col)-1].id)"
                                     v-bind:title="wells[((row-1)*6+col)-1].attributes.name"
                                 -->
                             </b-card>
