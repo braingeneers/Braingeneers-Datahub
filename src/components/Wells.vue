@@ -32,7 +32,7 @@ export default {
     methods: {
             showModal(id) {
                 console.log("#"+id)
-                $('#boof').click();
+                $("#"+id).click();
             },
             hideModal(id) {
                 this.$refs[id].hide();
@@ -74,8 +74,8 @@ export default {
                                 <!-- create unique collapse toggle for each card in for loop -->
                                 <!-- <img v-on:click="bkl" class="capture" :src="`https://via.placeholder.com/200`"/> -->
                                 <div>
-                                        <b-button  id="indirect-button" @click="showModal('modal-centere' + wells[((row-1)*6+col)-1].id)" > indirect</b-button>
-                                        <b-button id="boof" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
+                                        <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button>
+                                        <b-button v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
                                         <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered title="BootstrapVue">
                                             <p class="my-4">Vertically centered modal!</p>
                                         </b-modal>
