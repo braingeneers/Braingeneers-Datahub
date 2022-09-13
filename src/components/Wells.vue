@@ -34,22 +34,24 @@ export default {
                 console.log("#"+id)
                 $("#"+id).click();
             },
-            addSampleToWell(well_id, sample_id) {
-                console.log("addSampleToWell")
+            createSample(name, description, well_id){
+                console.log("create sample")
+                console.log(name)
+                console.log(description)
                 console.log(well_id)
-                console.log(sample_id)
-                axios.post(`http://localhost:1337/api/wells/${well_id}/samples/${sample_id}`)
-                    .then(response => {
-                        console.log(response)
-                        this.$router.go()
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
+                axios.post('http://localhost:1337/api/samples', {
+                    name: name,
+                    description: description,
+                    well: well_id
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
-            // hideModal(id) {
-            //     this.$refs[id].hide();
-            // },
+
         }
 }
 </script>
@@ -111,9 +113,12 @@ export default {
                                                     <img class="img-responsive" :src="`https://placekitten.com/g/600/600`" style="max-height:250px;">
                                                     <p class="my-4">cute cat</p>
                                                     <!-- button and text field to add sample to the database via restAPI call -->
-                                                    <b-form @submit.prevent="addSample(wells[((row-1)*6+col)-1].id)">
+                                                    <b-form @submit.prevent="createSample(wells[((row-1)*6+col)-1].id)">
                                                         <b-form-group id="input-group-1" label="Sample Name:" label-for="input-1">
                                                             <b-form-input id="input-1" v-model="sample_name" required></b-form-input>
+                                                            <!-- labeled input field for sample description -->
+                                                            <label for="description">Comment:</label>
+                                                            <textarea class="form-control" rows="5" id="description"></textarea>
                                                         </b-form-group>
                                                         <b-button type="submit" variant="primary">Submit</b-button>
                                                     </b-form>
