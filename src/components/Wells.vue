@@ -28,8 +28,10 @@ export default {
                 this.filter_params = this.filter_params + this.plate_name
             }
             // ${this.plate_name}
-            const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}`)
+            //added populate=* to get all the associated nested data
+            const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)
             this.wells = response.data.data
+            console.log(this.wells)
         } catch (error) {
             this.error = error;
         }
@@ -136,6 +138,14 @@ export default {
                                                 <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered v-bind:title= wells[((row-1)*6+col)-1].attributes.name>
                                                     <img class="img-responsive" :src="`https://placekitten.com/g/600/600`" style="max-height:250px;">
                                                     <p class="my-4">cute cat</p>
+                                                    <!-- list samples -->
+                                                    <b-list-group>
+                                                        Hello
+
+                                                        <b-list-group-item v-for="sample in wells[((row-1)*6+col)-1].attributes.samples.data" :key="sample.id">
+                                                            {{sample.attributes.name}}
+                                                        </b-list-group-item>
+                                                    </b-list-group>
                                                     <div>
                                                         <!-- button and text field to add sample to the database via restAPI call -->
                                                         <b-form @submit.prevent="createSample(wells[((row-1)*6+col)-1].id)">
