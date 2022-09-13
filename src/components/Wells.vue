@@ -42,6 +42,29 @@ export default {
 </script>
 
 <style>
+    .img-wrap {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+        margin: 0;
+
+    }
+
+    div > img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        /* min-height: 100%;
+        min-width: 100%;*/
+        transform: translate(-50%, -50%); 
+
+    }
+
     /* #my-button{
         height:0px;
         width:0px
@@ -61,13 +84,13 @@ export default {
                     <div v-for="row in 4" :key="row">
                         <b-row>
                             <div v-for="col in 6" :key="row * 10 + col">
-                                <b-col l="1">
+                                <b-col>
                                     <b-card 
                                         tag="article" 
-                                        class="mb-2">
+                                        class="mb-2 img-wrap">
                                         <!-- <b-card-text>{{ `${wells[((row-1)*6+col)-1].attributes.description}` }}</b-card-text> -->
                                         <!-- create unique collapse toggle for each card in for loop -->
-                                        <img v-on:click="showModal('boof' + wells[((row-1)*6+col)-1].id)"  :src="`https://placekitten.com/g/200/200`"/>
+                                        <img v-on:click="showModal('boof' + wells[((row-1)*6+col)-1].id)"  :src="`https://placekitten.com/g/600/600`"/>
                                         <div>
                                                 <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button> -->
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
