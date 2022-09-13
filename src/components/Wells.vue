@@ -34,6 +34,19 @@ export default {
                 console.log("#"+id)
                 $("#"+id).click();
             },
+            addSampleToWell(well_id, sample_id) {
+                console.log("addSampleToWell")
+                console.log(well_id)
+                console.log(sample_id)
+                axios.post(`http://localhost:1337/api/wells/${well_id}/samples/${sample_id}`)
+                    .then(response => {
+                        console.log(response)
+                        this.$router.go()
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+            },
             // hideModal(id) {
             //     this.$refs[id].hide();
             // },
@@ -94,9 +107,17 @@ export default {
                                         <div>
                                                 <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button> -->
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
-                                                <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered title="BootstrapVue">
+                                                <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered v-bind:title= wells[((row-1)*6+col)-1].attributes.name>
                                                     <img class="img-responsive" :src="`https://placekitten.com/g/600/600`" style="max-height:250px;">
-                                                    <p class="my-4">Vertically centered modal!</p>
+                                                    <p class="my-4">cute cat</p>
+                                                    <!-- button and text field to add sample to the database via restAPI call -->
+                                                    <b-form @submit.prevent="addSample(wells[((row-1)*6+col)-1].id)">
+                                                        <b-form-group id="input-group-1" label="Sample Name:" label-for="input-1">
+                                                            <b-form-input id="input-1" v-model="sample_name" required></b-form-input>
+                                                        </b-form-group>
+                                                        <b-button type="submit" variant="primary">Submit</b-button>
+                                                    </b-form>
+
                                                 </b-modal>
                                         </div>                               
                                         <!-- <b-button id="my-button" v-b-toggle="'collapse-' + wells[((row-1)*6+col)-1].id" variant="primary" ></b-button>
