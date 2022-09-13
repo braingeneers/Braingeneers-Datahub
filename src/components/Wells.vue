@@ -63,6 +63,18 @@ export default {
                     console.log(error);
                 });
             },
+            getSamples(well_id){
+                console.log("get samples")
+                console.log(well_id)
+                // post with api_token
+                axios.get(`http://localhost:1337/api/samples?filters[well][id][$eq]=${well_id}`)
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
 
         }
 }
