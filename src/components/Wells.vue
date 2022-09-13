@@ -9,7 +9,12 @@ export default {
             wells: [],
             //   filter_string: '?filters[plate][name][$eq]=test-plate-1',
             filter_params: "?filters[plate][name][$contains]=",
-            error: null
+            error: null,
+            form: {
+                sample_name: '',
+                sample_description: ''
+            },
+            api_token: "63e7b69b04c8f9d9c1c368a10ee586de676e5ae58b970225b4eb4d4ac8a633f141e98c656f296fabb0c1be54b01b23c152d09f41a562f7d6acde3865c3b53e33af5e1fbb4680adf71552f6b8e733e5df460a1c8fa32f42e2ccc26f204198bddc9382dcfe5d1af774465ce706baa6fcda5e0c0b8050f90a74f86dd8cffa1ccecb"
         }
 
     },
@@ -34,15 +39,22 @@ export default {
                 console.log("#"+id)
                 $("#"+id).click();
             },
-            createSample(name, description, well_id){
+            createSample(well_id){
                 console.log("create sample")
-                console.log(name)
-                console.log(description)
+                console.log(this.form.sample_name)
+                console.log(this.form.sample_description)
                 console.log(well_id)
+                // post with api_token
                 axios.post('http://localhost:1337/api/samples', {
-                    name: name,
-                    description: description,
-                    well: well_id
+                    data:{
+                        name: this.form.sample_name,
+                        description: this.form.sample_description,
+                        well: well_id
+                    }
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${this.api_token}`
+                    }
                 })
                 .then(function (response) {
                     console.log(response);
@@ -112,16 +124,34 @@ export default {
                                                 <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered v-bind:title= wells[((row-1)*6+col)-1].attributes.name>
                                                     <img class="img-responsive" :src="`https://placekitten.com/g/600/600`" style="max-height:250px;">
                                                     <p class="my-4">cute cat</p>
-                                                    <!-- button and text field to add sample to the database via restAPI call -->
-                                                    <b-form @submit.prevent="createSample(wells[((row-1)*6+col)-1].id)">
-                                                        <b-form-group id="input-group-1" label="Sample Name:" label-for="input-1">
-                                                            <b-form-input id="input-1" v-model="sample_name" required></b-form-input>
-                                                            <!-- labeled input field for sample description -->
-                                                            <label for="description">Comment:</label>
-                                                            <textarea class="form-control" rows="5" id="description"></textarea>
-                                                        </b-form-group>
-                                                        <b-button type="submit" variant="primary">Submit</b-button>
-                                                    </b-form>
+                                                    <div>
+                                                        <!-- button and text field to add sample to the database via restAPI call -->
+                                                        <b-form @submit.prevent="createSample(wells[((row-1)*6+col)-1].id)">
+                                                            <b-form-group
+                                                                id="input-group-1"
+                                                                label="Sample Name:"
+                                                                label-for="input-1"
+                                                                description="name the sample"
+                                                            >
+                                                                <b-form-input
+                                                                id="input-1"
+                                                                v-model="form.sample_name"
+                                                                placeholder="name"
+                                                                required
+                                                                ></b-form-input>
+                                                            </b-form-group>
+                                                            <b-form-group id="input-group-2" label="Description:" label-for="input-2">
+                                                                <b-form-textarea
+                                                                    id="input-2"
+                                                                    v-model="form.sample_description"
+                                                                    placeholder="description"
+                                                                    rows = "6"
+                                                                    required
+                                                                ></b-form-textarea>
+                                                            </b-form-group>
+                                                            <b-button type="submit" variant="primary">Submit</b-button>
+                                                        </b-form>
+                                                    </div>
 
                                                 </b-modal>
                                         </div>                               
