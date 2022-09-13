@@ -50,48 +50,50 @@ export default {
 
 
 <template>
-    <b-container>
+    <b-container fluid="xl">
         <!-- display plate name header -->
         <b-row>
             <h1>Plate: {{plate_name}}</h1>
         </b-row>
         <div v-if="wells.length">
             <!-- <b-row> -->
-                <table id="picture-grid">
-                    <tr v-for="row in 4" :key="row">
-                    <td v-for="col in 6" :key="row * 10 + col">
-                        <b-col l="1">
-                            <b-card 
-                                tag="article" 
-                                
-                                class="mb-2">
-                                <!-- <b-card-text>{{ `${wells[((row-1)*6+col)-1].attributes.description}` }}</b-card-text> -->
-                                <!-- create unique collapse toggle for each card in for loop -->
-                                <img v-on:click="showModal('boof' + wells[((row-1)*6+col)-1].id)"  :src="`https://placekitten.com/g/200/200`"/>
-                                <div>
-                                        <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button> -->
-                                        <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
-                                        <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered title="BootstrapVue">
-                                            <p class="my-4">Vertically centered modal!</p>
-                                        </b-modal>
-                                </div>                               
-                                <!-- <b-button id="my-button" v-b-toggle="'collapse-' + wells[((row-1)*6+col)-1].id" variant="primary" ></b-button>
-                                <b-collapse v-bind:id="'collapse-' + wells[((row-1)*6+col)-1].id" class="mt-2">
-                                    <h>Hello!</h>
-                                </b-collapse> -->
-                                 <!-- elements removed from card
-                                    @click="showModal('modal-centere' + wells[((row-1)*6+col)-1].id)"
-                                     @click="showModal('modal-centere' + wells[((row-1)*6+col)-1].id)"
-                                    v-bind:title="wells[((row-1)*6+col)-1].attributes.name"
-                                v-bind:img-src="`https://placekitten.com/g/200/200`"
-                                img-alt="Image" 
-                                img-top 
-                                -->
-                            </b-card>
-                        </b-col>
-                    </td>
-                    </tr>
-                </table>
+                <!-- <table id="picture-grid"> -->
+                    <div v-for="row in 4" :key="row">
+                        <b-row>
+                            <div v-for="col in 6" :key="row * 10 + col">
+                                <b-col l="1">
+                                    <b-card 
+                                        tag="article" 
+                                        class="mb-2">
+                                        <!-- <b-card-text>{{ `${wells[((row-1)*6+col)-1].attributes.description}` }}</b-card-text> -->
+                                        <!-- create unique collapse toggle for each card in for loop -->
+                                        <img v-on:click="showModal('boof' + wells[((row-1)*6+col)-1].id)"  :src="`https://placekitten.com/g/200/200`"/>
+                                        <div>
+                                                <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button> -->
+                                                <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
+                                                <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered title="BootstrapVue">
+                                                    <p class="my-4">Vertically centered modal!</p>
+                                                </b-modal>
+                                        </div>                               
+                                        <!-- <b-button id="my-button" v-b-toggle="'collapse-' + wells[((row-1)*6+col)-1].id" variant="primary" ></b-button>
+                                        <b-collapse v-bind:id="'collapse-' + wells[((row-1)*6+col)-1].id" class="mt-2">
+                                            <h>Hello!</h>
+                                        </b-collapse> -->
+                                        <!-- elements removed from card
+                                            @click="showModal('modal-centere' + wells[((row-1)*6+col)-1].id)"
+                                            @click="showModal('modal-centere' + wells[((row-1)*6+col)-1].id)"
+                                            v-bind:title="wells[((row-1)*6+col)-1].attributes.name"
+                                        v-bind:img-src="`https://placekitten.com/g/200/200`"
+                                        img-alt="Image" 
+                                        img-top 
+                                        -->
+                                    </b-card>
+                                </b-col>
+                            </div>
+                        </b-row>
+                    </div>
+                <!-- </div> -->
+                <!-- </table> -->
             <!-- </b-row> -->
         </div>
         <div v-else>
