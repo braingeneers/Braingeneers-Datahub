@@ -77,7 +77,7 @@ export default {
                     console.log(error);
                 });
             },
-            deleteSample(sample_id){
+            deleteSample(sample_id, well_id){
                 console.log("delete sample")
                 console.log(sample_id)
                 // post with api_token
@@ -89,6 +89,23 @@ export default {
                 .then(function (response) {
                     console.log(response);
                 })
+                .catch(function (error) {
+                    console.log(error);
+                });
+                // var temp_wells = this.wells
+                // $(temp_wells).each( function() {
+                //     if (this.id == well_id) console.log("found");
+
+                //     else (console.log("not found"));
+                // });
+                console.log(well_id)
+                console.log(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)
+                axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)                
+                .then(response => {
+                    console.log(response);
+                    this.wells = []
+                    this.wells = response.data.data
+                })  
                 .catch(function (error) {
                     console.log(error);
                 });
@@ -174,7 +191,7 @@ export default {
                                                             <b-list-group-item v-for="sample in wells[((row-1)*6+col)-1].attributes.samples.data" :key="sample.id">
                                                                 <div v-bind:id="'sample-' +sample.id">
                                                                     <b-button v-b-toggle="'collapse-sample' + sample.id" variant="secondary"> {{sample.attributes.name}} </b-button>
-                                                                    <b-button v-on:click="deleteSample(sample.id)" class="float-right" v-bind:id="'delete-sample-'+sample.id" variant="danger"> X </b-button>
+                                                                    <b-button v-on:click="deleteSample(sample.id, wells[((row-1)*6+col)-1].id)" class="float-right" v-bind:id="'delete-sample-'+sample.id" variant="danger"> X </b-button>
                                                                     <b-collapse v-bind:id="'collapse-sample' + sample.id" class="mt-2">
                                                                         <b-card>
                                                                             <b-card-text>{{sample.attributes.description}}</b-card-text>
