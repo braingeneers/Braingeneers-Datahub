@@ -86,8 +86,19 @@ export default {
                         'Authorization': `Bearer ${this.api_token}`
                     }
                 })
-                .then(function (response) {
+                .then(response => {
                     console.log(response);
+                    if (response.status == 200){
+                        axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)                
+                        .then(response => {
+                            console.log(response);
+                            this.wells = []
+                            this.wells = response.data.data
+                        })  
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -100,18 +111,19 @@ export default {
                 // });
                 console.log(well_id)
                 console.log(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)
-                axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)                
-                .then(response => {
-                    console.log(response);
-                    this.wells = []
-                    this.wells = response.data.data
-                })  
-                .catch(function (error) {
-                    console.log(error);
-                });
+                // axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)                
+                // .then(response => {
+                //     console.log(response);
+                //     this.wells = []
+                //     this.wells = response.data.data
+                // })  
+                // .catch(function (error) {
+                //     console.log(error);
+                // });
                 // delete page element
-                console.log("deleting page element: " + "sample-" + sample_id);
-                $("#"+'sample-'+sample_id).remove();
+                
+                // console.log("deleting page element: " + "sample-" + sample_id);
+                // $("#"+'sample-'+sample_id).remove();
 
                 // try {
                 //     const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)
