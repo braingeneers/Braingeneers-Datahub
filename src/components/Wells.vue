@@ -137,14 +137,17 @@ export default {
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
                                                 <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered v-bind:title= wells[((row-1)*6+col)-1].attributes.name>
                                                     <img class="img-responsive" :src="`https://placekitten.com/g/600/600`" style="max-height:250px;">
-                                                    <p class="my-4">cute cat</p>
+                                                    <!-- <p class="my-4">cute cat</p> -->
                                                     <!-- list samples -->
+                                                    <b-row></b-row>
                                                     <b-list-group>
-                                                        Hello
-
-                                                        <b-list-group-item v-for="sample in wells[((row-1)*6+col)-1].attributes.samples.data" :key="sample.id">
-                                                            {{sample.attributes.name}}
-                                                        </b-list-group-item>
+                                                        ---
+                                                        <b-button class="float-right" v-b-toggle="'collapse-samples-' + wells[((row-1)*6+col)-1].id" variant="primary"> Samples</b-button>
+                                                        <b-collapse v-bind:id="'collapse-samples-' + wells[((row-1)*6+col)-1].id" class="mt-2">
+                                                            <b-list-group-item v-for="sample in wells[((row-1)*6+col)-1].attributes.samples.data" :key="sample.id">
+                                                                {{sample.attributes.name}}
+                                                            </b-list-group-item>
+                                                        </b-collapse>
                                                     </b-list-group>
                                                     <div>
                                                         <!-- button and text field to add sample to the database via restAPI call -->
