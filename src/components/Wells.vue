@@ -323,10 +323,10 @@ export default {
                                                         <button id="Arrow48Right" type="button" v-on:click="OnArrow48RightClick">
                                                                 Forward 48 Timesteps
                                                         </button>
-                                                    </div>
+                                                    </div> -->
                                                     <div style="padding-top: 1vw">
 
-                                                        T: {{ manifest.captures[curTimestampIndex] }} Z: {{ curZ+1 }}/{{this.manifest.stack_size}}
+                                                        T: {{ manifest.captures[curTimestampIndex] }} Z: {{ curZ+1 }}/{{manifest.stack_size}}
                                                         <button v-on:click="OnPreviousFocalViewClick">
                                                             Previous Focal View
                                                         </button>
@@ -334,7 +334,7 @@ export default {
                                                         <button v-on:click="OnNextFocalViewClick" >
                                                             Next Focal View
                                                         </button>
-                                                    </div> -->
+                                                    </div>
                                                     <!-- <p class="my-4">cute cat</p> -->
                                                     samples
                                                     <b-button pill style="display:block;" v-b-toggle="'collapse-samples-' + wells[((row-1)*6+col)-1].id" variant="primary"> List Samples</b-button>
