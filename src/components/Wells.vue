@@ -176,6 +176,11 @@ export default {
                     alert("Unable to load experiment, does the uuid exist?")
                     })
             },
+            changeImageSet(uuid){
+                this.uuid = uuid
+                this.groupID = this.plate.attributes.image_parameters.group_id
+                this.loader("newest")
+            },
             missing(event) {
                 console.log("Missing image", event.target.src)
                 event.target.src = "https://placekitten.com/g/600/600"
