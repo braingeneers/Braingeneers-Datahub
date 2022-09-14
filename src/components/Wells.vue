@@ -308,32 +308,31 @@ export default {
                                                 <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button> -->
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
                                                 <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered v-bind:title= wells[((row-1)*6+col)-1].attributes.name>
-                                                    <img class="img-responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`" style="max-height:300px; display:block;">
-                                                    <!-- <div style="padding-top: 1vw">
-                                                        <button id="Arrow48Left" type="button" v-on:click="OnArrow48LeftClick">
-                                                                Back 48 Timesteps
-                                                        </button>
-                                                        <button id="ArrowLeft" type="button" v-on:click="OnArrowLeftClick">
-                                                                Previous Timestamp
-                                                        </button>
-                                                        Current Timestamp: {{this.curTimestampIndex+1}}/{{ this.manifest.captures.length}}
-                                                        <button id="ArrowRight" type="button" v-on:click="OnArrowRightClick">
-                                                                Next Timestamp
-                                                        </button>
-                                                        <button id="Arrow48Right" type="button" v-on:click="OnArrow48RightClick">
-                                                                Forward 48 Timesteps
-                                                        </button>
-                                                    </div> -->
+                                                    <img class="img-responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`" style="max-height:300px; display:block;">
+                                                    Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
+                                                    T: {{ manifest.captures[curTimestampIndex] }} Z: {{ curZ+1 }}/{{manifest.stack_size}}
                                                     <div style="padding-top: 1vw">
-
-                                                        T: {{ manifest.captures[curTimestampIndex] }} Z: {{ curZ+1 }}/{{manifest.stack_size}}
-                                                        <button v-on:click="OnPreviousFocalViewClick">
+                                                        <b-button id="Arrow48Left" type="button" v-on:click="OnArrow48LeftClick">
+                                                                Back 48 Timesteps
+                                                        </b-button>
+                                                        <b-button id="ArrowLeft" type="button" v-on:click="OnArrowLeftClick">
+                                                                Previous Timestamp
+                                                        </b-button>
+                                                        <b-button id="ArrowRight" type="button" v-on:click="OnArrowRightClick">
+                                                                Next Timestamp
+                                                        </b-button>
+                                                        <b-button id="Arrow48Right" type="button" v-on:click="OnArrow48RightClick">
+                                                                Forward 48 Timesteps
+                                                        </b-button>
+                                                    </div>
+                                                    <div style="padding-top: 1vw">
+                                                        <b-button v-on:click="OnPreviousFocalViewClick">
                                                             Previous Focal View
-                                                        </button>
+                                                        </b-button>
 
-                                                        <button v-on:click="OnNextFocalViewClick" >
+                                                        <b-button v-on:click="OnNextFocalViewClick" >
                                                             Next Focal View
-                                                        </button>
+                                                        </b-button>
                                                     </div>
                                                     <!-- <p class="my-4">cute cat</p> -->
                                                     samples
