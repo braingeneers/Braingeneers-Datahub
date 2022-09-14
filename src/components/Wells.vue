@@ -6,6 +6,7 @@ export default {
     props: ["plate_name"],
     data() {
         return {
+            plate: [],
             wells: [],
             //   filter_string: '?filters[plate][name][$eq]=test-plate-1',
             filter_params: "?filters[plate][name][$contains]=",
@@ -15,6 +16,7 @@ export default {
                 sample_description: ''
             },
             api_token: "63e7b69b04c8f9d9c1c368a10ee586de676e5ae58b970225b4eb4d4ac8a633f141e98c656f296fabb0c1be54b01b23c152d09f41a562f7d6acde3865c3b53e33af5e1fbb4680adf71552f6b8e733e5df460a1c8fa32f42e2ccc26f204198bddc9382dcfe5d1af774465ce706baa6fcda5e0c0b8050f90a74f86dd8cffa1ccecb",
+            api_endpoint: "http://localhost:1337",
             //image viewer stuff
             uuid:"2022-07-11-i-connectoid-3",
             groupID:"C", 
@@ -46,8 +48,10 @@ export default {
             }
             // ${this.plate_name}
             //added populate=* to get all the associated nested data
-            const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)
+            const response = await axios.get(`${this.api_endpoint}/api/wells${this.filter_params}&populate=*`)
             this.wells = response.data.data
+            // const response = await axios.get(`http://localhost:1337/api/plate/${this.filter_params}&populate=*`)
+            // this.wells = response.data.data
             // console.log(this.wells)
         } catch (error) {
             this.error = error;
@@ -168,6 +172,10 @@ export default {
                     alert("Unable to load experiment, does the uuid exist?")
                     })
             },
+            missing(event) {
+                console.log("Missing image", event.target.src)
+                event.target.src = "https://placekitten.com/g/600/600"
+            },
 
         }
 }
@@ -223,12 +231,12 @@ export default {
                                         <b-card-text>{{ `${wells[((row-1)*6+col)-1].attributes.description}` }}</b-card-text>
                                         <!-- create unique collapse toggle for each card in for loop -->
                                         <!-- <img class="img-card-fill" v-on:click="showModal('boof' + wells[((row-1)*6+col)-1].id)"  :src="`https://placekitten.com/g/600/600`"/> -->
-                                        <img class="img-card-fill" v-on:click="showModal('boof' + wells[((row-1)*6+col)-1].id)"  :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`"/>
+                                        <img class="img-card-fill" v-on:click="showModal('boof' + wells[((row-1)*6+col)-1].id)" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`"/>
                                         <div>
                                                 <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button> -->
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
                                                 <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered v-bind:title= wells[((row-1)*6+col)-1].attributes.name>
-                                                    <img class="img-responsive" :src="`https://placekitten.com/g/600/600`" style="max-height:300px; display:block;">
+                                                    <img class="img-responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`" style="max-height:300px; display:block;">
                                                     <!-- <p class="my-4">cute cat</p> -->
                                                     samples
                                                     <b-button pill style="display:block;" v-b-toggle="'collapse-samples-' + wells[((row-1)*6+col)-1].id" variant="primary"> List Samples</b-button>
