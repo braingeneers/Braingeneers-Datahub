@@ -31,7 +31,7 @@ export default {
             //added populate=* to get all the associated nested data
             const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)
             this.wells = response.data.data
-            console.log(this.wells)
+            // console.log(this.wells)
         } catch (error) {
             this.error = error;
         }
@@ -76,6 +76,35 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
+            },
+            deleteSample(sample_id){
+                console.log("delete sample")
+                console.log(sample_id)
+                // post with api_token
+                axios.delete(`http://localhost:1337/api/samples/${sample_id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${this.api_token}`
+                    }
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+                // delete page element
+                console.log("deleting page element: " + "sample-" + sample_id);
+                $("#"+'sample-'+sample_id).remove();
+
+                // try {
+                //     const response = await axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)
+                //     this.wells = response.data.data
+                // }
+                // catch (error) {
+                //     console.log(error);
+                // }
+
+                
             }
 
         }
@@ -136,47 +165,57 @@ export default {
                                                 <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button> -->
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
                                                 <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered v-bind:title= wells[((row-1)*6+col)-1].attributes.name>
-                                                    <img class="img-responsive" :src="`https://placekitten.com/g/600/600`" style="max-height:250px;">
+                                                    <img class="img-responsive" :src="`https://placekitten.com/g/600/600`" style="max-height:300px; display:block;">
                                                     <!-- <p class="my-4">cute cat</p> -->
-                                                    <!-- list samples -->
-                                                    <b-row></b-row>
-                                                    <b-list-group>
-                                                        ---
-                                                        <b-button class="float-right" v-b-toggle="'collapse-samples-' + wells[((row-1)*6+col)-1].id" variant="primary"> Samples</b-button>
-                                                        <b-collapse v-bind:id="'collapse-samples-' + wells[((row-1)*6+col)-1].id" class="mt-2">
+                                                    samples
+                                                    <b-button pill style="display:block;" v-b-toggle="'collapse-samples-' + wells[((row-1)*6+col)-1].id" variant="primary"> List Samples</b-button>
+                                                    <b-collapse v-bind:id="'collapse-samples-' + wells[((row-1)*6+col)-1].id" class="mt-2">
+                                                        <b-list-group>
                                                             <b-list-group-item v-for="sample in wells[((row-1)*6+col)-1].attributes.samples.data" :key="sample.id">
-                                                                {{sample.attributes.name}}
+                                                                <div v-bind:id="'sample-' +sample.id">
+                                                                    <b-button v-b-toggle="'collapse-sample' + sample.id" variant="secondary"> {{sample.attributes.name}} </b-button>
+                                                                    <b-button v-on:click="deleteSample(sample.id)" class="float-right" v-bind:id="'delete-sample-'+sample.id" variant="danger"> X </b-button>
+                                                                    <b-collapse v-bind:id="'collapse-sample' + sample.id" class="mt-2">
+                                                                        <b-card>
+                                                                            <b-card-text>{{sample.attributes.description}}</b-card-text>
+                                                                        </b-card>
+                                                                    </b-collapse>
+                                                                </div>
                                                             </b-list-group-item>
-                                                        </b-collapse>
-                                                    </b-list-group>
-                                                    <div>
-                                                        <!-- button and text field to add sample to the database via restAPI call -->
-                                                        <b-form @submit.prevent="createSample(wells[((row-1)*6+col)-1].id)">
-                                                            <b-form-group
-                                                                id="input-group-1"
-                                                                label="Sample Name:"
-                                                                label-for="input-1"
-                                                                description="name the sample"
-                                                            >
-                                                                <b-form-input
-                                                                id="input-1"
-                                                                v-model="form.sample_name"
-                                                                placeholder="name"
-                                                                required
-                                                                ></b-form-input>
-                                                            </b-form-group>
-                                                            <b-form-group id="input-group-2" label="Description:" label-for="input-2">
-                                                                <b-form-textarea
-                                                                    id="input-2"
-                                                                    v-model="form.sample_description"
-                                                                    placeholder="description"
-                                                                    rows = "6"
+                                                     
+                                                        </b-list-group>
+                                                    </b-collapse>
+                                                    <b-button pill style="display:block;" v-b-toggle="'collapse-create-sample-' + wells[((row-1)*6+col)-1].id" variant="success"> Label new sample</b-button>
+                                                    <b-collapse v-bind:id="'collapse-create-sample-' + wells[((row-1)*6+col)-1].id" class="mt-2">
+                                                        <div>
+                                                            <!-- button and text field to add sample to the database via restAPI call -->
+                                                            <b-form @submit.prevent="createSample(wells[((row-1)*6+col)-1].id)">
+                                                                <b-form-group
+                                                                    id="input-group-1"
+                                                                    label="Sample Name:"
+                                                                    label-for="input-1"
+                                                                    description="name the sample"
+                                                                >
+                                                                    <b-form-input
+                                                                    id="input-1"
+                                                                    v-model="form.sample_name"
+                                                                    placeholder="name"
                                                                     required
-                                                                ></b-form-textarea>
-                                                            </b-form-group>
-                                                            <b-button type="submit" variant="primary">Submit</b-button>
-                                                        </b-form>
-                                                    </div>
+                                                                    ></b-form-input>
+                                                                </b-form-group>
+                                                                <b-form-group id="input-group-2" label="Description:" label-for="input-2">
+                                                                    <b-form-textarea
+                                                                        id="input-2"
+                                                                        v-model="form.sample_description"
+                                                                        placeholder="description"
+                                                                        rows = "6"
+                                                                        required
+                                                                    ></b-form-textarea>
+                                                                </b-form-group>
+                                                                <b-button type="submit" variant="primary">Submit</b-button>
+                                                            </b-form>
+                                                        </div>
+                                                    </b-collapse>
 
                                                 </b-modal>
                                         </div>                               
