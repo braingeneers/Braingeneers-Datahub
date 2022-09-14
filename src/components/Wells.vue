@@ -6,7 +6,7 @@ export default {
     props: ["plate_name"],
     data() {
         return {
-            plate: [],
+            plate: {"attributes": {"image_parameters" : false}},
             wells: [],
             //   filter_string: '?filters[plate][name][$eq]=test-plate-1',
             filter_params: "?filters[plate][name][$contains]=",
@@ -185,6 +185,68 @@ export default {
                 console.log("Missing image", event.target.src)
                 event.target.src = "https://placekitten.com/g/600/600"
             },
+            OnArrowRightClick() {
+                console.log()
+                if (this.curTimestampIndex < this.manifest.captures.length-1) {
+                    this.curTimestampIndex = this.curTimestampIndex + 1
+                }
+                else {
+                    console.log("At max timestamp")
+                    console.log("this.curTimestampIndex: "+ this.curTimestampIndex)
+                }
+            },
+            OnArrow48RightClick() {
+                console.log()
+                if (this.curTimestampIndex < this.manifest.captures.length-49) {
+                    this.curTimestampIndex = this.curTimestampIndex + 48
+                }
+                else {
+                    this.curTimestampIndex = this.manifest.captures.length-1
+                    console.log("At max timestamp")
+                    console.log("this.curTimestampIndex: "+ this.curTimestampIndex)
+                }
+            },
+            OnArrowLeftClick() {
+                console.log()
+                if (this.curTimestampIndex > 0) {
+                    this.curTimestampIndex = this.curTimestampIndex - 1
+                }
+                else {
+                    console.log("At minimum timestamp")
+                    console.log("this.curTimestampIndex: "+ this.curTimestampIndex)
+                }
+            },
+            OnArrow48LeftClick() {
+                console.log()
+                if (this.curTimestampIndex > 48) {
+                    this.curTimestampIndex = this.curTimestampIndex - 48
+                }
+                else {
+                    this.curTimestampIndex = 0
+                    console.log("At first timestamp")
+                    console.log("this.curTimestampIndex: "+ this.curTimestampIndex)
+                }
+            },
+            OnPreviousFocalViewClick() {
+                if (this.curZ > 0) {
+                console.log("this.curZ: " + this.curZ)
+                this.startZ = this.curZ
+                this.curZ = this.startZ - 1
+
+                } else {
+                    console.log("At minimum focal length")
+                }
+            },
+            OnNextFocalViewClick() {
+                if (this.curZ < this.manifest.stack_size-1) {
+                console.log("this.curZ: " + this.curZ)
+                this.startZ = this.curZ
+                this.curZ = this.startZ + 1
+
+                } else {
+                    console.log("At maximum focal length")
+                }
+            },
 
         }
 }
@@ -247,6 +309,32 @@ export default {
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
                                                 <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered v-bind:title= wells[((row-1)*6+col)-1].attributes.name>
                                                     <img class="img-responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`" style="max-height:300px; display:block;">
+                                                    <!-- <div style="padding-top: 1vw">
+                                                        <button id="Arrow48Left" type="button" v-on:click="OnArrow48LeftClick">
+                                                                Back 48 Timesteps
+                                                        </button>
+                                                        <button id="ArrowLeft" type="button" v-on:click="OnArrowLeftClick">
+                                                                Previous Timestamp
+                                                        </button>
+                                                        Current Timestamp: {{this.curTimestampIndex+1}}/{{ this.manifest.captures.length}}
+                                                        <button id="ArrowRight" type="button" v-on:click="OnArrowRightClick">
+                                                                Next Timestamp
+                                                        </button>
+                                                        <button id="Arrow48Right" type="button" v-on:click="OnArrow48RightClick">
+                                                                Forward 48 Timesteps
+                                                        </button>
+                                                    </div>
+                                                    <div style="padding-top: 1vw">
+
+                                                        T: {{ manifest.captures[curTimestampIndex] }} Z: {{ curZ+1 }}/{{this.manifest.stack_size}}
+                                                        <button v-on:click="OnPreviousFocalViewClick">
+                                                            Previous Focal View
+                                                        </button>
+
+                                                        <button v-on:click="OnNextFocalViewClick" >
+                                                            Next Focal View
+                                                        </button>
+                                                    </div> -->
                                                     <!-- <p class="my-4">cute cat</p> -->
                                                     samples
                                                     <b-button pill style="display:block;" v-b-toggle="'collapse-samples-' + wells[((row-1)*6+col)-1].id" variant="primary"> List Samples</b-button>
