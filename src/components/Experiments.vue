@@ -60,7 +60,7 @@ export default {
                             </b-card-text>
                             <div v-bind:key="interaction_thing.id" v-for="interaction_thing in experiment.attributes.interaction_things.data">
                                     <b-button v-on:click="redirectToURL_wells(interaction_thing.attributes.name)">{{interaction_thing.attributes.name}}</b-button>
-                                </div>
+                            </div>
                             <template #footer>
                                 <small class="text-muted">footer</small>
                             </template>
