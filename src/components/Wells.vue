@@ -52,11 +52,12 @@ export default {
             const response = await axios.get(`${this.api_endpoint}/api/wells${this.filter_params}&populate=*`)
             this.wells = response.data.data
             const response2 = await axios.get(`${this.api_endpoint}/api/plates?filters[name][$eq]=${this.plate_name}`)
-            this.plate = response2.data.data
-            console.log("plate", JSON.stringify(this.plate, 0, 2))
+            this.plate = response2.data.data[0]
+            console.log("plate", JSON.stringify(this.plate.attributes.image_parameters.images, 0, 2))
             // console.log("wells", JSON.stringify(this.wells, 0, 2))
             // console.log(this.wells)
         } catch (error) {
+            console.log(error)
             this.error = error;
         }
     },
@@ -221,6 +222,7 @@ export default {
         <b-row>
             <h1>Plate: {{plate_name}}</h1>
         </b-row>
+
         <div v-if="wells.length">
             <!-- <b-row> -->
                 <!-- <table id="picture-grid"> -->
@@ -316,6 +318,19 @@ export default {
         </div>
         <div v-else>
             <h5>No wells found . . .</h5>
+        </div>
+        <div>
+            <!-- if this.plate has attribute image, show dropdown -->
+            <b-row v-if="plate.attributes.image_parameters.images">
+            <!-- <b-row v-if="plate_name"> -->
+                <b-col>
+                    <b-dropdown id="dropdown-1" text="Select Image Set" variant="primary" menu-class="w-100">
+                        <b-dropdown-item v-for="uuid in plate.attributes.image_parameters.uuids" :key="uuid" v-on:click="changeImageSet(uuid)">
+                            {{uuid}}
+                        </b-dropdown-item>
+                    </b-dropdown>
+                </b-col>
+            </b-row>
         </div>
     </b-container>
 </template>
