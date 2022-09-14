@@ -12,15 +12,15 @@ const routes = [
     name: 'home',
     component: PlatesView,
     meta: {
-        title: 'Home Page - Example App',
+        title: 'Home Page - Braingeneers Hub',
         metaTags: [
           {
             name: 'description',
-            content: 'The home page of our example app.'
+            content: 'The home page'
           },
           {
             property: 'og:description',
-            content: 'The home page of our example app.'
+            content: 'The home page'
           }
         ]
       }
@@ -29,24 +29,76 @@ const routes = [
     path: '/plates/:experiment_name_from_url',
     name: 'plates',
     component: PlatesView,
-    props: true
+    props: true,
+    meta: {
+        title: 'Experiments - Braingeneers Hub',
+        metaTags: [
+          {
+            name: 'description',
+            content: 'experiments page'
+          },
+          {
+            property: 'og:description',
+            content: 'experiments page'
+          }
+        ]
+      }
   },
   {
     path: '/wells/:plate_name_from_url',
     name: 'wells',
     component: WellsView,
-    props: true
+    props: true,
+    meta: {
+        title: 'Wells - Braingeneers Hub',
+        metaTags: [
+          {
+            name: 'description',
+            content: 'view wells'
+          },
+          {
+            property: 'og:description',
+            content: 'wells page'
+          }
+        ]
+      }
   },
   {
     path: '/wells',
     name: 'all_wells',
-    component: WellsView
+    component: WellsView,
+    meta: {
+        title: 'Wells - Braingeneers Hub',
+        metaTags: [
+          {
+            name: 'description',
+            content: 'view wells'
+          },
+          {
+            property: 'og:description',
+            content: 'wells page'
+          }
+        ]
+      }
   },
 
   {
     path: '/experiments',
     name: 'experiments',
-    component: ExperimentsView
+    component: ExperimentsView,
+    meta: {
+        title: 'Experiments - Braingeneers Hub',
+        metaTags: [
+          {
+            name: 'description',
+            content: 'experiments page'
+          },
+          {
+            property: 'og:description',
+            content: 'experiments page'
+          }
+        ]
+      }
   },
   {
     path: '/about',
