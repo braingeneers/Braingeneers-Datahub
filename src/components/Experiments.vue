@@ -54,7 +54,7 @@ export default {
                 <b-collapse v-bind:id="'collapse-' + experiment.id" class="mt-2">
                     <div>
                         <b-card-group>
-                            <b-card title="Interaction-Things">
+                            <!-- <b-card title="Interaction-Things">
                             <b-card-text>
                                 This is where we list interaction things
                             </b-card-text>
@@ -64,7 +64,7 @@ export default {
                             <template #footer>
                                 <small class="text-muted">footer</small>
                             </template>
-                            </b-card>
+                            </b-card> -->
 
                             <b-card title="Experiment-Notes">
                             <b-card-text class="text-left">
