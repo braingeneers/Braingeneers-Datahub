@@ -61,6 +61,7 @@ export default {
                 .then(response => {
                     console.log(response);
                     if (response.status == 200){
+                        //refresh the wells
                         axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)                
                         .then(response => {
                             console.log(response);
