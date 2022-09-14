@@ -14,12 +14,29 @@ export default {
                 sample_name: '',
                 sample_description: ''
             },
-            api_token: "63e7b69b04c8f9d9c1c368a10ee586de676e5ae58b970225b4eb4d4ac8a633f141e98c656f296fabb0c1be54b01b23c152d09f41a562f7d6acde3865c3b53e33af5e1fbb4680adf71552f6b8e733e5df460a1c8fa32f42e2ccc26f204198bddc9382dcfe5d1af774465ce706baa6fcda5e0c0b8050f90a74f86dd8cffa1ccecb"
+            api_token: "63e7b69b04c8f9d9c1c368a10ee586de676e5ae58b970225b4eb4d4ac8a633f141e98c656f296fabb0c1be54b01b23c152d09f41a562f7d6acde3865c3b53e33af5e1fbb4680adf71552f6b8e733e5df460a1c8fa32f42e2ccc26f204198bddc9382dcfe5d1af774465ce706baa6fcda5e0c0b8050f90a74f86dd8cffa1ccecb",
+            //image viewer stuff
+            uuid:"2022-07-11-i-connectoid-3",
+            groupID:"C", 
+            endpoint: "https://s3-west.nrp-nautilus.io/braingeneers/imaging",
+            manifest: {
+                stack_size: 0,
+                captures: [],
+            },
+            curTimestampIndex: 0,
+            curZ: 0,
+            curRow: 1,
+            curCol: 1,
+            firstLoadIndex: 0,
+            startTimestampIndex: 0,
+            startZ: 0,
+            panning: false
         }
 
     },
     async mounted() {
         try {
+            this.loader("oldest")
             console.log(this.filter_params)
             console.log(this.plate_name)
             if (!this.plate_name) {
@@ -119,7 +136,38 @@ export default {
 
                 // console.log("deleting page element: " + "sample-" + sample_id);
                 // $("#"+'sample-'+sample_id).remove();
-            }
+            },
+            // begin image viewer stuff
+            loader(start_index) {
+                console.log(start_index)
+                console.log("Loading...", this.uuid)
+                console.log(`${this.endpoint}/${this.uuid}/images/manifest.json`)
+                fetch(`${this.endpoint}/${this.uuid}/images/manifest.json`)
+                    .then(stream => stream.json())
+                    .then(data => {
+                    this.manifest = data
+                    switch(start_index){
+                        case "newest":
+                        this.curTimestampIndex = this.manifest.captures.length -1
+                        this.firstLoadIndex = this.manifest.captures.length -1
+                        break;
+                        case "oldest":
+                        this.curTimestampIndex = 0
+                        this.firstLoadIndex = 0
+                        break;
+                        case "sync":
+                        this.firstLoadIndex = this.curTimestampIndex
+                        break;
+                        default:
+                        console.log(this.loadTrigger)
+
+                    }
+                    })
+                    .catch(error => {
+                    console.log(error)
+                    alert("Unable to load experiment, does the uuid exist?")
+                    })
+            },
 
         }
 }
@@ -127,7 +175,7 @@ export default {
 
 <style>
     .img-wrap {
-        width: 100px;
+        width: auto;
         height: 100px;
         position: relative;
         display: inline-block;
@@ -174,7 +222,8 @@ export default {
                                         class="mb-2 img-wrap">
                                         <b-card-text>{{ `${wells[((row-1)*6+col)-1].attributes.description}` }}</b-card-text>
                                         <!-- create unique collapse toggle for each card in for loop -->
-                                        <img class="img-card-fill" v-on:click="showModal('boof' + wells[((row-1)*6+col)-1].id)"  :src="`https://placekitten.com/g/600/600`"/>
+                                        <!-- <img class="img-card-fill" v-on:click="showModal('boof' + wells[((row-1)*6+col)-1].id)"  :src="`https://placekitten.com/g/600/600`"/> -->
+                                        <img class="img-card-fill" v-on:click="showModal('boof' + wells[((row-1)*6+col)-1].id)"  :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`"/>
                                         <div>
                                                 <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button> -->
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
