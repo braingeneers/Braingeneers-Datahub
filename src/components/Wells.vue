@@ -48,10 +48,13 @@ export default {
             }
             // ${this.plate_name}
             //added populate=* to get all the associated nested data
+
             const response = await axios.get(`${this.api_endpoint}/api/wells${this.filter_params}&populate=*`)
             this.wells = response.data.data
-            // const response = await axios.get(`http://localhost:1337/api/plate/${this.filter_params}&populate=*`)
-            // this.wells = response.data.data
+            const response2 = await axios.get(`${this.api_endpoint}/api/plates?filters[name][$eq]=${this.plate_name}`)
+            this.plate = response2.data.data
+            console.log("plate", JSON.stringify(this.plate, 0, 2))
+            // console.log("wells", JSON.stringify(this.wells, 0, 2))
             // console.log(this.wells)
         } catch (error) {
             this.error = error;
