@@ -19,7 +19,6 @@ export default {
             api_endpoint: "http://localhost:1337",
             //image viewer stuff
             progress: 0,
-            timer: null,
             images: [],
             uuid:"2022-07-11-i-connectoid-3",
             groupID:"C", 
@@ -36,7 +35,7 @@ export default {
             startTimestampIndex: 0,
             startZ: 0,
             panning: false,
-            break_timelapse: false,
+            timers: [],
         }
 
     },
@@ -279,25 +278,30 @@ export default {
                 })
             },
             playTimelapse(){
-                this.break_timelapse = false
+                // this.break_timelapse = false
                 var self = this
-                for (let i = 0; i < this.manifest.captures.length; i = i + 1){
-                    if (self.break_timelapse == true){
-                        break
-                    }
-                    setTimeout(function(){
-                        self.curTimestampIndex = i
-                    }, 10)
-                }
-                // this.manifest.captures.forEach((capture, index) => {
-                //     self.timer = setTimeout(function(){
-                //         self.curTimestampIndex = index
+                // for (let i = 0; i < this.manifest.captures.length; i = i + 1){
+                //     if (self.break_timelapse == true){
+                //         break
+                //     }
+                //     setTimeout(function(){
+                //         self.curTimestampIndex = i
                 //     }, 10)
-                // })
+                // }
+                this.manifest.captures.every((capture, index) => {
+                    self.timers.push(setTimeout(function(){
+                        self.curTimestampIndex = index
+                    }, 10))
+                    
+                    return true
+                   
+                })
             },
             clearTimer(){
-                var self = this
-                clearTimeout(self.timer)
+                this.timers.forEach(timer => {
+                    clearTimeout(timer)
+                })
+                this.timers = []
             },
         }
 }
