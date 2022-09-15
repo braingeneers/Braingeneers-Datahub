@@ -48,7 +48,7 @@ export default {
 
                     <!-- horizontal white space -->
 
-                    <b-card-text class="text-properties text-center">Date {{experiment.attributes.updatedAt}}</b-card-text>
+                    <b-card-text class="text-properties text-center"> {{experiment.attributes.updatedAt | luxon}}</b-card-text>
                     <b-button class="float-right" v-b-toggle="'collapse-' + experiment.id" variant="primary">...</b-button>
                 </div>
                 <b-collapse v-bind:id="'collapse-' + experiment.id" class="mt-2">

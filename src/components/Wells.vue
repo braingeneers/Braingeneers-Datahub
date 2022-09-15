@@ -1,9 +1,13 @@
 <script>
 import axios from 'axios'
 import $ from 'jquery'
+import DirectionalPad from '@/components/DirectionalPad.vue'
 
 export default {
     props: ["plate_name"],
+    components: {
+        DirectionalPad,
+    },
     data() {
         return {
             plate: {"attributes": {"image_parameters" : false}},
@@ -373,12 +377,30 @@ export default {
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
                                                 <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered v-bind:title= wells[((row-1)*6+col)-1].attributes.name>
                                                     <img class="responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`" >
-                                                    Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
-                                                    T: {{ manifest.captures[curTimestampIndex] }} Z: {{ curZ+1 }}/{{manifest.stack_size}}
-                                                    <vue-ellipse-progress :size="25" :progress="progress" animation="default 0 0"/>
+                                                    <b-row>
+                                                        Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
+                                                    </b-row>
+                                                    <!-- new line -->
+                                                    <b-row>
+                                                        T: {{ manifest.captures[curTimestampIndex] | luxon}} 
+                                                    </b-row>
+                                                    <b-row>
+                                                        Z: {{ curZ+1 }}/{{manifest.stack_size}}
+                                                    </b-row>
+                                                    <b-row>
+                                                        <b-button class="btn btn-secondary btn-sm" v-on:click="loadAllImagesFromLayer(row, col, curZ)">
+                                                                Load All Images
+                                                        </b-button>
+                                                        <vue-ellipse-progress :size="25" :progress="progress" animation="default 0 0"/>
+                                                    </b-row>
+                                                    <DirectionalPad />
                                                     <!-- play timelapse -->
-                                                    <b-button @click="playTimelapse()">Play Timelapse</b-button>
-                                                    <b-button @click="clearTimer()">Stop Timelapse</b-button>
+                                                    <div class="p-1">
+                                                        <b-row>
+                                                            <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="playTimelapse()">Play Timelapse</b-button>
+                                                            <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="clearTimer()">Stop Timelapse</b-button>
+                                                        </b-row>
+                                                    </div>
                                                     <div style="padding-top: 1vw">
                                                         <b-button id="Arrow48Left" type="button" v-on:click="OnArrow48LeftClick">
                                                                 Back 48 Timesteps
@@ -402,9 +424,6 @@ export default {
                                                             Next Focal View
                                                         </b-button>
                                                         <!-- button to load all images  -->
-                                                        <b-button v-on:click="loadAllImagesFromLayer(row, col, curZ)">
-                                                            Load All Images
-                                                        </b-button>
                                                     </div>
                                                     samples
                                                     <b-button pill style="display:block;" v-b-toggle="'collapse-samples-' + wells[((row-1)*6+col)-1].id" variant="primary"> List Samples</b-button>
@@ -435,12 +454,12 @@ export default {
                                                                     label-for="input-1"
                                                                     description="name the sample"
                                                                 >
-                                                                    <b-form-input
+                                                                <b-form-input
                                                                     id="input-1"
                                                                     v-model="form.sample_name"
                                                                     placeholder="name"
                                                                     required
-                                                                    ></b-form-input>
+                                                                ></b-form-input>
                                                                 </b-form-group>
                                                                 <b-form-group id="input-group-2" label="Description:" label-for="input-2">
                                                                     <b-form-textarea

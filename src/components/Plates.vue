@@ -44,7 +44,7 @@ export default {
 
 
 <template>
-  <b-container>
+    <b-container>
     <div v-if="plates.length">
       <b-row>
         <div v-bind:key="plate.id" v-for="plate in plates">
