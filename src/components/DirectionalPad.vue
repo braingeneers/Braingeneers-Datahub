@@ -30,9 +30,9 @@
     <nav class="d-pad">
         <!-- emit click events -->
         <a class="up" href="#" @click="$emit('up')"></a>
-        <a class="right" href="#" @click="$emit('right')">></a>
+        <a class="right" href="#" @click="$emit('right')"></a>
         <a class="down" href="#" @click="$emit('down')"></a>
-        <a class="left" href="#" @click="$emit('left')">></a>  
+        <a class="left" href="#" @click="$emit('left')"></a>  
     </nav>
     </div>
 </template>
