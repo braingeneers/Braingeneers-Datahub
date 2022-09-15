@@ -299,7 +299,7 @@ export default {
                 this.manifest.captures.every((capture, index) => {
                     self.timers.push(setTimeout(function(){
                         self.curTimestampIndex = index
-                    }, 10))
+                    }, 75*index))
                     
                     return true
                    
