@@ -389,11 +389,12 @@ export default {
                                                     <img class="responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`" >
                                                     <b-row>
                                                         <b-col>
+                                                        <div class="p-1">
                                                         <b-button class="btn btn-secondary btn-sm" v-on:click="loadAllImagesFromLayer(row, col, curZ)">
                                                                 Load All Images
                                                         </b-button>
-
-                                                        <vue-ellipse-progress :size="25" :progress="progress" animation="default 0 0"/>
+                                                        <vue-ellipse-progress class="float-right" :size="30" :progress="progress" animation="default 0 0"/>
+                                                        </div>
                                                         <div class="p-1">
                                                         <b-row>
                                                             <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="playTimelapse()">Play Timelapse</b-button>
@@ -401,9 +402,9 @@ export default {
                                                         </b-row>
                                                     </div>
                                                     </b-col>
-                                                        <b-col>
+                                                    <b-col>
                                                         <DirectionalPad @up="OnNextFocalViewClick" @down="OnPreviousFocalViewClick" @right="OnArrowRightClick" @left="OnArrowLeftClick" />
-                                                        </b-col>
+                                                    </b-col>
                                                     </b-row>
                                                     
                                                     <!-- play timelapse -->

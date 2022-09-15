@@ -1,3 +1,4 @@
+<!-- d-pad CSS taken from https://codepen.io/tswone/pen/GLzZLd -->
 <script>
     export default {
         name: 'DirectionalPad',
