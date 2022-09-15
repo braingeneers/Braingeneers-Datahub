@@ -348,7 +348,7 @@ export default {
                                                     <img class="img-responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`" style="max-height:300px; display:block;">
                                                     Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
                                                     T: {{ manifest.captures[curTimestampIndex] }} Z: {{ curZ+1 }}/{{manifest.stack_size}}
-                                                    <vue-ellipse-progress :size="25" :progress="progress"/>
+                                                    <vue-ellipse-progress :size="25" :progress="progress" animation="default 0 0"/>
                                                     <!-- play timelapse -->
                                                     <b-button @click="playTimelapse()">Play Timelapse</b-button>
                                                     <div style="padding-top: 1vw">
