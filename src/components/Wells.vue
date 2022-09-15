@@ -254,16 +254,26 @@ export default {
                 // fetch image from url with axios
                 // axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)
                 var length = this.manifest.captures.length
+                var count = 0
                 this.images = []
+                var self = this
+                self.progress = 0
                 this.manifest.captures.forEach((capture, index) => {
-                    this.images.push(new Image())
-                    this.images[index].src = `${this.endpoint}/${this.uuid}/images/${capture}/camera${this.groupID}${row}${col}/${layer + 1}.jpg`
-                    this.images[index].onload = function() {
+                    self.images.push(new Image())
+                    self.images[index].src = `${this.endpoint}/${this.uuid}/images/${capture}/camera${this.groupID}${row}${col}/${layer + 1}.jpg`
+                    self.images[index].onload = function() {
                         console.log("loaded image")
-                        this.progress = (index / length) * 100
-                        console.log(this.progress)
+                        
+                        // .progress++
+                        console.log(self.progress)
+                        count = count + 1
+                        self.progress = (count/length) * 100
                     }
+
+                    // ((count / length) * 100)
+
                 })
+                // this.progress = 70
                 // img.src = `${this.endpoint}/${this.uuid}/images/${this.manifest.captures[this.curTimestampIndex].timestamp}/${this.curZ}.png`
                 // img.src = "https://placekitten.com/g/600/600"
                 // this.images.push(img)
