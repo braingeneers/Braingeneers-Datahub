@@ -7,6 +7,20 @@
         return {
           count: 0
         }
+      },
+      methods: {
+        up(){
+            console.log("up")
+        },
+        right(){
+            console.log("right")
+        },
+        down(){
+            console.log("down")
+        },
+        left(){
+            console.log("left")
+        }
       }
     }
 </script>
@@ -14,10 +28,11 @@
 <template>
     <div class="set">
     <nav class="d-pad">
-        <a class="up" href="#"></a>
-        <a class="right" href="#"></a>
-        <a class="down" href="#"></a>
-        <a class="left" href="#"></a>  
+        <!-- emit click events -->
+        <a class="up" href="#" v-on:click="up"></a>
+        <a class="right" href="#" v-on:click="right"></a>
+        <a class="down" href="#" v-on:click="down"></a>
+        <a class="left" href="#" v-on:click="left"></a>  
     </nav>
     </div>
 </template>
@@ -29,8 +44,8 @@
   text-align: center;
  .d-pad { margin-right: 40px; }
  .d-pad, .o-pad {
-    display: inline-block;
-    // transform: scale(.7);
+    // display: inline-block;
+    transform: scale(.7);
   }
 }
 .set.setbg { background: #222; }
