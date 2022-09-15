@@ -331,6 +331,11 @@ export default {
         min-width: 100%; */
     }
 
+    .responsive {
+        width: 100%;
+        height: auto;
+    }
+
     /* #my-button{
         height:0px;
         width:0px
@@ -363,7 +368,7 @@ export default {
                                                 <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button> -->
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
                                                 <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered v-bind:title= wells[((row-1)*6+col)-1].attributes.name>
-                                                    <img class="img-responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`" style="max-height:300px; display:block;">
+                                                    <img class="responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`" >
                                                     Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
                                                     T: {{ manifest.captures[curTimestampIndex] }} Z: {{ curZ+1 }}/{{manifest.stack_size}}
                                                     <vue-ellipse-progress :size="25" :progress="progress" animation="default 0 0"/>
