@@ -368,8 +368,10 @@ export default {
                     <div v-for="row in rows" :key="row">
                         <b-row>
                             <div v-for="col in columns" :key="row * 10 + col">
-                                <b-col cols = "12">
-                                    <div class="img-wrap" >
+                                <b-col>
+                                    <b-card 
+                                        tag="article" 
+                                        class="mb-2 img-wrap">
                                         <b-card-text>{{ `${wells[((row-1)*columns+col)-1].attributes.description}` }}</b-card-text>
                                         <!-- create unique collapse toggle for each card in for loop -->
                                         <!-- <img class="img-card-fill" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id)"  :src="`https://placekitten.com/g/600/600`"/> -->
@@ -486,7 +488,7 @@ export default {
 
                                                 </b-modal>
                                         </div>                               
-                                    </div>
+                                    </b-card>
                                 </b-col>
                             </div>
                         </b-row>
