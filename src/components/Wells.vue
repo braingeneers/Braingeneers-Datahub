@@ -393,7 +393,7 @@ export default {
                                                         </b-button>
                                                         <vue-ellipse-progress :size="25" :progress="progress" animation="default 0 0"/>
                                                     </b-row>
-                                                    <DirectionalPad />
+                                                    <DirectionalPad @up="OnNextFocalViewClick" @down="OnPreviousFocalViewClick" @right="OnArrowRightClick" @left="OnArrowLeftClick" />
                                                     <!-- play timelapse -->
                                                     <div class="p-1">
                                                         <b-row>

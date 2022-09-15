@@ -29,10 +29,10 @@
     <div class="set">
     <nav class="d-pad">
         <!-- emit click events -->
-        <a class="up" href="#" v-on:click="up"></a>
-        <a class="right" href="#" v-on:click="right"></a>
-        <a class="down" href="#" v-on:click="down"></a>
-        <a class="left" href="#" v-on:click="left"></a>  
+        <a class="up" href="#" @click="$emit('up')"></a>
+        <a class="right" href="#" @click="$emit('right')">></a>
+        <a class="down" href="#" @click="$emit('down')"></a>
+        <a class="left" href="#" @click="$emit('left')">></a>  
     </nav>
     </div>
 </template>
