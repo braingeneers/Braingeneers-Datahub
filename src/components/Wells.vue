@@ -21,6 +21,8 @@ export default {
             },
             api_token: "63e7b69b04c8f9d9c1c368a10ee586de676e5ae58b970225b4eb4d4ac8a633f141e98c656f296fabb0c1be54b01b23c152d09f41a562f7d6acde3865c3b53e33af5e1fbb4680adf71552f6b8e733e5df460a1c8fa32f42e2ccc26f204198bddc9382dcfe5d1af774465ce706baa6fcda5e0c0b8050f90a74f86dd8cffa1ccecb",
             api_endpoint: "http://localhost:1337",
+            rows: 0,
+            columns: 0,
             //image viewer stuff
             progress: 0,
             images: [],
@@ -60,6 +62,8 @@ export default {
             const response2 = await axios.get(`${this.api_endpoint}/api/plates?filters[name][$eq]=${this.plate_name}`)
             this.plate = response2.data.data[0]
             console.log("plate", JSON.stringify(this.plate.attributes.image_parameters.images, 0, 2))
+            this.rows = this.plate.attributes.rows
+            this.columns = this.plate.attributes.columns
             if (this.plate.attributes.image_parameters.images){
                 this.uuid = this.plate.attributes.image_parameters.uuids[0]
                 this.groupID = this.plate.attributes.image_parameters.group_id
