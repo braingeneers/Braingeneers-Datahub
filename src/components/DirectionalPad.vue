@@ -40,9 +40,9 @@
 <style lang="less">
 .set {
   overflow: hidden;
-  padding: 30px;
+  padding: 0px;
   text-align: center;
- .d-pad { margin-right: 40px; }
+ .d-pad { margin-left: 0px; }
  .d-pad, .o-pad {
     // display: inline-block;
     transform: scale(.7);

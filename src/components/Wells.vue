@@ -376,7 +376,6 @@ export default {
                                                 <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*6+col)-1].id)" > indirect</b-button> -->
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*6+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*6+col)-1].id">Launch centered modal</b-button>
                                                 <b-modal v-bind:id="'modal-centere' + wells[((row-1)*6+col)-1].id" centered v-bind:title= wells[((row-1)*6+col)-1].attributes.name>
-                                                    <img class="responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`" >
                                                     <b-row>
                                                         Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
                                                     </b-row>
@@ -387,21 +386,28 @@ export default {
                                                     <b-row>
                                                         Z: {{ curZ+1 }}/{{manifest.stack_size}}
                                                     </b-row>
+                                                    <img class="responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`" >
                                                     <b-row>
+                                                        <b-col>
                                                         <b-button class="btn btn-secondary btn-sm" v-on:click="loadAllImagesFromLayer(row, col, curZ)">
                                                                 Load All Images
                                                         </b-button>
+
                                                         <vue-ellipse-progress :size="25" :progress="progress" animation="default 0 0"/>
-                                                    </b-row>
-                                                    <DirectionalPad @up="OnNextFocalViewClick" @down="OnPreviousFocalViewClick" @right="OnArrowRightClick" @left="OnArrowLeftClick" />
-                                                    <!-- play timelapse -->
-                                                    <div class="p-1">
+                                                        <div class="p-1">
                                                         <b-row>
                                                             <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="playTimelapse()">Play Timelapse</b-button>
                                                             <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="clearTimer()">Stop Timelapse</b-button>
                                                         </b-row>
                                                     </div>
-                                                    <div style="padding-top: 1vw">
+                                                    </b-col>
+                                                        <b-col>
+                                                        <DirectionalPad @up="OnNextFocalViewClick" @down="OnPreviousFocalViewClick" @right="OnArrowRightClick" @left="OnArrowLeftClick" />
+                                                        </b-col>
+                                                    </b-row>
+                                                    
+                                                    <!-- play timelapse -->
+                                                    <!-- <div style="padding-top: 1vw">
                                                         <b-button id="Arrow48Left" type="button" v-on:click="OnArrow48LeftClick">
                                                                 Back 48 Timesteps
                                                         </b-button>
@@ -414,7 +420,7 @@ export default {
                                                         <b-button id="Arrow48Right" type="button" v-on:click="OnArrow48RightClick">
                                                                 Forward 48 Timesteps
                                                         </b-button>
-                                                    </div>
+                                                    </div> -->
                                                     <div style="padding-top: 1vw">
                                                         <b-button v-on:click="OnPreviousFocalViewClick">
                                                             Previous Focal View
