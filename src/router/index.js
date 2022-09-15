@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: PlatesView,
+    component: ExperimentsView,
     meta: {
         title: 'Home Page - Braingeneers Hub',
         metaTags: [
