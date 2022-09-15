@@ -379,7 +379,7 @@ export default {
                                         <div>
                                                 <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" > indirect</b-button> -->
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*columns+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*columns+col)-1].id">Launch centered modal</b-button>
-                                                <b-modal size="xl" v-bind:id="'modal-centere' + wells[((row-1)*columns+col)-1].id" centered v-bind:title= wells[((row-1)*columns+col)-1].attributes.name>
+                                                <b-modal size="lg" v-bind:id="'modal-centere' + wells[((row-1)*columns+col)-1].id" centered v-bind:title= wells[((row-1)*columns+col)-1].attributes.name>
                                                     <b-row>
                                                         Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
                                                     </b-row>
@@ -405,38 +405,6 @@ export default {
                                                             <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="clearTimer()">Stop Timelapse</b-button>
                                                         </b-row>
                                                     </div>
-                                                    </b-col>
-                                                    <b-col>
-                                                        <DirectionalPad @up="OnNextFocalViewClick" @down="OnPreviousFocalViewClick" @right="OnArrowRightClick" @left="OnArrowLeftClick" />
-                                                    </b-col>
-                                                    </b-row>
-                                                    
-                                                    <!-- play timelapse -->
-                                                    <!-- <div style="padding-top: 1vw">
-                                                        <b-button id="Arrow48Left" type="button" v-on:click="OnArrow48LeftClick">
-                                                                Back 48 Timesteps
-                                                        </b-button>
-                                                        <b-button id="ArrowLeft" type="button" v-on:click="OnArrowLeftClick">
-                                                                Previous Timestamp
-                                                        </b-button>
-                                                        <b-button id="ArrowRight" type="button" v-on:click="OnArrowRightClick">
-                                                                Next Timestamp
-                                                        </b-button>
-                                                        <b-button id="Arrow48Right" type="button" v-on:click="OnArrow48RightClick">
-                                                                Forward 48 Timesteps
-                                                        </b-button>
-                                                    </div> -->
-                                                    <div style="padding-top: 1vw">
-                                                        <b-button v-on:click="OnPreviousFocalViewClick">
-                                                            Previous Focal View
-                                                        </b-button>
-
-                                                        <b-button v-on:click="OnNextFocalViewClick" >
-                                                            Next Focal View
-                                                        </b-button>
-                                                        <!-- button to load all images  -->
-                                                    </div>
-                                                    samples
                                                     <b-button pill style="display:block;" v-b-toggle="'collapse-samples-' + wells[((row-1)*columns+col)-1].id" variant="primary"> List Samples</b-button>
                                                     <b-collapse v-bind:id="'collapse-samples-' + wells[((row-1)*columns+col)-1].id" class="mt-2">
                                                         <b-list-group>
@@ -485,6 +453,12 @@ export default {
                                                             </b-form>
                                                         </div>
                                                     </b-collapse>
+                                                    </b-col>
+                                                    <b-col>
+                                                        <DirectionalPad @up="OnNextFocalViewClick" @down="OnPreviousFocalViewClick" @right="OnArrowRightClick" @left="OnArrowLeftClick" />
+                                                    </b-col>
+                                                    </b-row>
+                                                   
 
                                                 </b-modal>
                                         </div>                               
