@@ -65,6 +65,8 @@ export default {
     },
     methods: {
             showModal(id) {
+                //reset progress bar
+                this.progress = 0
                 console.log("#"+id)
                 $("#"+id).click();
             },
@@ -169,7 +171,7 @@ export default {
                         this.firstLoadIndex = this.curTimestampIndex
                         break;
                         default:
-                        console.log(this.loadTrigger)
+                        // console.log(this.loadTrigger)
 
                     }
                     })
@@ -265,7 +267,7 @@ export default {
                         console.log("loaded image")
                         
                         // .progress++
-                        console.log(self.progress)
+                        // console.log(self.progress)
                         count = count + 1
                         self.progress = (count/length) * 100
                     }
@@ -273,14 +275,16 @@ export default {
                     // ((count / length) * 100)
 
                 })
-                // this.progress = 70
-                // img.src = `${this.endpoint}/${this.uuid}/images/${this.manifest.captures[this.curTimestampIndex].timestamp}/${this.curZ}.png`
-                // img.src = "https://placekitten.com/g/600/600"
-                // this.images.push(img)
-
             },
-        
 
+            playTimelapse(){
+                var self = this
+                this.manifest.captures.forEach((capture, index) => {
+                    setTimeout(function(){
+                        self.curTimestampIndex = index
+                    }, 10)
+                })
+            },
         }
 }
 </script>
@@ -345,6 +349,8 @@ export default {
                                                     Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
                                                     T: {{ manifest.captures[curTimestampIndex] }} Z: {{ curZ+1 }}/{{manifest.stack_size}}
                                                     <vue-ellipse-progress :size="25" :progress="progress"/>
+                                                    <!-- play timelapse -->
+                                                    <b-button @click="playTimelapse()">Play Timelapse</b-button>
                                                     <div style="padding-top: 1vw">
                                                         <b-button id="Arrow48Left" type="button" v-on:click="OnArrow48LeftClick">
                                                                 Back 48 Timesteps
@@ -438,7 +444,7 @@ export default {
             <b-row v-if="plate.attributes.image_parameters.images">
             <!-- <b-row v-if="plate_name"> -->
                 <b-col>
-                    <b-dropdown id="dropdown-1" text="Select Image Set" variant="primary" menu-class="w-100">
+                    <b-dropdown id="dropdown-1" text="Select Image Set"  block variant="outline-primary" class="m-2">
                         <b-dropdown-item v-for="uuid in plate.attributes.image_parameters.uuids" :key="uuid" v-on:click="changeImageSet(uuid)">
                             {{uuid}}
                         </b-dropdown-item>
