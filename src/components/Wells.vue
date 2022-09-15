@@ -19,6 +19,7 @@ export default {
             api_endpoint: "http://localhost:1337",
             //image viewer stuff
             progress: 0,
+            timer: null,
             images: [],
             uuid:"2022-07-11-i-connectoid-3",
             groupID:"C", 
@@ -34,7 +35,8 @@ export default {
             firstLoadIndex: 0,
             startTimestampIndex: 0,
             startZ: 0,
-            panning: false
+            panning: false,
+            break_timelapse: false,
         }
 
     },
@@ -276,14 +278,26 @@ export default {
 
                 })
             },
-
             playTimelapse(){
+                this.break_timelapse = false
                 var self = this
-                this.manifest.captures.forEach((capture, index) => {
+                for (let i = 0; i < this.manifest.captures.length; i = i + 1){
+                    if (self.break_timelapse == true){
+                        break
+                    }
                     setTimeout(function(){
-                        self.curTimestampIndex = index
+                        self.curTimestampIndex = i
                     }, 10)
-                })
+                }
+                // this.manifest.captures.forEach((capture, index) => {
+                //     self.timer = setTimeout(function(){
+                //         self.curTimestampIndex = index
+                //     }, 10)
+                // })
+            },
+            clearTimer(){
+                var self = this
+                clearTimeout(self.timer)
             },
         }
 }
@@ -351,6 +365,7 @@ export default {
                                                     <vue-ellipse-progress :size="25" :progress="progress" animation="default 0 0"/>
                                                     <!-- play timelapse -->
                                                     <b-button @click="playTimelapse()">Play Timelapse</b-button>
+                                                    <b-button @click="clearTimer()">Stop Timelapse</b-button>
                                                     <div style="padding-top: 1vw">
                                                         <b-button id="Arrow48Left" type="button" v-on:click="OnArrow48LeftClick">
                                                                 Back 48 Timesteps
