@@ -322,7 +322,7 @@ export default {
 <style>
     .img-wrap {
         width: auto;
-        height: auto;
+        height: 100px;
         position: relative;
         display: inline-block;
         overflow: hidden;
