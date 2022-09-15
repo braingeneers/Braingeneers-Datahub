@@ -20,8 +20,8 @@ export default {
             //image viewer stuff
             progress: 0,
             images: [],
-            uuid:"2022-07-11-i-connectoid-3",
-            groupID:"C", 
+            uuid:"",
+            groupID:"", 
             endpoint: "https://s3-west.nrp-nautilus.io/braingeneers/imaging",
             manifest: {
                 stack_size: 0,
@@ -41,7 +41,6 @@ export default {
     },
     async mounted() {
         try {
-            this.loader("oldest")
             console.log(this.filter_params)
             console.log(this.plate_name)
             if (!this.plate_name) {
@@ -57,6 +56,11 @@ export default {
             const response2 = await axios.get(`${this.api_endpoint}/api/plates?filters[name][$eq]=${this.plate_name}`)
             this.plate = response2.data.data[0]
             console.log("plate", JSON.stringify(this.plate.attributes.image_parameters.images, 0, 2))
+            if (this.plate.attributes.image_parameters.images){
+                this.uuid = this.plate.attributes.image_parameters.uuids[0]
+                this.groupID = this.plate.attributes.image_parameters.group_id
+                this.loader("oldest")
+            }
             // console.log("wells", JSON.stringify(this.wells, 0, 2))
             // console.log(this.wells)
         } catch (error) {
