@@ -253,10 +253,20 @@ export default {
                 console.log("load all images from layer", row, col, layer)
                 // fetch image from url with axios
                 // axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)
-                var img = new Image()
+                var length = this.manifest.captures.length
+                this.images = []
+                this.manifest.captures.forEach((capture, index) => {
+                    this.images.push(new Image())
+                    this.images[index].src = `${this.endpoint}/${this.uuid}/images/${capture}/camera${this.groupID}${row}${col}/${layer + 1}.jpg`
+                    this.images[index].onload = function() {
+                        console.log("loaded image")
+                        this.progress = (index / length) * 100
+                        console.log(this.progress)
+                    }
+                })
                 // img.src = `${this.endpoint}/${this.uuid}/images/${this.manifest.captures[this.curTimestampIndex].timestamp}/${this.curZ}.png`
-                img.src = "https://placekitten.com/g/600/600"
-                this.images.push(img)
+                // img.src = "https://placekitten.com/g/600/600"
+                // this.images.push(img)
 
             },
         
@@ -346,6 +356,10 @@ export default {
 
                                                         <b-button v-on:click="OnNextFocalViewClick" >
                                                             Next Focal View
+                                                        </b-button>
+                                                        <!-- button to load all images  -->
+                                                        <b-button v-on:click="loadAllImagesFromLayer(row, col, curZ)">
+                                                            Load All Images
                                                         </b-button>
                                                     </div>
                                                     samples
