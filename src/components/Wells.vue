@@ -200,7 +200,7 @@ export default {
             },
             missing(event) {
                 console.log("Missing image", event.target.src)
-                event.target.src = "https://placekitten.com/g/600/600"
+                event.target.src = "https://placekitten.com/g/560/420"
             },
             OnArrowRightClick() {
                 console.log()
@@ -362,13 +362,6 @@ export default {
         <b-row>
             <h1>Plate: {{plate_name}}</h1>
         </b-row>
-        <b-container class="bv-example-row">
-        <b-row>
-            <b-col>1 of 3</b-col>
-            <b-col>2 of 3</b-col>
-            <b-col>3 of 3</b-col>
-        </b-row>
-        </b-container>
         <div v-if="wells.length">
             <!-- <b-row> -->
                 <!-- <table id="picture-grid"> -->
