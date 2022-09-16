@@ -347,6 +347,8 @@ export default {
         width: 100%;
         height: auto;
         padding-top: 5px;
+        padding-right: 0;
+        padding-left: 0;
     }
 
     /* #my-button{
@@ -368,101 +370,92 @@ export default {
                     <div v-for="row in rows" :key="row">
                         <b-row>
                             <b-col v-for="col in columns" :key="row * 10 + col">
-                                <!-- <b-col> -->
-                                    <!-- <b-card 
-                                        tag="article" 
-                                        class="mb-2 img-wrap"> -->
-                                        <!-- create unique collapse toggle for each card in for loop -->
-                                        <!-- <img class="img-card-fill" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id)"  :src="`https://placekitten.com/g/600/600`"/> -->
                                         <img class="responsive" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`"/>
                                         <div>
-                                                <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" > indirect</b-button> -->
-                                                <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*columns+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*columns+col)-1].id">Launch centered modal</b-button>
-                                                <b-modal size="lg" v-bind:id="'modal-centere' + wells[((row-1)*columns+col)-1].id" centered v-bind:title= wells[((row-1)*columns+col)-1].attributes.name>
-                                                    <b-row>
-                                                        Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
-                                                    </b-row>
-                                                    <!-- new line -->
-                                                    <b-row>
-                                                        T: {{ manifest.captures[curTimestampIndex] | luxon}} 
-                                                    </b-row>
-                                                    <b-row>
-                                                        Z: {{ curZ+1 }}/{{manifest.stack_size}}
-                                                    </b-row>
+                                            <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" > indirect</b-button> -->
+                                            <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*columns+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*columns+col)-1].id">Launch centered modal</b-button>
+                                            <b-modal size="lg" v-bind:id="'modal-centere' + wells[((row-1)*columns+col)-1].id" centered v-bind:title= wells[((row-1)*columns+col)-1].attributes.name>
+                                                <b-row>
+                                                    Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
+                                                </b-row>
+                                                <!-- new line -->
+                                                <b-row>
+                                                    T: {{ manifest.captures[curTimestampIndex] | luxon}} 
+                                                </b-row>
+                                                <b-row>
+                                                    Z: {{ curZ+1 }}/{{manifest.stack_size}}
+                                                </b-row>
                                                     <img class="responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`" >
-                                                    <b-row>
-                                                        <b-col>
+                                                <b-row>
+                                                    <b-col>
                                                         <div class="p-1">
-                                                        <b-button class="btn btn-secondary btn-sm" v-on:click="loadAllImagesFromLayer(row, col, curZ)">
-                                                                Load All Images
-                                                        </b-button>
-                                                        <vue-ellipse-progress class="float-right" :size="30" :progress="progress" animation="default 0 0"/>
+                                                            <b-button class="btn btn-secondary btn-sm" v-on:click="loadAllImagesFromLayer(row, col, curZ)">
+                                                                    Load All Images
+                                                            </b-button>
+                                                            <vue-ellipse-progress class="float-right" :size="30" :progress="progress" animation="default 0 0"/>
                                                         </div>
                                                         <div class="p-1">
-                                                        <b-row>
-                                                            <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="playTimelapse()">Play Timelapse</b-button>
-                                                            <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="clearTimer()">Stop Timelapse</b-button>
-                                                        </b-row>
-                                                    </div>
-                                                    <b-button pill style="display:block;" v-b-toggle="'collapse-samples-' + wells[((row-1)*columns+col)-1].id" variant="primary"> List Samples</b-button>
-                                                    <b-collapse v-bind:id="'collapse-samples-' + wells[((row-1)*columns+col)-1].id" class="mt-2">
-                                                        <b-list-group>
-                                                            <b-list-group-item v-for="sample in wells[((row-1)*columns+col)-1].attributes.samples.data" :key="sample.id">
-                                                                <div v-bind:id="'sample-' +sample.id">
-                                                                    <b-button v-b-toggle="'collapse-sample' + sample.id" variant="secondary"> {{sample.attributes.name}} </b-button>
-                                                                    <b-button v-on:click="deleteSample(sample.id)" class="float-right" v-bind:id="'delete-sample-'+sample.id" variant="danger"> X </b-button>
-                                                                    <b-collapse v-bind:id="'collapse-sample' + sample.id" class="mt-2">
-                                                                        <b-card>
-                                                                            <b-card-text>{{sample.attributes.description}}</b-card-text>
-                                                                        </b-card>
-                                                                    </b-collapse>
-                                                                </div>
-                                                            </b-list-group-item>
-                                                     
-                                                        </b-list-group>
-                                                    </b-collapse>
-                                                    <b-button pill style="display:block;" v-b-toggle="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id" variant="success"> Label new sample</b-button>
-                                                    <b-collapse v-bind:id="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id" class="mt-2">
-                                                        <div>
-                                                            <!-- button and text field to add sample to the database via restAPI call -->
-                                                            <b-form @submit.prevent="createSample(wells[((row-1)*columns+col)-1].id)">
-                                                                <b-form-group
-                                                                    id="input-group-1"
-                                                                    label="Sample Name:"
-                                                                    label-for="input-1"
-                                                                    description="name the sample"
-                                                                >
-                                                                <b-form-input
-                                                                    id="input-1"
-                                                                    v-model="form.sample_name"
-                                                                    placeholder="name"
-                                                                    required
-                                                                ></b-form-input>
-                                                                </b-form-group>
-                                                                <b-form-group id="input-group-2" label="Description:" label-for="input-2">
-                                                                    <b-form-textarea
-                                                                        id="input-2"
-                                                                        v-model="form.sample_description"
-                                                                        placeholder="description"
-                                                                        rows = "6"
+                                                            <b-row>
+                                                                <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="playTimelapse()">Play Timelapse</b-button>
+                                                                <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="clearTimer()">Stop Timelapse</b-button>
+                                                            </b-row>
+                                                        </div>
+                                                        <b-button pill style="display:block;" v-b-toggle="'collapse-samples-' + wells[((row-1)*columns+col)-1].id" variant="primary"> List Samples</b-button>
+                                                        <b-collapse v-bind:id="'collapse-samples-' + wells[((row-1)*columns+col)-1].id" class="mt-2">
+                                                            <b-list-group>
+                                                                <b-list-group-item v-for="sample in wells[((row-1)*columns+col)-1].attributes.samples.data" :key="sample.id">
+                                                                    <div v-bind:id="'sample-' +sample.id">
+                                                                        <b-button v-b-toggle="'collapse-sample' + sample.id" variant="secondary"> {{sample.attributes.name}} </b-button>
+                                                                        <b-button v-on:click="deleteSample(sample.id)" class="float-right" v-bind:id="'delete-sample-'+sample.id" variant="danger"> X </b-button>
+                                                                        <b-collapse v-bind:id="'collapse-sample' + sample.id" class="mt-2">
+                                                                            <b-card>
+                                                                                <b-card-text>{{sample.attributes.description}}</b-card-text>
+                                                                            </b-card>
+                                                                        </b-collapse>
+                                                                    </div>
+                                                                </b-list-group-item>
+                                                        
+                                                            </b-list-group>
+                                                        </b-collapse>
+                                                        <b-button pill style="display:block;" v-b-toggle="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id" variant="success"> Label new sample</b-button>
+                                                        <b-collapse v-bind:id="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id" class="mt-2">
+                                                            <div>
+                                                                <!-- button and text field to add sample to the database via restAPI call -->
+                                                                <b-form @submit.prevent="createSample(wells[((row-1)*columns+col)-1].id)">
+                                                                    <b-form-group
+                                                                        id="input-group-1"
+                                                                        label="Sample Name:"
+                                                                        label-for="input-1"
+                                                                        description="name the sample"
+                                                                    >
+                                                                    <b-form-input
+                                                                        id="input-1"
+                                                                        v-model="form.sample_name"
+                                                                        placeholder="name"
                                                                         required
-                                                                    ></b-form-textarea>
-                                                                </b-form-group>
-                                                                <b-button type="submit" variant="primary">Submit</b-button>
-                                                            </b-form>
-                                                        </div>
-                                                    </b-collapse>
+                                                                    ></b-form-input>
+                                                                    </b-form-group>
+                                                                    <b-form-group id="input-group-2" label="Description:" label-for="input-2">
+                                                                        <b-form-textarea
+                                                                            id="input-2"
+                                                                            v-model="form.sample_description"
+                                                                            placeholder="description"
+                                                                            rows = "6"
+                                                                            required
+                                                                        ></b-form-textarea>
+                                                                    </b-form-group>
+                                                                    <b-button type="submit" variant="primary">Submit</b-button>
+                                                                </b-form>
+                                                            </div>
+                                                        </b-collapse>
                                                     </b-col>
                                                     <b-col>
                                                         <DirectionalPad @up="OnNextFocalViewClick" @down="OnPreviousFocalViewClick" @right="OnArrowRightClick" @left="OnArrowLeftClick" />
                                                     </b-col>
-                                                    </b-row>
-                                                   
-
-                                                </b-modal>
+                                                </b-row>
+                                            </b-modal>
                                         </div>                               
-                                    <!-- </b-card> -->
-                            </b-col>
+                                    </b-col>
                             <!-- </div> -->
                         </b-row>
                     </div>
