@@ -346,6 +346,7 @@ export default {
     .responsive {
         width: 100%;
         height: auto;
+        padding-top: 5px;
     }
 
     /* #my-button{
@@ -361,21 +362,26 @@ export default {
         <b-row>
             <h1>Plate: {{plate_name}}</h1>
         </b-row>
-
+        <b-container class="bv-example-row">
+        <b-row>
+            <b-col>1 of 3</b-col>
+            <b-col>2 of 3</b-col>
+            <b-col>3 of 3</b-col>
+        </b-row>
+        </b-container>
         <div v-if="wells.length">
             <!-- <b-row> -->
                 <!-- <table id="picture-grid"> -->
                     <div v-for="row in rows" :key="row">
                         <b-row>
-                            <div v-for="col in columns" :key="row * 10 + col">
-                                <b-col>
-                                    <b-card 
+                            <b-col v-for="col in columns" :key="row * 10 + col">
+                                <!-- <b-col> -->
+                                    <!-- <b-card 
                                         tag="article" 
-                                        class="mb-2 img-wrap">
-                                        <b-card-text>{{ `${wells[((row-1)*columns+col)-1].attributes.description}` }}</b-card-text>
+                                        class="mb-2 img-wrap"> -->
                                         <!-- create unique collapse toggle for each card in for loop -->
                                         <!-- <img class="img-card-fill" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id)"  :src="`https://placekitten.com/g/600/600`"/> -->
-                                        <img class="img-card-fill" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`"/>
+                                        <img class="responsive" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`"/>
                                         <div>
                                                 <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" > indirect</b-button> -->
                                                 <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*columns+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*columns+col)-1].id">Launch centered modal</b-button>
@@ -462,9 +468,9 @@ export default {
 
                                                 </b-modal>
                                         </div>                               
-                                    </b-card>
-                                </b-col>
-                            </div>
+                                    <!-- </b-card> -->
+                            </b-col>
+                            <!-- </div> -->
                         </b-row>
                     </div>
         </div>
