@@ -52,6 +52,11 @@
         },
         methods:
         {
+            mounted(){
+                // get user info from local storage
+                var user = JSON.parse(localStorage.getItem('userData'));
+                console.log(user);
+            },
             clicked() {
                console.log("clicked")
             },
