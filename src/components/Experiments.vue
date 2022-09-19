@@ -5,7 +5,8 @@ export default {
   data () {
     return {
       experiments: [],
-      error: null
+      error: null,
+      user: []
     }
   },
   methods:{
@@ -15,6 +16,7 @@ export default {
     redirectToURL_wells(plate_name){
       this.$router.push({ path: '/wells/'+plate_name });
     },
+
   },
   async mounted () {
     try {
