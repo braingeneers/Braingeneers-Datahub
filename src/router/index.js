@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import PlatesView from '../views/PlatesView.vue'
 import WellsView from '../views/WellsView.vue'
 import ExperimentsView from '../views/ExperimentsView.vue'
+import Register from '../views/Register.vue'
+import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
@@ -24,6 +26,16 @@ const routes = [
           }
         ]
       }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   {
     path: '/plates/:experiment_name_from_url',

@@ -346,9 +346,13 @@ export default {
     .responsive {
         width: 100%;
         height: auto;
-        padding-top: 5px;
+        /* padding-top: 5px;
         padding-right: 0;
-        padding-left: 0;
+        padding-left: 0; */
+    }
+
+    .column-padding {
+        padding: 2.5px;
     }
 
     /* #my-button{
@@ -369,7 +373,7 @@ export default {
                 <!-- <table id="picture-grid"> -->
                     <div v-for="row in rows" :key="row">
                         <b-row>
-                            <b-col v-for="col in columns" :key="row * 10 + col">
+                            <b-col class="column-padding" v-for="col in columns" :key="row * 10 + col">
                                         <img class="responsive" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`"/>
                                         <div>
                                             <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" > indirect</b-button> -->
