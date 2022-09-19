@@ -32,40 +32,42 @@
     import axios from 'axios'
 
     export default {
-        name: 'Login',
-        
-        data() {
-            return {
-                email: '',
-                password: '',
-                error: false,
-                errorMsg: `An error occurred, please try again`, 
+    name: "Login",
+    data() {
+        return {
+            email: "",
+            password: "",
+            error: false,
+            errorMsg: `An error occurred, please try again`,
+        };
+    },
+    methods: {
+        async login(e) {
+            e.preventDefault();
+            try {
+                const res = await axios.post(`http://localhost:1337/api/auth/local`, {
+                    identifier: this.email,
+                    password: this.password
+                });
+                const { jwt, user } = res.data;
+
+                // console.log(this.password);
+                // console.log(this.email);
+                window.localStorage.setItem("jwt", jwt);
+                window.localStorage.setItem("userData", JSON.stringify(user));
+                // window.localStorage.setItem('bookmarks', JSON.stringify(user.bookmarks))
+                //emit user
+                // this.$emit('user', user)
+                this.$router.push("/experiments");
+            }
+            catch (error) {
+                console.log(error);
+                this.error = true;
+                this.password = "";
             }
         },
-        methods: {
-            async login(e) {
-                e.preventDefault()
-                try {
-                    const res = await axios.post(`http://localhost:1337/api/auth/local`, {
-                        identifier: this.email,
-                        password: this.password
-                    });
-                    
-                    const { jwt, user } = res.data
-                    console.log = this.password
-                    console.log = this.email
-                    window.localStorage.setItem('jwt', jwt)
-                    window.localStorage.setItem('userData', JSON.stringify(user))
-                    // window.localStorage.setItem('bookmarks', JSON.stringify(user.bookmarks))
-                    this.$router.push('/experiments')
-                } catch(error) {
-                    console.log(error)
-                    this.error = true
-                    this.password = ''
-                }
-            },
-        }
-    }
+    },
+}
 </script>
 <style scoped>
 </style>

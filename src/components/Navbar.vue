@@ -56,14 +56,16 @@
         data() {
             return {
                 username: "nobody",
-                user: [],
+                user: {"username": "user"},
             }
         },
         mounted(){
-                // get user info from local storage
-                console.log("barf");
+                // get user info fr
+                // this.user = {"username": "user"};
+                console.log("user")
                 this.user = JSON.parse(window.localStorage.getItem('userData'));
-                console.log("user", JSON.stringify(this.user, 0, 2));
+                // console.log(this.user)
+                // console.log("user", JSON.stringify(this.user, 0, 2));
             },
 
         methods:
@@ -72,8 +74,14 @@
             clicked() {
                console.log("clicked")
             },
+            loadUserInfo(){
+                // get user info from local storage
+                this.user = JSON.parse(window.localStorage.getItem('userData'));
+                console.log("user", JSON.stringify(this.user, 0, 2));
+            },
             openUserInfoModal() {
                 this.user = JSON.parse(window.localStorage.getItem('userData'));
+                // console.log(this.user)
                 console.log("user", JSON.stringify(this.user, 0, 2));
                 // console.log("openUserInfoModal")
                 $('#user-info').click()
