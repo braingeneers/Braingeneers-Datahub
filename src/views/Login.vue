@@ -39,9 +39,7 @@
                 email: '',
                 password: '',
                 error: false,
-                errorMsg: `An error occurred, please try again`,
-                api_token: "63e7b69b04c8f9d9c1c368a10ee586de676e5ae58b970225b4eb4d4ac8a633f141e98c656f296fabb0c1be54b01b23c152d09f41a562f7d6acde3865c3b53e33af5e1fbb4680adf71552f6b8e733e5df460a1c8fa32f42e2ccc26f204198bddc9382dcfe5d1af774465ce706baa6fcda5e0c0b8050f90a74f86dd8cffa1ccecb",
-            
+                errorMsg: `An error occurred, please try again`, 
             }
         },
         methods: {
@@ -59,7 +57,7 @@
                     window.localStorage.setItem('jwt', jwt)
                     window.localStorage.setItem('userData', JSON.stringify(user))
                     // window.localStorage.setItem('bookmarks', JSON.stringify(user.bookmarks))
-                    this.$router.push('/')
+                    this.$router.push('/experiments')
                 } catch(error) {
                     console.log(error)
                     this.error = true

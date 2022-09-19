@@ -22,7 +22,7 @@
           </b-nav-form>
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
-              <em>{{username}}</em>
+              <em>{{user.username}}</em>
             </template>
             <b-dropdown-item @click="openUserInfoModal" href="#">Profile</b-dropdown-item>
             <b-dropdown-item href="#">Sign Out</b-dropdown-item>
@@ -30,7 +30,19 @@
         </b-navbar-nav>
       </b-collapse>
         <b-button style="display:none" id="user-info" v-b-modal="'user-info-modal'">user info</b-button>
-        <b-modal size="lg" v-bind:id="'user-info-modal'" centered v-bind:title="'barf'">
+        <b-modal size="lg" v-bind:id="'user-info-modal'" centered title="Profile Data">
+            <div v-for="(value , name) in user" :key="name">
+                <!-- show data -->
+                <div class="row">
+                    <div class="col-3">
+                        {{name}}
+                    </div>
+                    <div class="col-9">
+                        {{value}}
+                    </div>
+                </div>      
+            </div>
+
         </b-modal>
     </b-navbar>
   </div>
@@ -44,24 +56,26 @@
         data() {
             return {
                 username: "nobody",
-                email: '',
-                password: '',
-                error: false,
-                errorMsg: `An error occurred, please try again`,
+                user: [],
             }
         },
+        mounted(){
+                // get user info from local storage
+                console.log("barf");
+                this.user = JSON.parse(window.localStorage.getItem('userData'));
+                console.log("user", JSON.stringify(this.user, 0, 2));
+            },
+
         methods:
         {
-            mounted(){
-                // get user info from local storage
-                var user = JSON.parse(localStorage.getItem('userData'));
-                console.log(user);
-            },
+
             clicked() {
                console.log("clicked")
             },
             openUserInfoModal() {
-                console.log("openUserInfoModal")
+                this.user = JSON.parse(window.localStorage.getItem('userData'));
+                console.log("user", JSON.stringify(this.user, 0, 2));
+                // console.log("openUserInfoModal")
                 $('#user-info').click()
             }
         },

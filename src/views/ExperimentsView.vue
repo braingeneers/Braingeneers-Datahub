@@ -17,6 +17,10 @@ export default {
   components: {
     Navbar,
     Experiments,
- }
+ },
+ methods:{
+
+ },
+
 }
 </script>

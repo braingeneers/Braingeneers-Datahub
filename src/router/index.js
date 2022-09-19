@@ -9,33 +9,46 @@ import Login from '../views/Login.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: ExperimentsView,
-    meta: {
-        title: 'Home Page - Braingeneers Hub',
-        metaTags: [
-          {
-            name: 'description',
-            content: 'The home page'
-          },
-          {
-            property: 'og:description',
-            content: 'The home page'
-          }
-        ]
-      }
-  },
+//   {
+//     path: '/',
+//     name: 'home',
+//     component: ExperimentsView,
+//     meta: {
+//         title: 'Home Page - Braingeneers Hub',
+//         metaTags: [
+//           {
+//             name: 'description',
+//             content: 'The home page'
+//           },
+//           {
+//             property: 'og:description',
+//             content: 'The home page'
+//           }
+//         ]
+//       }
+//   },
   {
     path: '/register',
     name: 'Register',
     component: Register
   },
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {
+        title: 'Login - Braingeneers Hub',
+        metaTags: [
+          {
+            name: 'description',
+            content: 'login page'
+          },
+          {
+            property: 'og:description',
+            content: 'login'
+          }
+        ]
+      }
   },
   {
     path: '/plates/:experiment_name_from_url',
