@@ -22,14 +22,44 @@
           </b-nav-form>
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
-              <em>User</em>
+              <em>{{username}}</em>
             </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
+            <b-dropdown-item @click="openUserInfoModal" href="#">Profile</b-dropdown-item>
             <b-dropdown-item href="#">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
+        <b-button style="display:none" id="user-info" v-b-modal="'user-info-modal'">user info</b-button>
+        <b-modal size="lg" v-bind:id="'user-info-modal'" centered v-bind:title="'barf'">
+        </b-modal>
     </b-navbar>
   </div>
 </template>
-<script></script>
+<script>
+    import $ from 'jquery';
+
+    export default {
+        name: 'NavBar',
+        
+        data() {
+            return {
+                username: "nobody",
+                email: '',
+                password: '',
+                error: false,
+                errorMsg: `An error occurred, please try again`,
+            }
+        },
+        methods:
+        {
+            clicked() {
+               console.log("clicked")
+            },
+            openUserInfoModal() {
+                console.log("openUserInfoModal")
+                $('#user-info').click()
+            }
+        },
+    }
+
+</script>
