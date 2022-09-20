@@ -23,8 +23,8 @@
         try {
           console.log(this.query)
           const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/fuzzy-search/search?query=${this.query}`)
-          console.log(JSON.stringify(response))
-          this.experiments = response.data.data
+          this.experiments = response.data.experiments
+          console.log(JSON.stringify(this.experiments))
         } catch (error) {
           this.error = error;
         }
@@ -49,11 +49,11 @@
                     <b-card>
                     
                     <div class="text-left">
-                        <h4 class="text-properties">{{experiment.attributes.name}}  </h4>
+                        <h4 class="text-properties">{{experiment.name}}  </h4>
     
                         <!-- horizontal white space -->
     
-                        <b-card-text class="text-properties text-center"> {{experiment.attributes.updatedAt | luxon}}</b-card-text>
+                        <b-card-text class="text-properties text-center"> {{experiment.updatedAt | luxon}}</b-card-text>
                         <b-button class="float-right" v-b-toggle="'collapse-' + experiment.id" variant="primary">...</b-button>
                     </div>
                     <b-collapse v-bind:id="'collapse-' + experiment.id" class="mt-2">
@@ -63,8 +63,8 @@
                                 <b-card-text>
                                     This is where we list interaction things
                                 </b-card-text>
-                                <div v-bind:key="interaction_thing.id" v-for="interaction_thing in experiment.attributes.interaction_things.data">
-                                        <b-button v-on:click="redirectToURL_wells(interaction_thing.attributes.name)">{{interaction_thing.attributes.name}}</b-button>
+                                <div v-bind:key="interaction_thing.id" v-for="interaction_thing in experiment.interaction_things.data">
+                                        <b-button v-on:click="redirectToURL_wells(interaction_thing.name)">{{interaction_thing.name}}</b-button>
                                 </div>
                                 <template #footer>
                                     <small class="text-muted">footer</small>
@@ -73,7 +73,7 @@
     
                                 <b-card title="Experiment-Notes">
                                 <b-card-text class="text-left">
-                                    {{experiment.attributes.description}}
+                                    {{experiment.description}}
                                 </b-card-text>
                                 <template #footer>
                                     <small class="text-muted">Last updated 3 mins ago</small>
@@ -84,9 +84,9 @@
                                 <b-card-text>
                                     This is where we list plates
                                 </b-card-text>
-                                    <div v-bind:key="plate.id" v-for="plate in experiment.attributes.plates.data">
-                                        <b-button v-on:click="redirectToURL_wells(plate.attributes.name)">{{plate.attributes.name}}</b-button>
-                                    </div>
+                                    <!-- <div v-bind:key="plate.id" v-for="plate in experiment.plates.data">
+                                        <b-button v-on:click="redirectToURL_wells(plate.name)">{{plate.name}}</b-button>
+                                    </div> -->
                                 <template #footer>
                                     <small class="text-muted">Last updated 3 mins ago</small>
                                 </template>
@@ -95,15 +95,15 @@
                         </div>
                     </b-collapse> 
                     <!-- <span> -->
-                        <!-- <div v-bind:key="well.id" v-for="well in experiment.attributes.wells.data">
-                        <strong>{{ `${well.attributes.name}` }}</strong>
+                        <!-- <div v-bind:key="well.id" v-for="well in experiment.wells.data">
+                        <strong>{{ `${well.name}` }}</strong>
                         </div> -->
                     <!-- </span> -->
-                    <!-- <button v-on:click="redirectToURL(experiment.attributes.name)"> Plates </button> -->
-                    <!-- <router-link to="/wells/" + ${experiment.attributes.name} >Wells</router-link>  -->
+                    <!-- <button v-on:click="redirectToURL(experiment.name)"> Plates </button> -->
+                    <!-- <router-link to="/wells/" + ${experiment.name} >Wells</router-link>  -->
     
                     <!-- removed bits
-                    v-bind:title="experiment.attributes.name"
+                    v-bind:title="experiment.name"
                  -->
                     </b-card>
                 <!-- </b-row> -->
