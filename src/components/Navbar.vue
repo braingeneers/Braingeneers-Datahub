@@ -14,7 +14,7 @@
             <b-form-input
               size="sm"
               class="mr-sm-2"
-              placeholder="Search"
+              placeholder="Search Experiments"
               v-model="search"
             ></b-form-input>
             <b-button @click="redirectURL_for_search" size="sm" class="my-2 my-sm-0" type="submit"
