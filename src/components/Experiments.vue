@@ -20,7 +20,7 @@ export default {
   },
   async mounted () {
     try {
-      const response = await axios.get('http://localhost:1337/api/experiments?populate=%2A')
+      const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/experiments?populate=%2A`)
       this.experiments = response.data.data
     } catch (error) {
       this.error = error;
