@@ -19,7 +19,6 @@ export default {
                 sample_name: '',
                 sample_description: ''
             },
-            api_endpoint: process.env.VUE_APP_API_ENDPOINT,
             rows: 0,
             columns: 0,
             //image viewer stuff
@@ -57,9 +56,9 @@ export default {
             // ${this.plate_name}
             //added populate=* to get all the associated nested data
 
-            const response = await axios.get(`${this.api_endpoint}/api/wells${this.filter_params}&populate=*`)
+            const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
             this.wells = response.data.data
-            const response2 = await axios.get(`${this.api_endpoint}/api/plates?filters[name][$eq]=${this.plate_name}`)
+            const response2 = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/plates?filters[name][$eq]=${this.plate_name}`)
             this.plate = response2.data.data[0]
             console.log("plate", JSON.stringify(this.plate.attributes.image_parameters.images, 0, 2))
             this.rows = this.plate.attributes.rows
