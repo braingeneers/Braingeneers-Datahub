@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div>
         <div>
             <div class="sm:w-1/2">
@@ -27,7 +27,42 @@
             </div>
         </div>
     </div>
+</template> -->
+
+<template>
+    <!-- <div class="container-sm"> -->
+        <div class="body">
+        <main class="form-signin">
+            <b-card>
+                <div class="card-body">
+                        <p v-show="error" class="text-sm text-red-500">{{ errorMsg }}</p>
+                        <form>
+                            <h2 class="h3 mb-3 fw-normal text-center">Please sign in</h2>
+
+                            <div class="form-group">
+                                <label>Email address</label>
+                                <input type="email" class="form-control form-control-lg" v-model="email" placeholder="Email address" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control form-control-lg" v-model="password" placeholder="Password"/>
+                            </div>
+
+                            <div class="checkbox mb-3">
+                                <label><input type="checkbox" value="remember-me"> Remember me</label>
+                            </div>
+
+                            <button @click="login" class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                            <!-- <router-link class="w-100 btn btn-lg btn-primary" type="submit" to="/signup">Sign in</router-link> -->
+                        </form>
+                    </div>
+                </b-card>  
+            <p class="mt-3 mb-3 text-muted text-center">© 2020–2025</p>
+        </main>      
+    </div>
 </template>
+
 <script>
     import axios from 'axios'
 
@@ -69,5 +104,23 @@
     },
 }
 </script>
-<style scoped>
+<style scoped lang="css">
+    .body {
+        display: flex;
+        padding-top: 60px;
+        padding-bottom: 600px;        
+        align-items: center;
+        background-color: #bbb5ea;
+    }
+    .form-signin {
+        width: 100%;
+        max-width: 450px;
+        margin: auto;
+    }
+    label {
+        font-weight: 600;
+    }
 </style>
+<!-- <style scoped>
+    
+</style> -->
