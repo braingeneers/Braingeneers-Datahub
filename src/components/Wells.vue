@@ -19,7 +19,7 @@ export default {
                 sample_name: '',
                 sample_description: ''
             },
-            api_endpoint: "http://localhost:1337",
+            api_endpoint: process.env.VUE_APP_API_ENDPOINT,
             rows: 0,
             columns: 0,
             //image viewer stuff
@@ -46,6 +46,7 @@ export default {
     },
     async mounted() {
         try {
+            console.log(process.env.VUE_APP_API_ENDPOINT)
             console.log(this.filter_params)
             console.log(this.plate_name)
             if (!this.plate_name) {
