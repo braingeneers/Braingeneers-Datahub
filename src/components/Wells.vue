@@ -134,10 +134,11 @@ export default {
             deleteSample(sample_id){
                 console.log("delete sample")
                 console.log(sample_id)
-                // post with api_token
+                // post with jwt token
+                var token = window.localStorage.getItem('jwt');
                 axios.delete(`http://localhost:1337/api/samples/${sample_id}`, {
                     headers: {
-                        'Authorization': `Bearer ${this.api_token}`
+                        'Authorization': `Bearer ${token}`
                     }
                 })
                 .then(response => {
