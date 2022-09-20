@@ -19,7 +19,6 @@ export default {
                 sample_name: '',
                 sample_description: ''
             },
-            api_token: "63e7b69b04c8f9d9c1c368a10ee586de676e5ae58b970225b4eb4d4ac8a633f141e98c656f296fabb0c1be54b01b23c152d09f41a562f7d6acde3865c3b53e33af5e1fbb4680adf71552f6b8e733e5df460a1c8fa32f42e2ccc26f204198bddc9382dcfe5d1af774465ce706baa6fcda5e0c0b8050f90a74f86dd8cffa1ccecb",
             api_endpoint: "http://localhost:1337",
             rows: 0,
             columns: 0,
@@ -88,7 +87,8 @@ export default {
                 console.log(this.form.sample_name)
                 console.log(this.form.sample_description)
                 console.log(well_id)
-                // post with api_token
+                // post with jwt
+                var token = window.localStorage.getItem('jwt');
                 axios.post('http://localhost:1337/api/samples', {
                     data:{
                         name: this.form.sample_name,
@@ -97,16 +97,16 @@ export default {
                     }
                 }, {
                     headers: {
-                        'Authorization': `Bearer ${this.api_token}`
+                        'Authorization': `Bearer ${token}`
                     }
                 })
                 .then(response => {
-                    console.log(response);
+                    console.log(JSON.stringify(response, 0, 2));
                     if (response.status == 200){
                         //refresh the wells
                         axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)                
                         .then(response => {
-                            console.log(response);
+                            console.log(JSON.stringify(response, 0, 2));
                             this.wells = []
                             this.wells = response.data.data
                         })  
