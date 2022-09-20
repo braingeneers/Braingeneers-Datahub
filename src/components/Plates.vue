@@ -17,7 +17,7 @@ export default {
   },
 //   async mounted () {
 //     try {
-//       const response = await axios.get('http://localhost:1337/api/plates?populate=%2A')
+//       const response = await axios.get('${process.env.VUE_APP_API_ENDPOINT}/api/plates?populate=%2A')
 //       this.plates = response.data.data
 //     } catch (error) {
 //       this.error = error;
@@ -33,7 +33,7 @@ export default {
                 this.filter_params = this.filter_params + this.experiment_name
             }
             // ${this.plate_name}
-            const response = await axios.get(`http://localhost:1337/api/plates${this.filter_params}`)
+            const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/plates${this.filter_params}`)
             this.plates = response.data.data
         } catch (error) {
             this.error = error;
