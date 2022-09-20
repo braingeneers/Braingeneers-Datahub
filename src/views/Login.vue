@@ -35,9 +35,11 @@
         <main class="form-signin">
             <b-card>
                 <div class="card-body">
-                        <p v-show="error" class="text-sm text-red-500">{{ errorMsg }}</p>
+                    <!-- include braingeneers logo from assets -->
+                    <p v-show="error" class="text-sm text-red-500">{{ errorMsg }}</p>
                         <form>
-                            <h2 class="h3 mb-3 fw-normal text-center">Please sign in</h2>
+                            <img src="@/assets/braingeneers_logo.png" alt="braingeneers logo" class="d-block mx-auto mb-4" style="display:inline" width="200" height="auto">
+                            <!-- <h2 class="h3 mb-3 fw-normal text-center">Please sign in</h2> -->
 
                             <div class="form-group">
                                 <label>Email address</label>
@@ -124,6 +126,13 @@
     }
     label {
         font-weight: 600;
+    }
+    .responsive {
+        width: 100%;
+        height: auto;
+        /* padding-top: 5px;
+        padding-right: 0;
+        padding-left: 0; */
     }
 </style>
 <!-- <style scoped>
