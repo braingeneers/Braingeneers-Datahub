@@ -38,7 +38,8 @@
                     <!-- include braingeneers logo from assets -->
                     <p v-show="error" class="text-sm text-red-500">{{ errorMsg }}</p>
                         <form>
-                            <img src="@/assets/braingeneers_logo.png" alt="braingeneers logo" class="d-block mx-auto mb-4" style="display:inline" width="200" height="auto">
+                            <img src="@/assets/hub-logo.png" alt="braingeneers logo" class="d-block mx-auto mb-4 responsive" style="display:inline">
+                            <!-- width="200" height="auto"> -->
                             <!-- <h2 class="h3 mb-3 fw-normal text-center">Please sign in</h2> -->
 
                             <div class="form-group">

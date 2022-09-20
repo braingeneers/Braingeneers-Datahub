@@ -1,7 +1,10 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand href="#">BraingeneersHub</b-navbar-brand>
+      <b-navbar-brand href="#">
+        <img src="@/assets/logo-with-background.png" alt="braingeneers logo" class="d-inline-block align-top" height=30px width=auto >
+        <!-- <img src="https://placekitten.com/g/30/30" class="d-inline-block align-top" alt="Kitten"> -->
+        BraingeneersHub</b-navbar-brand>
       <!-- <router-link to="/">Plates</router-link> | -->
       <router-link to="/experiments">Experiments</router-link> |
       <!-- <router-link to="/wells">Wells</router-link>| -->
@@ -100,3 +103,6 @@
     }
 
 </script>
+<style>
+
+</style>
