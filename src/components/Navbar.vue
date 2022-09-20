@@ -3,7 +3,7 @@
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand href="#">BraingeneersHub</b-navbar-brand>
       <!-- <router-link to="/">Plates</router-link> | -->
-      <router-link to="/">Experiments</router-link>|
+      <router-link to="/experiments">Experiments</router-link>|
       <router-link to="/wells">Wells</router-link>|
       <router-link to="/about">About</router-link>
 

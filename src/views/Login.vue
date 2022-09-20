@@ -45,7 +45,7 @@
         async login(e) {
             e.preventDefault();
             try {
-                const res = await axios.post(`http://localhost:1337/api/auth/local`, {
+                const res = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/api/auth/local`, {
                     identifier: this.email,
                     password: this.password
                 });
