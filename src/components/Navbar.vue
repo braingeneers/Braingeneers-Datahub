@@ -25,7 +25,7 @@
               <em>{{user.username}}</em>
             </template>
             <b-dropdown-item @click="openUserInfoModal" href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+            <b-dropdown-item @click="logout" href="#">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -85,7 +85,12 @@
                 console.log("user", JSON.stringify(this.user, 0, 2));
                 // console.log("openUserInfoModal")
                 $('#user-info').click()
-            }
+            },
+            logout() {
+                window.localStorage.removeItem("jwt");
+                window.localStorage.removeItem("userData");
+                this.$router.push("/");
+        },
         },
     }
 

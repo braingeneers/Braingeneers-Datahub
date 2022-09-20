@@ -5,6 +5,7 @@ import WellsView from '../views/WellsView.vue'
 import ExperimentsView from '../views/ExperimentsView.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
+import SearchResultsView from '../views/SearchResultsView.vue'
 
 Vue.use(VueRouter)
 
@@ -124,6 +125,25 @@ const routes = [
           }
         ]
       }
+  },
+  {
+    path: '/search/:search_query',
+    name: 'search',
+    props: true,
+    component: SearchResultsView,
+    meta: {
+        title: 'Search - Braingeneers Hub',
+        metaTags: [
+            {
+            name: 'description',
+            content: 'experiment search page'
+            },
+            {
+            property: 'og:description',
+            content: 'experiments search page'
+            }
+        ]
+    }
   },
   {
     path: '/about',

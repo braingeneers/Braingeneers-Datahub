@@ -101,6 +101,11 @@
                 this.password = "";
             }
         },
+        logout() {
+            window.localStorage.removeItem("jwt");
+            window.localStorage.removeItem("userData");
+            this.$router.push("/");
+        },
     },
 }
 </script>
@@ -110,7 +115,7 @@
         padding-top: 60px;
         padding-bottom: 600px;        
         align-items: center;
-        background-color: #bbb5ea;
+        background-color: #f3f2fe;
     }
     .form-signin {
         width: 100%;
