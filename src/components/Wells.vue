@@ -90,7 +90,7 @@ export default {
                 console.log(well_id)
                 // post with jwt
                 var token = window.localStorage.getItem('jwt');
-                axios.post('http://localhost:1337/api/samples', {
+                axios.post(`${process.env.VUE_APP_API_ENDPOINT}/api/samples`, {
                     data:{
                         name: this.form.sample_name,
                         description: this.form.sample_description,
@@ -105,7 +105,7 @@ export default {
                     console.log(JSON.stringify(response, 0, 2));
                     if (response.status == 200){
                         //refresh the wells
-                        axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)                
+                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)                
                         .then(response => {
                             console.log(JSON.stringify(response, 0, 2));
                             this.wells = []
@@ -124,7 +124,7 @@ export default {
                 console.log("get samples")
                 console.log(well_id)
                 // post with api_token
-                axios.get(`http://localhost:1337/api/samples?filters[well][id][$eq]=${well_id}`)
+                axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/samples?filters[well][id][$eq]=${well_id}`)
                 .then(function (response) {
                     console.log(response);
                 })
@@ -137,7 +137,7 @@ export default {
                 console.log(sample_id)
                 // post with jwt token
                 var token = window.localStorage.getItem('jwt');
-                axios.delete(`http://localhost:1337/api/samples/${sample_id}`, {
+                axios.delete(`${process.env.VUE_APP_API_ENDPOINT}/api/samples/${sample_id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -145,7 +145,7 @@ export default {
                 .then(response => {
                     console.log(response);
                     if (response.status == 200){
-                        axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)                
+                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)                
                         .then(response => {
                             console.log(response);
                             this.wells = []
@@ -269,7 +269,7 @@ export default {
             loadAllImagesFromLayer(row, col, layer){
                 console.log("load all images from layer", row, col, layer)
                 // fetch image from url with axios
-                // axios.get(`http://localhost:1337/api/wells${this.filter_params}&populate=*`)
+                // axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
                 var length = this.manifest.captures.length
                 var count = 0
                 this.images = []
