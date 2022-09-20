@@ -3,9 +3,9 @@
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand href="#">BraingeneersHub</b-navbar-brand>
       <!-- <router-link to="/">Plates</router-link> | -->
-      <router-link to="/experiments">Experiments</router-link>|
-      <router-link to="/wells">Wells</router-link>|
-      <router-link to="/about">About</router-link>
+      <router-link to="/experiments">Experiments</router-link> |
+      <!-- <router-link to="/wells">Wells</router-link>| -->
+      <router-link to="/about"> About</router-link>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
@@ -15,8 +15,9 @@
               size="sm"
               class="mr-sm-2"
               placeholder="Search"
+              v-model="search"
             ></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit"
+            <b-button @click="redirectURL_for_search" size="sm" class="my-2 my-sm-0" type="submit"
               >Search</b-button
             >
           </b-nav-form>
@@ -57,6 +58,7 @@
             return {
                 username: "nobody",
                 user: {"username": "user"},
+                search: "",
             }
         },
         mounted(){
@@ -90,7 +92,10 @@
                 window.localStorage.removeItem("jwt");
                 window.localStorage.removeItem("userData");
                 this.$router.push("/");
-        },
+            },
+            redirectURL_for_search() {
+                this.$router.push("/search/" + this.search);
+            }
         },
     }
 
