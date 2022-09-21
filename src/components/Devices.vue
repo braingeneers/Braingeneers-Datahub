@@ -82,7 +82,7 @@
                                     This is where we list plates
                                 </b-card-text>
                                     <!-- <div v-bind:key="plate.id" v-for="plate in device.attributes.plates.data"> -->
-                                    <div v-if="device.attributes.plate.data.attributes.name" v-bind:plate="device.attributes.plate.data.attributes.name">
+                                    <div v-if="device.attributes.plate.data">
                                         <b-button v-on:click="redirectToURL_wells(device.attributes.plate.data.attributes.name)">{{device.attributes.plate.data.attributes.name}}</b-button>
                                     </div>
                                 <template #footer>
