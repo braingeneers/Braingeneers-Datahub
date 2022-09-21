@@ -6,14 +6,12 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import router from './router'
 import VueEllipseProgress from 'vue-ellipse-progress';
 import VueLuxon from "vue-luxon";
-import PortalVue from 'portal-vue';
 
 import '../src/assets/css/styles.css';
 // Vue.use(VueLuxon);
 
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
-Vue.use(PortalVue);
 Vue.use(VueEllipseProgress);
 Vue.use(VueLuxon, {
     input: {

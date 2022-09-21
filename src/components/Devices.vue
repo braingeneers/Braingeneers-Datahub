@@ -40,20 +40,27 @@
     <template>
       <b-container>
         <div v-if="interaction_things.length">
-            <portal-target name="BioPlateScope">
+            <div ref="BioPlateScopes">
                 <h4>BioPlateScopes</h4>
-            </portal-target>
-            <portal-target name="Autoculture">
+
+            </div>
+            <div ref="Autoculture">
                 <h4>Autoculture</h4>
-            </portal-target>
-            <portal-target name="MaxOne">
-                <h4>MaxOne</h4>
-            </portal-target>
+                
+            </div>
+            <div ref="Maxwell">
+                <h4>Maxwell</h4>
+                
+            </div>
+            <div ref="Other">
+                <h4>Other</h4>
+                
+            </div>
           <!-- <b-row> -->
             <div v-bind:key="device.id" v-for="device in interaction_things">
                 <!-- <b-row> -->
-                    <portal to="BioPlateScope">
                     <b-card>
+                    
                     <div class="text-left">
                         <h4 class="text-properties">{{device.attributes.name}}  </h4>
     
@@ -114,7 +121,6 @@
                  -->
                     </b-card>
                 <!-- </b-row> -->
-            </portal>
             </div>
           <!-- </b-row> -->
         </div>
