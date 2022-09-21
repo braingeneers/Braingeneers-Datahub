@@ -7,7 +7,7 @@
         BraingeneersHub</b-navbar-brand>
       <!-- <router-link to="/">Plates</router-link> | -->
       <router-link to="/experiments">Experiments</router-link> |
-      <!-- <router-link to="/wells">Wells</router-link>| -->
+      <router-link to="/devices"> Devices</router-link>|
       <router-link to="/about"> About</router-link>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -20,7 +20,7 @@
               placeholder="Search Experiments"
               v-model="search"
             ></b-form-input>
-            <b-button @click="redirectURL_for_search" size="sm" class="my-2 my-sm-0" type="submit"
+            <b-button :disabled="search.length === 0" @click="redirectURL_for_search" size="sm" class="my-2 my-sm-0" type="submit"
               >Search</b-button
             >
           </b-nav-form>

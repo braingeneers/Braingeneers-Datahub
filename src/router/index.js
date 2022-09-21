@@ -6,145 +6,147 @@ import ExperimentsView from '../views/ExperimentsView.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import SearchResultsView from '../views/SearchResultsView.vue'
+import DevicesView from '../views/DevicesView.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-//   {
-//     path: '/',
-//     name: 'home',
-//     component: ExperimentsView,
-//     meta: {
-//         title: 'Home Page - Braingeneers Hub',
-//         metaTags: [
-//           {
-//             name: 'description',
-//             content: 'The home page'
-//           },
-//           {
-//             property: 'og:description',
-//             content: 'The home page'
-//           }
-//         ]
-//       }
-//   },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register
-  },
-  {
-    path: '/',
-    name: 'Login',
-    component: Login,
-    meta: {
-        title: 'Login - Braingeneers Hub',
-        metaTags: [
-          {
-            name: 'description',
-            content: 'login page'
-          },
-          {
-            property: 'og:description',
-            content: 'login'
+    {
+        path: '/',
+        name: 'Login',
+        component: Login,
+        meta: {
+            title: 'Login - Braingeneers Hub',
+            metaTags: [
+              {
+                name: 'description',
+                content: 'login page'
+              },
+              {
+                property: 'og:description',
+                content: 'login'
+              }
+            ]
           }
-        ]
-      }
-  },
-  {
-    path: '/plates/:experiment_name_from_url',
-    name: 'plates',
-    component: PlatesView,
-    props: true,
-    meta: {
-        title: 'Experiments - Braingeneers Hub',
-        metaTags: [
-          {
-            name: 'description',
-            content: 'experiments page'
-          },
-          {
-            property: 'og:description',
-            content: 'experiments page'
-          }
-        ]
-      }
-  },
-  {
-    path: '/wells/:plate_name_from_url',
-    name: 'wells',
-    component: WellsView,
-    props: true,
-    meta: {
-        title: 'Wells - Braingeneers Hub',
-        metaTags: [
-          {
-            name: 'description',
-            content: 'view wells'
-          },
-          {
-            property: 'og:description',
-            content: 'wells page'
-          }
-        ]
-      }
-  },
-  {
-    path: '/wells',
-    name: 'all_wells',
-    component: WellsView,
-    meta: {
-        title: 'Wells - Braingeneers Hub',
-        metaTags: [
-          {
-            name: 'description',
-            content: 'view wells'
-          },
-          {
-            property: 'og:description',
-            content: 'wells page'
-          }
-        ]
-      }
-  },
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register
+    },
 
-  {
-    path: '/experiments',
-    name: 'experiments',
-    component: ExperimentsView,
-    meta: {
-        title: 'Experiments - Braingeneers Hub',
-        metaTags: [
-          {
-            name: 'description',
-            content: 'experiments page'
-          },
-          {
-            property: 'og:description',
-            content: 'experiments page'
-          }
-        ]
-      }
-  },
-  {
-    path: '/search/:search_query',
-    name: 'search',
-    props: true,
-    component: SearchResultsView,
-    meta: {
-        title: 'Search - Braingeneers Hub',
-        metaTags: [
+    {
+        path: '/plates/:experiment_name_from_url',
+        name: 'plates',
+        component: PlatesView,
+        props: true,
+        meta: {
+            title: 'Experiments - Braingeneers Hub',
+            metaTags: [
             {
-            name: 'description',
-            content: 'experiment search page'
+                name: 'description',
+                content: 'experiments page'
             },
             {
-            property: 'og:description',
-            content: 'experiments search page'
+                property: 'og:description',
+                content: 'experiments page'
             }
-        ]
-    }
-  },
+            ]
+        }
+    },
+    {
+        path: '/wells/:plate_name_from_url',
+        name: 'wells',
+        component: WellsView,
+        props: true,
+        meta: {
+            title: 'Wells - Braingeneers Hub',
+            metaTags: [
+            {
+                name: 'description',
+                content: 'view wells'
+            },
+            {
+                property: 'og:description',
+                content: 'wells page'
+            }
+            ]
+        }
+    },
+    {
+        path: '/wells',
+        name: 'all_wells',
+        component: WellsView,
+        meta: {
+            title: 'Wells - Braingeneers Hub',
+            metaTags: [
+            {
+                name: 'description',
+                content: 'view wells'
+            },
+            {
+                property: 'og:description',
+                content: 'wells page'
+            }
+            ]
+        }
+    },
+
+    {
+        path: '/experiments',
+        name: 'experiments',
+        component: ExperimentsView,
+        meta: {
+            title: 'Experiments - Braingeneers Hub',
+            metaTags: [
+            {
+                name: 'description',
+                content: 'experiments page'
+            },
+            {
+                property: 'og:description',
+                content: 'experiments page'
+            }
+            ]
+        }
+    },
+    {
+        path: '/devices',
+        name: 'devices',
+        component: DevicesView,
+        meta: {
+            title: 'Devices - Braingeneers Hub',
+            metaTags: [
+            {
+                name: 'description',
+                content: 'devices page'
+            },
+            {
+                property: 'og:description',
+                content: 'devices page'
+            }
+            ]
+        }
+    },
+    {
+        path: '/search/:search_query',
+        name: 'search',
+        props: true,
+        component: SearchResultsView,
+        meta: {
+            title: 'Search - Braingeneers Hub',
+            metaTags: [
+                {
+                name: 'description',
+                content: 'experiment search page'
+                },
+                {
+                property: 'og:description',
+                content: 'experiments search page'
+                }
+            ]
+        }
+    },
   {
     path: '/about',
     name: 'about',
