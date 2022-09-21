@@ -4,7 +4,7 @@
       <Navbar />
       <div ref="BioPlateScopes">
                 <h4>BioPlateScopes</h4>
-                <Devices v-bind:type="'BioPlateScope'"/>
+                <Devices v-bind:type="'BioPlateScope'" v-bind:interaction_things="interaction_things"/>
             </div>
             <div ref="Autoculture">
                 <h4>Autoculture</h4>
@@ -25,6 +25,7 @@
   <script>
   // @ is an alias to /src
   // import HelloWorld from '@/components/HelloWorld.vue'
+  import axios from 'axios'
   import Navbar from '@/components/Navbar.vue'
   import Devices from '@/components/Devices.vue'
   
@@ -34,10 +35,22 @@
         Navbar,
         Devices,
    },
-   methods:{
-  
-   },
-  
+   data () {
+        return {
+          interaction_things: [],
+          error: null,
+          user: [],
+        }
+      },
+    async mounted () {
+        try {
+          const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/interaction-things?populate=%2A`)
+          this.interaction_things = response.data.data
+        } catch (error) {
+          console.log(error)
+          this.error = error;
+        }
+      }
   }
   </script>
   

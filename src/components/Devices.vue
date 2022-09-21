@@ -1,11 +1,11 @@
 <script>
-    import axios from 'axios'
+    // import axios from 'axios'
     
     export default {
-      props: ['type'],
+      props: ['type', 'interaction_things'],
       data () {
         return {
-          interaction_things: [],
+        //   interaction_things: [],
           error: null,
           user: [],
         }
@@ -19,16 +19,16 @@
         },
     
       },
-      async mounted () {
-        try {
-          console.log(this.type)
-          const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/interaction-things?populate=%2A`)
-          this.interaction_things = response.data.data
-        } catch (error) {
-          console.log(error)
-          this.error = error;
-        }
-      }
+    //   async mounted () {
+    //     try {
+    //       console.log(this.type)
+    //       const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/interaction-things?populate=%2A`)
+    //       this.interaction_things = response.data.data
+    //     } catch (error) {
+    //       console.log(error)
+    //       this.error = error;
+    //     }
+    //   }
     }
     </script>
     <style>
