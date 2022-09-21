@@ -40,6 +40,22 @@
     <template>
       <b-container>
         <div v-if="interaction_things.length">
+            <div ref="BioPlateScopes">
+                <h4>BioPlateScopes</h4>
+
+            </div>
+            <div ref="Autoculture">
+                <h4>Autoculture</h4>
+                
+            </div>
+            <div ref="Maxwell">
+                <h4>Maxwell</h4>
+                
+            </div>
+            <div ref="Other">
+                <h4>Other</h4>
+                
+            </div>
           <!-- <b-row> -->
             <div v-bind:key="device.id" v-for="device in interaction_things">
                 <!-- <b-row> -->
