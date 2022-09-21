@@ -2,11 +2,12 @@
     import axios from 'axios'
     
     export default {
+      props: ['type'],
       data () {
         return {
           interaction_things: [],
           error: null,
-          user: []
+          user: [],
         }
       },
       methods:{
@@ -20,6 +21,7 @@
       },
       async mounted () {
         try {
+          console.log(this.type)
           const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/interaction-things?populate=%2A`)
           this.interaction_things = response.data.data
         } catch (error) {
@@ -40,27 +42,14 @@
     <template>
       <b-container>
         <div v-if="interaction_things.length">
-            <div ref="BioPlateScopes">
-                <h4>BioPlateScopes</h4>
-
-            </div>
-            <div ref="Autoculture">
-                <h4>Autoculture</h4>
-                
-            </div>
-            <div ref="Maxwell">
-                <h4>Maxwell</h4>
-                
-            </div>
-            <div ref="Other">
-                <h4>Other</h4>
-                
-            </div>
           <!-- <b-row> -->
             <div v-bind:key="device.id" v-for="device in interaction_things">
                 <!-- <b-row> -->
+
                     <b-card>
-                    
+                    <div v-if="type === device.attributes.type">
+                        <h4 class="text-properties"> yup  </h4>
+                    </div>
                     <div class="text-left">
                         <h4 class="text-properties">{{device.attributes.name}}  </h4>
     
@@ -72,17 +61,17 @@
                     <b-collapse v-bind:id="'collapse-' + device.id" class="mt-2">
                         <div>
                             <b-card-group>
-                                <!-- <b-card title="Interaction-Things">
-                                <b-card-text>
-                                    This is where we list interaction things
+                                <b-card title="Type">
+                                <b-card-text class="text-left">
+                                    {{device.attributes.type}}
                                 </b-card-text>
-                                <div v-bind:key="interaction_thing.id" v-for="interaction_thing in device.attributes.interaction_things.data">
+                                <!-- <div v-bind:key="interaction_thing.id" v-for="interaction_thing in device.attributes.interaction_things.data">
                                         <b-button v-on:click="redirectToURL_wells(interaction_thing.attributes.name)">{{interaction_thing.attributes.name}}</b-button>
-                                </div>
+                                </div> -->
                                 <template #footer>
                                     <small class="text-muted">footer</small>
                                 </template>
-                                </b-card> -->
+                                </b-card>
     
                                 <b-card title="device-Notes">
                                 <b-card-text class="text-left">
