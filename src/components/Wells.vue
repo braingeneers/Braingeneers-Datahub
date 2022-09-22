@@ -44,6 +44,7 @@ export default {
             panning: false,
             timers: [],
             anno: null,
+            curWell_id: null,
         }
 
     },
@@ -86,8 +87,9 @@ export default {
                 image: document.getElementById("well-image")
             });
 
-            this.anno.on('createAnnotation', function (annotation) {
+            this.anno.on('createAnnotation', (annotation) => {
                 console.log('Created annotation', JSON.stringify(annotation));
+                this.createSample(this.curWell_id)
             });
 
             this.anno.on('createSelection', function (selection) {
@@ -145,7 +147,7 @@ export default {
                         //refresh the wells
                         axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
                             .then(response => {
-                                console.log(JSON.stringify(response, 0, 2));
+                                // console.log(JSON.stringify(response, 0, 2));
                                 this.wells = []
                                 this.wells = response.data.data
                             })
@@ -415,7 +417,7 @@ export default {
             <div v-for="row in rows" :key="row">
                 <b-row>
                     <b-col class="column-padding" v-for="col in columns" :key="row * 10 + col">
-                        <img class="responsive" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id)"
+                        <img class="responsive" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id); curWell_id=wells[((row-1)*columns+col)-1].id"
                             @error="missing($event)"
                             :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`" />
                         <div>
