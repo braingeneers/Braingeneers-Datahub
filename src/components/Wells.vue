@@ -72,7 +72,7 @@ export default {
                 this.groupID = this.plate.attributes.image_parameters.group_id
                 this.loader("oldest")
             }
-            this.initAnno();
+            // this.initAnno();
             // console.log("wells", JSON.stringify(this.wells, 0, 2))
             // console.log(this.wells)
         } catch (error) {
@@ -83,11 +83,11 @@ export default {
     methods: {
         initAnno() {
             this.anno = new Annotorious({
-                image: document.getElementById("example")
+                image: document.getElementById("well-image")
             });
 
             this.anno.on('createAnnotation', function (annotation) {
-                console.log('Created annotation', annotation);
+                console.log('Created annotation', JSON.stringify(annotation));
             });
 
             this.anno.on('createSelection', function (selection) {
@@ -119,6 +119,7 @@ export default {
             this.progress = 0
             console.log("#" + id)
             $("#" + id).click();
+            // this.initAnno();
         },
         createSample(well_id) {
             console.log("create sample")
@@ -403,7 +404,7 @@ export default {
 
 <template>
     <b-container fluid="xl">
-        <img id="example" src="https://placekitten.com/g/560/420" />
+        <!-- <img id="example" src="https://placekitten.com/g/560/420" /> -->
         <!-- display plate name header -->
         <b-row>
             <h1>Plate: {{plate_name}}</h1>
@@ -434,7 +435,7 @@ export default {
                                 <b-row>
                                     Z: {{ curZ+1 }}/{{manifest.stack_size}}
                                 </b-row>
-                                <img class="responsive" @error="missing($event)"
+                                <img id="well-image" class="responsive" @error="missing($event)"
                                     :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`">
                                 <b-row>
                                     <b-col>
@@ -481,7 +482,7 @@ export default {
 
                                             </b-list-group>
                                         </b-collapse>
-                                        <b-button pill style="display:block;"
+                                        <b-button pill style="display:block;" @click="initAnno();"           
                                             v-b-toggle="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id"
                                             variant="success"> Label new sample</b-button>
                                         <b-collapse
