@@ -36,7 +36,7 @@ const routes = [
     },
 
     {
-        path: '/plates/:experiment_name_from_url',
+        path: '/plates',
         name: 'plates',
         component: PlatesView,
         props: true,
