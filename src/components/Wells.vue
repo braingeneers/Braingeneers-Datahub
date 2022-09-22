@@ -1,6 +1,9 @@
 <script>
 import axios from 'axios'
 import $ from 'jquery'
+import { Annotorious } from '@recogito/annotorious';
+import '@recogito/annotorious/dist/annotorious.min.css';
+
 import DirectionalPad from '@/components/DirectionalPad.vue'
 
 export default {
@@ -10,7 +13,7 @@ export default {
     },
     data() {
         return {
-            plate: {"attributes": {"image_parameters" : false}},
+            plate: { "attributes": { "image_parameters": false } },
             wells: [],
             //   filter_string: '?filters[plate][name][$eq]=test-plate-1',
             filter_params: "?filters[plate][name][$contains]=",
@@ -24,8 +27,8 @@ export default {
             //image viewer stuff
             progress: 0,
             images: [],
-            uuid:"",
-            groupID:"", 
+            uuid: "",
+            groupID: "",
             endpoint: "https://s3-west.nrp-nautilus.io/braingeneers/imaging",
             manifest: {
                 stack_size: 0,
@@ -40,6 +43,7 @@ export default {
             startZ: 0,
             panning: false,
             timers: [],
+            anno: null,
         }
 
     },
@@ -63,11 +67,12 @@ export default {
             console.log("plate", JSON.stringify(this.plate.attributes.image_parameters.images, 0, 2))
             this.rows = this.plate.attributes.rows
             this.columns = this.plate.attributes.columns
-            if (this.plate.attributes.image_parameters.images){
+            if (this.plate.attributes.image_parameters.images) {
                 this.uuid = this.plate.attributes.image_parameters.uuids[0]
                 this.groupID = this.plate.attributes.image_parameters.group_id
                 this.loader("oldest")
             }
+            this.initAnno();
             // console.log("wells", JSON.stringify(this.wells, 0, 2))
             // console.log(this.wells)
         } catch (error) {
@@ -76,287 +81,320 @@ export default {
         }
     },
     methods: {
-            showModal(id) {
-                //reset progress bar
-                this.progress = 0
-                console.log("#"+id)
-                $("#"+id).click();
-            },
-            createSample(well_id){
-                console.log("create sample")
-                console.log(this.form.sample_name)
-                console.log(this.form.sample_description)
-                console.log(well_id)
-                // post with jwt
-                var token = window.localStorage.getItem('jwt');
-                axios.post(`${process.env.VUE_APP_API_ENDPOINT}/api/samples`, {
-                    data:{
-                        name: this.form.sample_name,
-                        description: this.form.sample_description,
-                        well: well_id
-                    }
-                }, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
+        initAnno() {
+            this.anno = new Annotorious({
+                image: document.getElementById("example")
+            });
+
+            this.anno.on('createAnnotation', function (annotation) {
+                console.log('Created annotation', annotation);
+            });
+
+            this.anno.on('createSelection', function (selection) {
+                console.log('Created selection', selection);
+            });
+
+            this.anno.on('deleteAnnotation', function (annotation) {
+                console.log('Delete annotation', annotation);
+            });
+
+            this.anno.on('mouseEnterAnnotation', function (annotation){
+                console.log('Mouse ENTERED annotation', annotation);
+            });
+
+            this.anno.on('selectAnnotation', function (annotation) {
+                console.log('Select annotation', annotation);
+            });
+
+            this.anno.on('cancelSelected', function () {
+                console.log('UNSELECTED');
+            });
+
+            this.anno.on('clickAnnotation', function (annotation) {
+                console.log('Clicked annotation', annotation);
+            });
+        },
+        showModal(id) {
+            //reset progress bar
+            this.progress = 0
+            console.log("#" + id)
+            $("#" + id).click();
+        },
+        createSample(well_id) {
+            console.log("create sample")
+            console.log(this.form.sample_name)
+            console.log(this.form.sample_description)
+            console.log(well_id)
+            // post with jwt
+            var token = window.localStorage.getItem('jwt');
+            axios.post(`${process.env.VUE_APP_API_ENDPOINT}/api/samples`, {
+                data: {
+                    name: this.form.sample_name,
+                    description: this.form.sample_description,
+                    well: well_id
+                }
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
                 .then(response => {
                     console.log(JSON.stringify(response, 0, 2));
-                    if (response.status == 200){
+                    if (response.status == 200) {
                         //refresh the wells
-                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)                
-                        .then(response => {
-                            console.log(JSON.stringify(response, 0, 2));
-                            this.wells = []
-                            this.wells = response.data.data
-                        })  
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
+                            .then(response => {
+                                console.log(JSON.stringify(response, 0, 2));
+                                this.wells = []
+                                this.wells = response.data.data
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-            },
-            getSamples(well_id){
-                console.log("get samples")
-                console.log(well_id)
-                // post with api_token
-                axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/samples?filters[well][id][$eq]=${well_id}`)
+        },
+        getSamples(well_id) {
+            console.log("get samples")
+            console.log(well_id)
+            // post with api_token
+            axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/samples?filters[well][id][$eq]=${well_id}`)
                 .then(function (response) {
                     console.log(response);
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-            },
-            deleteSample(sample_id){
-                console.log("delete sample")
-                console.log(sample_id)
-                // post with jwt token
-                var token = window.localStorage.getItem('jwt');
-                axios.delete(`${process.env.VUE_APP_API_ENDPOINT}/api/samples/${sample_id}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
+        },
+        deleteSample(sample_id) {
+            console.log("delete sample")
+            console.log(sample_id)
+            // post with jwt token
+            var token = window.localStorage.getItem('jwt');
+            axios.delete(`${process.env.VUE_APP_API_ENDPOINT}/api/samples/${sample_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
                 .then(response => {
                     console.log(response);
-                    if (response.status == 200){
-                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)                
-                        .then(response => {
-                            console.log(response);
-                            this.wells = []
-                            this.wells = response.data.data
-                        })  
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+                    if (response.status == 200) {
+                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
+                            .then(response => {
+                                console.log(response);
+                                this.wells = []
+                                this.wells = response.data.data
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-                // delete page element
+            // delete page element
 
-                // console.log("deleting page element: " + "sample-" + sample_id);
-                // $("#"+'sample-'+sample_id).remove();
-            },
-            // begin image viewer stuff
-            loader(start_index) {
-                console.log(start_index)
-                console.log("Loading...", this.uuid)
-                console.log(`${this.endpoint}/${this.uuid}/images/manifest.json`)
-                fetch(`${this.endpoint}/${this.uuid}/images/manifest.json`)
-                    .then(stream => stream.json())
-                    .then(data => {
+            // console.log("deleting page element: " + "sample-" + sample_id);
+            // $("#"+'sample-'+sample_id).remove();
+        },
+        // begin image viewer stuff
+        loader(start_index) {
+            console.log(start_index)
+            console.log("Loading...", this.uuid)
+            console.log(`${this.endpoint}/${this.uuid}/images/manifest.json`)
+            fetch(`${this.endpoint}/${this.uuid}/images/manifest.json`)
+                .then(stream => stream.json())
+                .then(data => {
                     this.manifest = data
-                    switch(start_index){
+                    switch (start_index) {
                         case "newest":
-                        this.curTimestampIndex = this.manifest.captures.length -1
-                        this.firstLoadIndex = this.manifest.captures.length -1
-                        break;
+                            this.curTimestampIndex = this.manifest.captures.length - 1
+                            this.firstLoadIndex = this.manifest.captures.length - 1
+                            break;
                         case "oldest":
-                        this.curTimestampIndex = 0
-                        this.firstLoadIndex = 0
-                        break;
+                            this.curTimestampIndex = 0
+                            this.firstLoadIndex = 0
+                            break;
                         case "sync":
-                        this.firstLoadIndex = this.curTimestampIndex
-                        break;
+                            this.firstLoadIndex = this.curTimestampIndex
+                            break;
                         default:
                         // console.log(this.loadTrigger)
 
                     }
-                    })
-                    .catch(error => {
+                })
+                .catch(error => {
                     console.log(error)
                     alert("Unable to load experiment, does the uuid exist?")
-                    })
-            },
-            changeImageSet(uuid){
-                this.uuid = uuid
-                this.groupID = this.plate.attributes.image_parameters.group_id
-                this.loader("newest")
-            },
-            missing(event) {
-                console.log("Missing image", event.target.src)
-                event.target.src = "https://placekitten.com/g/560/420"
-            },
-            OnArrowRightClick() {
-                console.log()
-                if (this.curTimestampIndex < this.manifest.captures.length-1) {
-                    this.curTimestampIndex = this.curTimestampIndex + 1
-                }
-                else {
-                    console.log("At max timestamp")
-                    console.log("this.curTimestampIndex: "+ this.curTimestampIndex)
-                }
-            },
-            OnArrow48RightClick() {
-                console.log()
-                if (this.curTimestampIndex < this.manifest.captures.length-49) {
-                    this.curTimestampIndex = this.curTimestampIndex + 48
-                }
-                else {
-                    this.curTimestampIndex = this.manifest.captures.length-1
-                    console.log("At max timestamp")
-                    console.log("this.curTimestampIndex: "+ this.curTimestampIndex)
-                }
-            },
-            OnArrowLeftClick() {
-                console.log()
-                if (this.curTimestampIndex > 0) {
-                    this.curTimestampIndex = this.curTimestampIndex - 1
-                }
-                else {
-                    console.log("At minimum timestamp")
-                    console.log("this.curTimestampIndex: "+ this.curTimestampIndex)
-                }
-            },
-            OnArrow48LeftClick() {
-                console.log()
-                if (this.curTimestampIndex > 48) {
-                    this.curTimestampIndex = this.curTimestampIndex - 48
-                }
-                else {
-                    this.curTimestampIndex = 0
-                    console.log("At first timestamp")
-                    console.log("this.curTimestampIndex: "+ this.curTimestampIndex)
-                }
-            },
-            OnPreviousFocalViewClick() {
-                if (this.curZ > 0) {
+                })
+        },
+        changeImageSet(uuid) {
+            this.uuid = uuid
+            this.groupID = this.plate.attributes.image_parameters.group_id
+            this.loader("newest")
+        },
+        missing(event) {
+            console.log("Missing image", event.target.src)
+            event.target.src = "https://placekitten.com/g/560/420"
+        },
+        OnArrowRightClick() {
+            console.log()
+            if (this.curTimestampIndex < this.manifest.captures.length - 1) {
+                this.curTimestampIndex = this.curTimestampIndex + 1
+            }
+            else {
+                console.log("At max timestamp")
+                console.log("this.curTimestampIndex: " + this.curTimestampIndex)
+            }
+        },
+        OnArrow48RightClick() {
+            console.log()
+            if (this.curTimestampIndex < this.manifest.captures.length - 49) {
+                this.curTimestampIndex = this.curTimestampIndex + 48
+            }
+            else {
+                this.curTimestampIndex = this.manifest.captures.length - 1
+                console.log("At max timestamp")
+                console.log("this.curTimestampIndex: " + this.curTimestampIndex)
+            }
+        },
+        OnArrowLeftClick() {
+            console.log()
+            if (this.curTimestampIndex > 0) {
+                this.curTimestampIndex = this.curTimestampIndex - 1
+            }
+            else {
+                console.log("At minimum timestamp")
+                console.log("this.curTimestampIndex: " + this.curTimestampIndex)
+            }
+        },
+        OnArrow48LeftClick() {
+            console.log()
+            if (this.curTimestampIndex > 48) {
+                this.curTimestampIndex = this.curTimestampIndex - 48
+            }
+            else {
+                this.curTimestampIndex = 0
+                console.log("At first timestamp")
+                console.log("this.curTimestampIndex: " + this.curTimestampIndex)
+            }
+        },
+        OnPreviousFocalViewClick() {
+            if (this.curZ > 0) {
                 console.log("this.curZ: " + this.curZ)
                 this.startZ = this.curZ
                 this.curZ = this.startZ - 1
 
-                } else {
-                    console.log("At minimum focal length")
-                }
-            },
-            OnNextFocalViewClick() {
-                if (this.curZ < this.manifest.stack_size-1) {
+            } else {
+                console.log("At minimum focal length")
+            }
+        },
+        OnNextFocalViewClick() {
+            if (this.curZ < this.manifest.stack_size - 1) {
                 console.log("this.curZ: " + this.curZ)
                 this.startZ = this.curZ
                 this.curZ = this.startZ + 1
 
-                } else {
-                    console.log("At maximum focal length")
+            } else {
+                console.log("At maximum focal length")
+            }
+        },
+        loadAllImagesFromLayer(row, col, layer) {
+            console.log("load all images from layer", row, col, layer)
+            // fetch image from url with axios
+            // axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
+            var length = this.manifest.captures.length
+            var count = 0
+            this.images = []
+            var self = this
+            self.progress = 0
+            this.manifest.captures.forEach((capture, index) => {
+                self.images.push(new Image())
+                self.images[index].src = `${this.endpoint}/${this.uuid}/images/${capture}/camera${this.groupID}${row}${col}/${layer + 1}.jpg`
+                self.images[index].onload = function () {
+                    console.log("loaded image")
+
+                    // .progress++
+                    // console.log(self.progress)
+                    count = count + 1
+                    self.progress = (count / length) * 100
                 }
-            },
-            loadAllImagesFromLayer(row, col, layer){
-                console.log("load all images from layer", row, col, layer)
-                // fetch image from url with axios
-                // axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
-                var length = this.manifest.captures.length
-                var count = 0
-                this.images = []
-                var self = this
-                self.progress = 0
-                this.manifest.captures.forEach((capture, index) => {
-                    self.images.push(new Image())
-                    self.images[index].src = `${this.endpoint}/${this.uuid}/images/${capture}/camera${this.groupID}${row}${col}/${layer + 1}.jpg`
-                    self.images[index].onload = function() {
-                        console.log("loaded image")
-                        
-                        // .progress++
-                        // console.log(self.progress)
-                        count = count + 1
-                        self.progress = (count/length) * 100
-                    }
 
-                    // ((count / length) * 100)
+                // ((count / length) * 100)
 
-                })
-            },
-            playTimelapse(){
-                // this.break_timelapse = false
-                var self = this
-                // for (let i = 0; i < this.manifest.captures.length; i = i + 1){
-                //     if (self.break_timelapse == true){
-                //         break
-                //     }
-                //     setTimeout(function(){
-                //         self.curTimestampIndex = i
-                //     }, 10)
-                // }
-                this.manifest.captures.every((capture, index) => {
-                    self.timers.push(setTimeout(function(){
-                        self.curTimestampIndex = index
-                    }, 75*index))
-                    
-                    return true
-                   
-                })
-            },
-            clearTimer(){
-                this.timers.forEach(timer => {
-                    clearTimeout(timer)
-                })
-                this.timers = []
-            },
-        }
+            })
+        },
+        playTimelapse() {
+            // this.break_timelapse = false
+            var self = this
+            // for (let i = 0; i < this.manifest.captures.length; i = i + 1){
+            //     if (self.break_timelapse == true){
+            //         break
+            //     }
+            //     setTimeout(function(){
+            //         self.curTimestampIndex = i
+            //     }, 10)
+            // }
+            this.manifest.captures.every((capture, index) => {
+                self.timers.push(setTimeout(function () {
+                    self.curTimestampIndex = index
+                }, 75 * index))
+
+                return true
+
+            })
+        },
+        clearTimer() {
+            this.timers.forEach(timer => {
+                clearTimeout(timer)
+            })
+            this.timers = []
+        },
+    }
 }
 </script>
 
 <style>
-    .img-wrap {
-        width: auto;
-        height: auto;
-        position: relative;
-        display: inline-block;
-        overflow: hidden;
-        margin: 0;
+.img-wrap {
+    width: auto;
+    height: auto;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    margin: 0;
 
-    }
+}
 
-    .img-card-fill {
-        width: 100%;
-        height: 100%;
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); 
+.img-card-fill {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-        /* min-height: 100%;
+    /* min-height: 100%;
         min-width: 100%; */
-    }
+}
 
-    .responsive {
-        width: 100%;
-        height: auto;
-        /* padding-top: 5px;
+.responsive {
+    width: 100%;
+    height: auto;
+    /* padding-top: 5px;
         padding-right: 0;
         padding-left: 0; */
-    }
+}
 
-    .column-padding {
-        padding: 2.5px;
-    }
+.column-padding {
+    padding: 2.5px;
+}
 
-    /* #my-button{
+/* #my-button{
         height:0px;
         width:0px
     }  */
@@ -365,105 +403,121 @@ export default {
 
 <template>
     <b-container fluid="xl">
+        <img id="example" src="https://placekitten.com/g/560/420" />
         <!-- display plate name header -->
         <b-row>
             <h1>Plate: {{plate_name}}</h1>
         </b-row>
         <div v-if="wells.length">
             <!-- <b-row> -->
-                <!-- <table id="picture-grid"> -->
-                    <div v-for="row in rows" :key="row">
-                        <b-row>
-                            <b-col class="column-padding" v-for="col in columns" :key="row * 10 + col">
-                                        <img class="responsive" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`"/>
-                                        <div>
-                                            <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" > indirect</b-button> -->
-                                            <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*columns+col)-1].id" v-b-modal="'modal-centere' + wells[((row-1)*columns+col)-1].id">Launch centered modal</b-button>
-                                            <b-modal size="lg" v-bind:id="'modal-centere' + wells[((row-1)*columns+col)-1].id" centered v-bind:title= wells[((row-1)*columns+col)-1].attributes.name>
-                                                <b-row>
-                                                    Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
-                                                </b-row>
-                                                <!-- new line -->
-                                                <b-row>
-                                                    T: {{ manifest.captures[curTimestampIndex] | luxon}} 
-                                                </b-row>
-                                                <b-row>
-                                                    Z: {{ curZ+1 }}/{{manifest.stack_size}}
-                                                </b-row>
-                                                    <img class="responsive" @error="missing($event)" :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`" >
-                                                <b-row>
-                                                    <b-col>
-                                                        <div class="p-1">
-                                                            <b-button class="btn btn-secondary btn-sm" v-on:click="loadAllImagesFromLayer(row, col, curZ)">
-                                                                    Load All Images
-                                                            </b-button>
-                                                            <vue-ellipse-progress class="float-right" :size="30" :progress="progress" animation="default 0 0"/>
-                                                        </div>
-                                                        <div class="p-1">
-                                                            <b-row>
-                                                                <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="playTimelapse()">Play Timelapse</b-button>
-                                                                <b-button  style="padding: 5px" class="btn btn-secondary btn-sm" @click="clearTimer()">Stop Timelapse</b-button>
-                                                            </b-row>
-                                                        </div>
-                                                        <b-button pill style="display:block;" v-b-toggle="'collapse-samples-' + wells[((row-1)*columns+col)-1].id" variant="primary"> List Samples</b-button>
-                                                        <b-collapse v-bind:id="'collapse-samples-' + wells[((row-1)*columns+col)-1].id" class="mt-2">
-                                                            <b-list-group>
-                                                                <b-list-group-item v-for="sample in wells[((row-1)*columns+col)-1].attributes.samples.data" :key="sample.id">
-                                                                    <div v-bind:id="'sample-' +sample.id">
-                                                                        <b-button v-b-toggle="'collapse-sample' + sample.id" variant="secondary"> {{sample.attributes.name}} </b-button>
-                                                                        <b-button v-on:click="deleteSample(sample.id)" class="float-right" v-bind:id="'delete-sample-'+sample.id" variant="danger"> X </b-button>
-                                                                        <b-collapse v-bind:id="'collapse-sample' + sample.id" class="mt-2">
-                                                                            <b-card>
-                                                                                <b-card-text>{{sample.attributes.description}}</b-card-text>
-                                                                            </b-card>
-                                                                        </b-collapse>
-                                                                    </div>
-                                                                </b-list-group-item>
-                                                        
-                                                            </b-list-group>
+            <!-- <table id="picture-grid"> -->
+            <div v-for="row in rows" :key="row">
+                <b-row>
+                    <b-col class="column-padding" v-for="col in columns" :key="row * 10 + col">
+                        <img class="responsive" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id)"
+                            @error="missing($event)"
+                            :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`" />
+                        <div>
+                            <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" > indirect</b-button> -->
+                            <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*columns+col)-1].id"
+                                v-b-modal="'modal-centere' + wells[((row-1)*columns+col)-1].id">Launch centered modal
+                            </b-button>
+                            <b-modal size="lg" v-bind:id="'modal-centere' + wells[((row-1)*columns+col)-1].id" centered
+                                v-bind:title=wells[((row-1)*columns+col)-1].attributes.name>
+                                <b-row>
+                                    Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
+                                </b-row>
+                                <!-- new line -->
+                                <b-row>
+                                    T: {{ manifest.captures[curTimestampIndex] | luxon}}
+                                </b-row>
+                                <b-row>
+                                    Z: {{ curZ+1 }}/{{manifest.stack_size}}
+                                </b-row>
+                                <img class="responsive" @error="missing($event)"
+                                    :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`">
+                                <b-row>
+                                    <b-col>
+                                        <div class="p-1">
+                                            <b-button class="btn btn-secondary btn-sm"
+                                                v-on:click="loadAllImagesFromLayer(row, col, curZ)">
+                                                Load All Images
+                                            </b-button>
+                                            <vue-ellipse-progress class="float-right" :size="30" :progress="progress"
+                                                animation="default 0 0" />
+                                        </div>
+                                        <div class="p-1">
+                                            <b-row>
+                                                <b-button style="padding: 5px" class="btn btn-secondary btn-sm"
+                                                    @click="playTimelapse()">Play Timelapse</b-button>
+                                                <b-button style="padding: 5px" class="btn btn-secondary btn-sm"
+                                                    @click="clearTimer()">Stop Timelapse</b-button>
+                                            </b-row>
+                                        </div>
+                                        <b-button pill style="display:block;"
+                                            v-b-toggle="'collapse-samples-' + wells[((row-1)*columns+col)-1].id"
+                                            variant="primary"> List Samples</b-button>
+                                        <b-collapse v-bind:id="'collapse-samples-' + wells[((row-1)*columns+col)-1].id"
+                                            class="mt-2">
+                                            <b-list-group>
+                                                <b-list-group-item
+                                                    v-for="sample in wells[((row-1)*columns+col)-1].attributes.samples.data"
+                                                    :key="sample.id">
+                                                    <div v-bind:id="'sample-' +sample.id">
+                                                        <b-button v-b-toggle="'collapse-sample' + sample.id"
+                                                            variant="secondary"> {{sample.attributes.name}} </b-button>
+                                                        <b-button v-on:click="deleteSample(sample.id)"
+                                                            class="float-right" v-bind:id="'delete-sample-'+sample.id"
+                                                            variant="danger"> X </b-button>
+                                                        <b-collapse v-bind:id="'collapse-sample' + sample.id"
+                                                            class="mt-2">
+                                                            <b-card>
+                                                                <b-card-text>{{sample.attributes.description}}
+                                                                </b-card-text>
+                                                            </b-card>
                                                         </b-collapse>
-                                                        <b-button pill style="display:block;" v-b-toggle="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id" variant="success"> Label new sample</b-button>
-                                                        <b-collapse v-bind:id="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id" class="mt-2">
-                                                            <div>
-                                                                <!-- button and text field to add sample to the database via restAPI call -->
-                                                                <b-form @submit.prevent="createSample(wells[((row-1)*columns+col)-1].id)">
-                                                                    <b-form-group
-                                                                        id="input-group-1"
-                                                                        label="Sample Name:"
-                                                                        label-for="input-1"
-                                                                        description="name the sample"
-                                                                    >
-                                                                    <b-form-input
-                                                                        id="input-1"
-                                                                        v-model="form.sample_name"
-                                                                        placeholder="name"
-                                                                        required
-                                                                    ></b-form-input>
-                                                                    </b-form-group>
-                                                                    <b-form-group id="input-group-2" label="Description:" label-for="input-2">
-                                                                        <b-form-textarea
-                                                                            id="input-2"
-                                                                            v-model="form.sample_description"
-                                                                            placeholder="description"
-                                                                            rows = "6"
-                                                                            required
-                                                                        ></b-form-textarea>
-                                                                    </b-form-group>
-                                                                    <b-button type="submit" variant="primary">Submit</b-button>
-                                                                </b-form>
-                                                            </div>
-                                                        </b-collapse>
-                                                    </b-col>
-                                                    <b-col>
-                                                        <DirectionalPad @up="OnNextFocalViewClick" @down="OnPreviousFocalViewClick" @right="OnArrowRightClick" @left="OnArrowLeftClick" />
-                                                    </b-col>
-                                                </b-row>
-                                            </b-modal>
-                                        </div>                               
+                                                    </div>
+                                                </b-list-group-item>
+
+                                            </b-list-group>
+                                        </b-collapse>
+                                        <b-button pill style="display:block;"
+                                            v-b-toggle="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id"
+                                            variant="success"> Label new sample</b-button>
+                                        <b-collapse
+                                            v-bind:id="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id"
+                                            class="mt-2">
+                                            <div>
+                                                <!-- button and text field to add sample to the database via restAPI call -->
+                                                <b-form
+                                                    @submit.prevent="createSample(wells[((row-1)*columns+col)-1].id)">
+                                                    <b-form-group id="input-group-1" label="Sample Name:"
+                                                        label-for="input-1" description="name the sample">
+                                                        <b-form-input id="input-1" v-model="form.sample_name"
+                                                            placeholder="name" required></b-form-input>
+                                                    </b-form-group>
+                                                    <b-form-group id="input-group-2" label="Description:"
+                                                        label-for="input-2">
+                                                        <b-form-textarea id="input-2" v-model="form.sample_description"
+                                                            placeholder="description" rows="6" required>
+                                                        </b-form-textarea>
+                                                    </b-form-group>
+                                                    <b-button type="submit" variant="primary">Submit</b-button>
+                                                </b-form>
+                                            </div>
+                                        </b-collapse>
                                     </b-col>
-                            <!-- </div> -->
-                        </b-row>
-                    </div>
+                                    <b-col>
+                                        <DirectionalPad @up="OnNextFocalViewClick" @down="OnPreviousFocalViewClick"
+                                            @right="OnArrowRightClick" @left="OnArrowLeftClick" />
+                                    </b-col>
+                                </b-row>
+                            </b-modal>
+                        </div>
+                    </b-col>
+                    <!-- </div> -->
+                </b-row>
+            </div>
         </div>
         <div v-else>
             <h5>No wells found . . .</h5>
@@ -471,10 +525,11 @@ export default {
         <div>
             <!-- if this.plate has attribute image, show dropdown -->
             <b-row v-if="plate.attributes.image_parameters.images">
-            <!-- <b-row v-if="plate_name"> -->
+                <!-- <b-row v-if="plate_name"> -->
                 <b-col>
-                    <b-dropdown id="dropdown-1" text="Select Image Set"  block variant="outline-primary" class="m-2">
-                        <b-dropdown-item v-for="uuid in plate.attributes.image_parameters.uuids" :key="uuid" v-on:click="changeImageSet(uuid)">
+                    <b-dropdown id="dropdown-1" text="Select Image Set" block variant="outline-primary" class="m-2">
+                        <b-dropdown-item v-for="uuid in plate.attributes.image_parameters.uuids" :key="uuid"
+                            v-on:click="changeImageSet(uuid)">
                             {{uuid}}
                         </b-dropdown-item>
                     </b-dropdown>
