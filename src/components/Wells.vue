@@ -83,38 +83,51 @@ export default {
     },
     methods: {
         initAnno() {
-            this.anno = new Annotorious({
-                image: document.getElementById("well-image")
-            });
+            if (!this.anno) {
+                this.anno = new Annotorious({
+                    image: document.getElementById("well-image")
+                });
+                this.anno.on('createAnnotation', (annotation) => {
+                    console.log('Created annotation', JSON.stringify(annotation));
+                    this.createSample(this.curWell_id, annotation)
+                });
 
-            this.anno.on('createAnnotation', (annotation) => {
-                console.log('Created annotation', JSON.stringify(annotation));
-                this.createSample(this.curWell_id)
-            });
+                this.anno.on('createSelection', function (selection) {
+                    console.log('Created selection', selection);
+                });
 
-            this.anno.on('createSelection', function (selection) {
-                console.log('Created selection', selection);
-            });
+                this.anno.on('deleteAnnotation', function (annotation) {
+                    console.log('Delete annotation', annotation);
+                });
 
-            this.anno.on('deleteAnnotation', function (annotation) {
-                console.log('Delete annotation', annotation);
-            });
+                this.anno.on('mouseEnterAnnotation', function (annotation) {
+                    console.log('Mouse ENTERED annotation', annotation);
+                });
 
-            this.anno.on('mouseEnterAnnotation', function (annotation){
-                console.log('Mouse ENTERED annotation', annotation);
-            });
+                this.anno.on('selectAnnotation', function (annotation) {
+                    console.log('Select annotation', annotation);
+                });
 
-            this.anno.on('selectAnnotation', function (annotation) {
-                console.log('Select annotation', annotation);
-            });
+                this.anno.on('cancelSelected', function () {
+                    console.log('UNSELECTED');
+                });
 
-            this.anno.on('cancelSelected', function () {
-                console.log('UNSELECTED');
-            });
+                this.anno.on('clickAnnotation', function (annotation) {
+                    console.log('Clicked annotation', annotation);
+                });
+            } else {
+                console.log("anno already exists")
+            }
+        },
+        loadAnno(annotation) {
+            if (!this.anno) {
+                this.initAnno();
+                console.log("initted anno")
+            }
 
-            this.anno.on('clickAnnotation', function (annotation) {
-                console.log('Clicked annotation', annotation);
-            });
+            this.anno.addAnnotation(annotation);
+            console.log("added annotation")
+            console.log(JSON.stringify(annotation, 0, 2))
         },
         showModal(id) {
             //reset progress bar
@@ -123,18 +136,26 @@ export default {
             $("#" + id).click();
             // this.initAnno();
         },
-        createSample(well_id) {
+        createSample(well_id, annotation) {
             console.log("create sample")
-            console.log(this.form.sample_name)
-            console.log(this.form.sample_description)
+            // console.log(this.form.sample_name)
+            // console.log(this.form.sample_description)
             console.log(well_id)
+            // if (!(this.form.sample_name && this.form.sample_description) && annotation) {
+            //     this.form.sample_name = annotation.body[0].value
+            //     this.form.sample_description = annotation.body[0].value
+
+            // }
+
             // post with jwt
             var token = window.localStorage.getItem('jwt');
             axios.post(`${process.env.VUE_APP_API_ENDPOINT}/api/samples`, {
                 data: {
-                    name: this.form.sample_name,
-                    description: this.form.sample_description,
-                    well: well_id
+                    // name: this.form.sample_name,
+                    name: annotation.body[0].value,
+                    // description: this.form.sample_description,
+                    well: well_id,
+                    annotation: annotation
                 }
             }, {
                 headers: {
@@ -199,6 +220,10 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
+
+            this.anno.addAnnotation(annotation);
+            console.log("added annotation")
+            console.log(JSON.stringify(annotation, 0, 2))
             // delete page element
 
             // console.log("deleting page element: " + "sample-" + sample_id);
@@ -417,7 +442,8 @@ export default {
             <div v-for="row in rows" :key="row">
                 <b-row>
                     <b-col class="column-padding" v-for="col in columns" :key="row * 10 + col">
-                        <img class="responsive" v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id); curWell_id=wells[((row-1)*columns+col)-1].id"
+                        <img class="responsive"
+                            v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id); curWell_id=wells[((row-1)*columns+col)-1].id"
                             @error="missing($event)"
                             :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`" />
                         <div>
@@ -468,6 +494,7 @@ export default {
                                                     :key="sample.id">
                                                     <div v-bind:id="'sample-' +sample.id">
                                                         <b-button v-b-toggle="'collapse-sample' + sample.id"
+                                                            @click="loadAnno(sample.attributes.annotation)"
                                                             variant="secondary"> {{sample.attributes.name}} </b-button>
                                                         <b-button v-on:click="deleteSample(sample.id)"
                                                             class="float-right" v-bind:id="'delete-sample-'+sample.id"
@@ -475,7 +502,9 @@ export default {
                                                         <b-collapse v-bind:id="'collapse-sample' + sample.id"
                                                             class="mt-2">
                                                             <b-card>
-                                                                <b-card-text>{{sample.attributes.description}}
+                                                                <!-- <b-card-text>{{sample.attributes.description}} -->
+                                                                <b-card-text>
+                                                                    {{JSON.stringify(sample.attributes.annotation)}}
                                                                 </b-card-text>
                                                             </b-card>
                                                         </b-collapse>
@@ -484,7 +513,7 @@ export default {
 
                                             </b-list-group>
                                         </b-collapse>
-                                        <b-button pill style="display:block;" @click="initAnno();"           
+                                        <b-button pill style="display:block;" @click="initAnno();"
                                             v-b-toggle="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id"
                                             variant="success"> Label new sample</b-button>
                                         <b-collapse
@@ -492,7 +521,7 @@ export default {
                                             class="mt-2">
                                             <div>
                                                 <!-- button and text field to add sample to the database via restAPI call -->
-                                                <b-form
+                                                <!-- <b-form
                                                     @submit.prevent="createSample(wells[((row-1)*columns+col)-1].id)">
                                                     <b-form-group id="input-group-1" label="Sample Name:"
                                                         label-for="input-1" description="name the sample">
@@ -506,7 +535,7 @@ export default {
                                                         </b-form-textarea>
                                                     </b-form-group>
                                                     <b-button type="submit" variant="primary">Submit</b-button>
-                                                </b-form>
+                                                </b-form> -->
                                             </div>
                                         </b-collapse>
                                     </b-col>
