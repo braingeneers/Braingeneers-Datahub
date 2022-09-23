@@ -193,12 +193,12 @@ export default {
                     console.log(error);
                 });
         },
-        deleteSample(sample_id) {
+        deleteSample(sample) {
             console.log("delete sample")
-            console.log(sample_id)
+            console.log(JSON.stringify(sample, 0, 2))
             // post with jwt token
             var token = window.localStorage.getItem('jwt');
-            axios.delete(`${process.env.VUE_APP_API_ENDPOINT}/api/samples/${sample_id}`, {
+            axios.delete(`${process.env.VUE_APP_API_ENDPOINT}/api/samples/${sample.id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -220,10 +220,14 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
-
-            this.anno.addAnnotation(annotation);
-            console.log("added annotation")
-            console.log(JSON.stringify(annotation, 0, 2))
+            
+            if (sample.attributes.annotation){
+                console.log(sample.attributes.annotation.id)
+                this.anno.removeAnnotation(sample.attributes.annotation.id)
+            }
+            // this.anno.addAnnotation(annotation);
+            // console.log("added annotation")
+            // console.log(JSON.stringify(annotation, 0, 2))
             // delete page element
 
             // console.log("deleting page element: " + "sample-" + sample_id);
@@ -496,7 +500,7 @@ export default {
                                                         <b-button v-b-toggle="'collapse-sample' + sample.id"
                                                             @click="loadAnno(sample.attributes.annotation)"
                                                             variant="secondary"> {{sample.attributes.name}} </b-button>
-                                                        <b-button v-on:click="deleteSample(sample.id)"
+                                                        <b-button v-on:click="deleteSample(sample)"
                                                             class="float-right" v-bind:id="'delete-sample-'+sample.id"
                                                             variant="danger"> X </b-button>
                                                         <b-collapse v-bind:id="'collapse-sample' + sample.id"
