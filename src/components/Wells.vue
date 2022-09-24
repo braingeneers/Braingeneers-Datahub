@@ -3,6 +3,8 @@ import axios from 'axios'
 import $ from 'jquery'
 import { Annotorious } from '@recogito/annotorious';
 import '@recogito/annotorious/dist/annotorious.min.css';
+import  SelectorPack  from '@recogito/annotorious-selector-pack';
+// import '@recogito/annotorious-selector-pack/dist/annotorious-selector-pack.min.css';
 
 import DirectionalPad from '@/components/DirectionalPad.vue'
 
@@ -87,6 +89,14 @@ export default {
                 this.anno = new Annotorious({
                     image: document.getElementById("well-image")
                 });
+
+                // this.anno.SelectorPack(this.anno)
+                // new AnnotoriousSelectorPack(this.anno);
+                console.log(JSON.stringify(this.anno.listDrawingTools(), 0, 2))
+                console.log(SelectorPack(this.anno))
+                console.log(JSON.stringify(this.anno.listDrawingTools(), 0, 2))
+                // console.log(window.SelectorPack)
+                // SelectorPack(this.anno)
                 this.anno.on('createAnnotation', (annotation) => {
                     console.log('Created annotation', JSON.stringify(annotation));
                     this.createSample(this.curWell_id, annotation)

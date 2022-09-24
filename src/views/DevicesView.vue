@@ -3,12 +3,19 @@
         <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
         <Navbar />
         <div ref="BioPlateScopes">
-            <h4>BioPlateScopes</h4>
-            <Devices v-bind:type="'BioPlateScope'" v-bind:interaction_things="interaction_things" />
+            <!-- <h4>BioPlateScopes</h4> -->
+            <b-button pill  v-b-toggle="'collapse-scopes'"
+                variant="primary"> BioPlateScopes </b-button>
+            <b-collapse v-bind:id="'collapse-scopes'" class="mt-2">
+                <Devices v-bind:type="'BioPlateScope'" v-bind:interaction_things="interaction_things" />
+            </b-collapse>
         </div>
         <div ref="Autoculture">
-            <h4>Autoculture</h4>
-            <Devices v-bind:type="'Autoculture'" v-bind:interaction_things="interaction_things" />
+            <b-button pill  v-b-toggle="'collapse-Autoculture'"
+                variant="primary"> Autoculture </b-button>
+            <b-collapse v-bind:id="'collapse-Autoculture'" class="mt-2">
+                <Devices v-bind:type="'Autoculture'" v-bind:interaction_things="interaction_things" />
+            </b-collapse>
         </div>
         <div ref="Maxwell">
             <h4>Maxwell</h4>
