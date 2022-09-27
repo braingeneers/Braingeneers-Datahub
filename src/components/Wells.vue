@@ -95,6 +95,8 @@ export default {
                 console.log(JSON.stringify(this.anno.listDrawingTools(), 0, 2))
                 console.log(SelectorPack(this.anno))
                 console.log(JSON.stringify(this.anno.listDrawingTools(), 0, 2))
+
+                this.anno.setDrawingTool("circle")
                 // console.log(window.SelectorPack)
                 // SelectorPack(this.anno)
                 this.anno.on('createAnnotation', (annotation) => {
