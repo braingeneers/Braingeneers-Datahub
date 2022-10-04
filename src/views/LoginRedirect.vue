@@ -27,6 +27,20 @@ export default {
         console.log("access_token=" + this.access_token)
         // console.log(this.thing)
         //get jwt from strapi with GET
+        await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/auth/auth0/callback?id_token=${this.IDToken}&access_token=${this.access_token}`).then(res => {
+                    console.log(res);
+                    const { jwt, user } = res.data;
+                    console.log(jwt);
+                    console.log(user);
+                    // console.log(this.password);
+                    // console.log(this.email);
+                    window.localStorage.setItem("jwt", jwt);
+                    window.localStorage.setItem("userData", JSON.stringify(user));
+                    // window.localStorage.setItem('bookmarks', JSON.stringify(user.bookmarks))
+                    //emit user
+                    // this.$emit('user', user)
+                    this.$router.push("/experiments");
+                });
 
 
     },
@@ -49,7 +63,7 @@ export default {
                     // window.localStorage.setItem('bookmarks', JSON.stringify(user.bookmarks))
                     //emit user
                     // this.$emit('user', user)
-                    // this.$router.push("/experiments");
+                    this.$router.push("/experiments");
                 });
 
             }
@@ -59,24 +73,12 @@ export default {
                 this.password = "";
             }
         },
-        async logout() {
+        logout() {
             window.localStorage.removeItem("jwt");
             window.localStorage.removeItem("userData");
-            // this.$router.push("/auth");
-            await axios.get("https://dev-zp88n4zn.us.auth0.com/v2/logout",
-                { params: {
-                    client_id: "A1qy7vKm2XW8hQ6jn4Aj3fh7fhl0mITi",
-                    returnTo: "http://localhost:8080/auth"
-                 }
-                },
-                { headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                }}).then(res => {
-                console.log(res);
-                //   this.$router.push("/");
+            this.$auth.logout({
+                returnTo: window.location.origin
             });
-            // this.$router.push("/auth");
         },
     },
 }

@@ -1,54 +1,26 @@
 <template>
-    <!-- <div class="container-sm"> -->
-    <div class="body">
-        <main class="form-signin">
-            <b-card>
-                <div class="card-body">
-                    <!-- include braingeneers logo from assets -->
-                    <p v-show="error" class="text-sm text-red-500">{{ errorMsg }}</p>
-                    <form>
-                        <img src="@/assets/hub-logo.png" alt="braingeneers logo" class="d-block mx-auto mb-4 responsive"
-                            style="display:inline">
-                        <!-- width="200" height="auto"> -->
-                        <!-- <h2 class="h3 mb-3 fw-normal text-center">Please sign in</h2> -->
+    <div class="home">
+        <img alt="Vue logo" src="../assets/logo.png" />
+        <HelloWorld msg="Welcome to Your Vue.js App" />
 
-                        <div class="form-group">
-                            <label>Email address</label>
-                            <input type="email" class="form-control form-control-lg" v-model="email"
-                                placeholder="Email address" />
-                        </div>
-
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" class="form-control form-control-lg" v-model="password"
-                                placeholder="Password" />
-                        </div>
-
-                        <div class="checkbox mb-3">
-                            <label><input type="checkbox" value="remember-me"> Remember me</label>
-                        </div>
-
-                        <button @click="login" class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-                        <!-- <router-link class="w-100 btn btn-lg btn-primary" type="submit" to="/signup">Sign in</router-link> -->
-                    </form>
-                </div>
-            </b-card>
-            <div>
-                <LoginButton></LoginButton>
-            </div>
-            <p class="mt-3 mb-3 text-muted text-center">© 2020–2025</p>
-        </main>
+        <!-- Check that the SDK client is not currently loading before accessing is methods -->
+        <div v-if="!$auth.loading">
+            <!-- show login when not authenticated -->
+            <button v-if="!$auth.isAuthenticated" @click="login">Log in</button>
+            <!-- show logout when authenticated -->
+            <button v-if="$auth.isAuthenticated" @click="logout">Log out</button>
+        </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 // import { useAuth0 } from '@auth0/auth0-vue';
-import LoginButton from '@/components/LoginButton';
+// import LoginButton from '@/components/LoginButton';
 
 export default {
     name: "Login",
-    components: { LoginButton },
+    // components: { LoginButton },
     data() {
         return {
             email: "",
@@ -67,35 +39,47 @@ export default {
     //     };
     // },
     methods: {
-        async login(e) {
-            e.preventDefault();
-            try {
-                const res = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/api/auth/local`, {
-                    identifier: this.email,
-                    password: this.password
-                });
-                const { jwt, user } = res.data;
-
-                // console.log(this.password);
-                // console.log(this.email);
-                window.localStorage.setItem("jwt", jwt);
-                window.localStorage.setItem("userData", JSON.stringify(user));
-                // window.localStorage.setItem('bookmarks', JSON.stringify(user.bookmarks))
-                //emit user
-                // this.$emit('user', user)
-                this.$router.push("/experiments");
-            }
-            catch (error) {
-                console.log(error);
-                this.error = true;
-                this.password = "";
-            }
+        // Log the user in
+        login() {
+            this.$auth.loginWithRedirect({
+                redirect_uri: "http://localhost:1337/api/connect/auth0",
+            });
         },
+        // Log the user out
         logout() {
-            window.localStorage.removeItem("jwt");
-            window.localStorage.removeItem("userData");
-            this.$router.push("/");
-        },
+            this.$auth.logout({
+                returnTo: window.location.origin
+            });
+        }
+        // async login(e) {
+        //     e.preventDefault();
+        //     try {
+        //         const res = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/api/auth/local`, {
+        //             identifier: this.email,
+        //             password: this.password
+        //         });
+        //         const { jwt, user } = res.data;
+
+        //         // console.log(this.password);
+        //         // console.log(this.email);
+        //         window.localStorage.setItem("jwt", jwt);
+        //         window.localStorage.setItem("userData", JSON.stringify(user));
+        //         // window.localStorage.setItem('bookmarks', JSON.stringify(user.bookmarks))
+        //         //emit user
+        //         // this.$emit('user', user)
+        //         this.$router.push("/experiments");
+        //     }
+        //     catch (error) {
+        //         console.log(error);
+        //         this.error = true;
+        //         this.password = "";
+        //     }
+        // },
+        // logout() {
+        //     window.localStorage.removeItem("jwt");
+        //     window.localStorage.removeItem("userData");
+        //     this.$router.push("/");
+        // },
     },
 }
 </script>

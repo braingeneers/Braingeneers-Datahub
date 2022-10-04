@@ -13,10 +13,10 @@ import '../src/assets/css/styles.css';
 // Vue.use(VueLuxon);
 
 // Import the Auth0 configuration and plugin
-import { domain, clientId, audience, serverUrl} from '../auth_config.json';
+import { domain, clientId} from '../auth_config.json';
 import { Auth0Plugin } from '@/auth/auth0-plugin';
 
-Vue.config.productionTip = false;
+
 Vue.use(BootstrapVue);
 Vue.use(VueEllipseProgress);
 Vue.use(VueLuxon, {
@@ -29,8 +29,6 @@ Vue.use(VueLuxon, {
 Vue.use(Auth0Plugin, {
     domain,
     clientId,
-    audience,
-    serverUrl,
     onRedirectCallback: (appState) => {
       router.push(
         appState && appState.targetUrl
@@ -39,12 +37,8 @@ Vue.use(Auth0Plugin, {
       );
     },
   });
-// Vue.use(createAuth0({
-//       "domain": "dev-zp88n4zn.us.auth0.com",
-//       "clientId": "e2Ahwi6tTVehcx4z50sTs0Uc76kwxIrD",
-//       redirect_uri: window.location.origin
-//     })
-//   );
+
+  Vue.config.productionTip = false;
 
 new Vue({
   router,
