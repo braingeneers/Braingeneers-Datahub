@@ -7,6 +7,7 @@ import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import SearchResultsView from '../views/SearchResultsView.vue'
 import DevicesView from '../views/DevicesView.vue'
+import LoginRedirect from '../views/LoginRedirect.vue'
 
 Vue.use(VueRouter)
 
@@ -18,16 +19,16 @@ const routes = [
         meta: {
             title: 'Login - Braingeneers Hub',
             metaTags: [
-              {
-                name: 'description',
-                content: 'login page'
-              },
-              {
-                property: 'og:description',
-                content: 'login'
-              }
+                {
+                    name: 'description',
+                    content: 'login page'
+                },
+                {
+                    property: 'og:description',
+                    content: 'login'
+                }
             ]
-          }
+        }
     },
     {
         path: '/register',
@@ -43,14 +44,14 @@ const routes = [
         meta: {
             title: 'Experiments - Braingeneers Hub',
             metaTags: [
-            {
-                name: 'description',
-                content: 'experiments page'
-            },
-            {
-                property: 'og:description',
-                content: 'experiments page'
-            }
+                {
+                    name: 'description',
+                    content: 'experiments page'
+                },
+                {
+                    property: 'og:description',
+                    content: 'experiments page'
+                }
             ]
         }
     },
@@ -62,14 +63,14 @@ const routes = [
         meta: {
             title: 'Wells - Braingeneers Hub',
             metaTags: [
-            {
-                name: 'description',
-                content: 'view wells'
-            },
-            {
-                property: 'og:description',
-                content: 'wells page'
-            }
+                {
+                    name: 'description',
+                    content: 'view wells'
+                },
+                {
+                    property: 'og:description',
+                    content: 'wells page'
+                }
             ]
         }
     },
@@ -80,14 +81,14 @@ const routes = [
         meta: {
             title: 'Wells - Braingeneers Hub',
             metaTags: [
-            {
-                name: 'description',
-                content: 'view wells'
-            },
-            {
-                property: 'og:description',
-                content: 'wells page'
-            }
+                {
+                    name: 'description',
+                    content: 'view wells'
+                },
+                {
+                    property: 'og:description',
+                    content: 'wells page'
+                }
             ]
         }
     },
@@ -99,14 +100,14 @@ const routes = [
         meta: {
             title: 'Experiments - Braingeneers Hub',
             metaTags: [
-            {
-                name: 'description',
-                content: 'experiments page'
-            },
-            {
-                property: 'og:description',
-                content: 'experiments page'
-            }
+                {
+                    name: 'description',
+                    content: 'experiments page'
+                },
+                {
+                    property: 'og:description',
+                    content: 'experiments page'
+                }
             ]
         }
     },
@@ -117,14 +118,14 @@ const routes = [
         meta: {
             title: 'Devices - Braingeneers Hub',
             metaTags: [
-            {
-                name: 'description',
-                content: 'devices page'
-            },
-            {
-                property: 'og:description',
-                content: 'devices page'
-            }
+                {
+                    name: 'description',
+                    content: 'devices page'
+                },
+                {
+                    property: 'og:description',
+                    content: 'devices page'
+                }
             ]
         }
     },
@@ -137,24 +138,37 @@ const routes = [
             title: 'Search - Braingeneers Hub',
             metaTags: [
                 {
-                name: 'description',
-                content: 'experiment search page'
+                    name: 'description',
+                    content: 'experiment search page'
                 },
                 {
-                property: 'og:description',
-                content: 'experiments search page'
+                    property: 'og:description',
+                    content: 'experiments search page'
                 }
             ]
         }
     },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    {
+        path: '/auth',
+        name: 'auth',
+        beforeEnter() { location.href = `${process.env.VUE_APP_API_ENDPOINT}/api/connect/auth0` },
+
+    },
+    {
+        path: '/connect/auth0/redirect',
+        name: 'login-redirect',
+        component: LoginRedirect,
+
+        props: route => ({ IDToken: route.query.id_token, access_token: route.query.access_token })
+    },
+    {
+        path: '/about',
+        name: 'about',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    }
 ]
 
 // const router = new VueRouter({
@@ -164,7 +178,7 @@ const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes
-  })
+})
 
 export default router
 
@@ -177,42 +191,42 @@ router.beforeEach((to, from, next) => {
     // e.g., if we have `/some/deep/nested/route` and `/some`, `/deep`, and `/nested` have titles,
     // `/nested`'s will be chosen.
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
-  
+
     // Find the nearest route element with meta tags.
     const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
-  
+
     const previousNearestWithMeta = from.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
-  
+
     // If a route with a title was found, set the document (page) title to that value.
-    if(nearestWithTitle) {
-      document.title = nearestWithTitle.meta.title;
-    } else if(previousNearestWithMeta) {
-      document.title = previousNearestWithMeta.meta.title;
+    if (nearestWithTitle) {
+        document.title = nearestWithTitle.meta.title;
+    } else if (previousNearestWithMeta) {
+        document.title = previousNearestWithMeta.meta.title;
     }
-  
+
     // Remove any stale meta tags from the document using the key attribute we set below.
     Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode.removeChild(el));
-  
+
     // Skip rendering meta tags if there are none.
-    if(!nearestWithMeta) return next();
-  
+    if (!nearestWithMeta) return next();
+
     // Turn the meta tag definitions into actual elements in the head.
     nearestWithMeta.meta.metaTags.map(tagDef => {
-      const tag = document.createElement('meta');
-  
-      Object.keys(tagDef).forEach(key => {
-        tag.setAttribute(key, tagDef[key]);
-      });
-  
-      // We use this to track which meta tags we create so we don't interfere with other ones.
-      tag.setAttribute('data-vue-router-controlled', '');
-  
-      return tag;
+        const tag = document.createElement('meta');
+
+        Object.keys(tagDef).forEach(key => {
+            tag.setAttribute(key, tagDef[key]);
+        });
+
+        // We use this to track which meta tags we create so we don't interfere with other ones.
+        tag.setAttribute('data-vue-router-controlled', '');
+
+        return tag;
     })
-    // Add the meta tags to the document head.
-    .forEach(tag => document.head.appendChild(tag));
-  
+        // Add the meta tags to the document head.
+        .forEach(tag => document.head.appendChild(tag));
+
     next();
-  });
-  
+});
+
   // ...
