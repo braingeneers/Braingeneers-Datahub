@@ -1,76 +1,54 @@
-<!-- <template>
-    <div>
-        <div>
-            <div class="sm:w-1/2">
-                    <h1>
-                        Login
-                    </h1>
-                    <p v-show="error" class="text-sm text-red-500">{{ errorMsg }}</p>
-                    <form @submit="login">
-                        <div class="my-5">
-                            <h4>Email</h4>
-                            <input type="email" v-model="email">
-                        </div>
-                        <div class="my-5">
-                            <h4>Password</h4>
-                            <input type="password" v-model="password">
-                        </div>
-                        
-                        <button type="submit" :disabled="password.length < 3">
-                            Login
-                        </button>
-                        <p class="my-2">
-                            <router-link to="/forgotpassword" >Forgot Password?</router-link>
-                        </p>
-                        
-                    </form>
-            </div>
-        </div>
-    </div>
-</template> -->
-
 <template>
     <!-- <div class="container-sm"> -->
-        <div class="body">
+    <div class="body">
         <main class="form-signin">
             <b-card>
                 <div class="card-body">
                     <!-- include braingeneers logo from assets -->
                     <p v-show="error" class="text-sm text-red-500">{{ errorMsg }}</p>
-                        <form>
-                            <img src="@/assets/hub-logo.png" alt="braingeneers logo" class="d-block mx-auto mb-4 responsive" style="display:inline">
-                            <!-- width="200" height="auto"> -->
-                            <!-- <h2 class="h3 mb-3 fw-normal text-center">Please sign in</h2> -->
+                    <form>
+                        <img src="@/assets/hub-logo.png" alt="braingeneers logo" class="d-block mx-auto mb-4 responsive"
+                            style="display:inline">
+                        <!-- width="200" height="auto"> -->
+                        <!-- <h2 class="h3 mb-3 fw-normal text-center">Please sign in</h2> -->
 
-                            <div class="form-group">
-                                <label>Email address</label>
-                                <input type="email" class="form-control form-control-lg" v-model="email" placeholder="Email address" />
-                            </div>
+                        <div class="form-group">
+                            <label>Email address</label>
+                            <input type="email" class="form-control form-control-lg" v-model="email"
+                                placeholder="Email address" />
+                        </div>
 
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input type="password" class="form-control form-control-lg" v-model="password" placeholder="Password"/>
-                            </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control form-control-lg" v-model="password"
+                                placeholder="Password" />
+                        </div>
 
-                            <div class="checkbox mb-3">
-                                <label><input type="checkbox" value="remember-me"> Remember me</label>
-                            </div>
+                        <div class="checkbox mb-3">
+                            <label><input type="checkbox" value="remember-me"> Remember me</label>
+                        </div>
 
-                            <button @click="login" class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-                            <!-- <router-link class="w-100 btn btn-lg btn-primary" type="submit" to="/signup">Sign in</router-link> -->
-                        </form>
-                    </div>
-                </b-card>  
+                        <button @click="login" class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                        <!-- <router-link class="w-100 btn btn-lg btn-primary" type="submit" to="/signup">Sign in</router-link> -->
+                    </form>
+                </div>
+            </b-card>
+            <div>
+                <LoginButton></LoginButton>
+            </div>
             <p class="mt-3 mb-3 text-muted text-center">© 2020–2025</p>
-        </main>      
+        </main>
     </div>
 </template>
 
 <script>
-    import axios from 'axios'
+import axios from 'axios'
+// import { useAuth0 } from '@auth0/auth0-vue';
+import LoginButton from '@/components/LoginButton';
 
-    export default {
+export default {
     name: "Login",
+    components: { LoginButton },
     data() {
         return {
             email: "",
@@ -79,6 +57,15 @@
             errorMsg: `An error occurred, please try again`,
         };
     },
+    // setup() {
+    //     const { loginWithRedirect } = useAuth0();
+
+    //     return {
+    //         logine: () => {
+    //             loginWithRedirect();
+    //         }
+    //     };
+    // },
     methods: {
         async login(e) {
             e.preventDefault();
@@ -113,28 +100,31 @@
 }
 </script>
 <style scoped lang="css">
-    .body {
-        display: flex;
-        padding-top: 60px;
-        padding-bottom: 600px;        
-        align-items: center;
-        background-color: #f3f2fe;
-    }
-    .form-signin {
-        width: 100%;
-        max-width: 450px;
-        margin: auto;
-    }
-    label {
-        font-weight: 600;
-    }
-    .responsive {
-        width: 100%;
-        height: auto;
-        /* padding-top: 5px;
+.body {
+    display: flex;
+    padding-top: 60px;
+    padding-bottom: 600px;
+    align-items: center;
+    background-color: #f3f2fe;
+}
+
+.form-signin {
+    width: 100%;
+    max-width: 450px;
+    margin: auto;
+}
+
+label {
+    font-weight: 600;
+}
+
+.responsive {
+    width: 100%;
+    height: auto;
+    /* padding-top: 5px;
         padding-right: 0;
         padding-left: 0; */
-    }
+}
 </style>
 <!-- <style scoped>
     
