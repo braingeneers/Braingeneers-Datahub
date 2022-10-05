@@ -1,7 +1,6 @@
 <template>
     <div class="home">
         <img alt="Vue logo" src="../assets/logo.png" />
-        <HelloWorld msg="Welcome to Your Vue.js App" />
 
         <!-- Check that the SDK client is not currently loading before accessing is methods -->
         <div v-if="!$auth.loading">
@@ -29,6 +28,27 @@ export default {
             errorMsg: `An error occurred, please try again`,
         };
     },
+    async mounted(){
+        var token = window.localStorage.getItem('jwt');
+        console.log("token", token)
+        if (token){
+            this.$router.push("/experiments");
+        } else{
+            // beforeEnter() { location.href = `${process.env.VUE_APP_API_ENDPOINT}/api/connect/auth0` }
+            //set one second timeout to allow auth0 to load
+            setTimeout(() => {
+                this.$auth.loginWithRedirect({
+                    redirect_uri: `${process.env.VUE_APP_API_ENDPOINT}/api/connect/auth0`,  
+                });
+            }, 1000);
+
+
+            // await this.$auth.loginWithRedirect({
+            //     redirect_uri: `${process.env.VUE_APP_API_ENDPOINT}/api/connect/auth0`,
+            // });
+        }
+
+    },
     // setup() {
     //     const { loginWithRedirect } = useAuth0();
 
@@ -42,7 +62,7 @@ export default {
         // Log the user in
         login() {
             this.$auth.loginWithRedirect({
-                redirect_uri: "http://localhost:1337/api/connect/auth0",
+                redirect_uri: `${process.env.VUE_APP_API_ENDPOINT}/api/connect/auth0`,
             });
         },
         // Log the user out
