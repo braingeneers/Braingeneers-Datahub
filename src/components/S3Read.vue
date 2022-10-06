@@ -21,7 +21,8 @@ export default {
     name: 'S3Read',
     data() {
         return {
-            foo: true
+            foo: true,
+            // s3: new AWS.S3()
         }
     },
     async mounted() {
@@ -32,17 +33,16 @@ export default {
         const s3 = new AWS.S3();
         console.log("hi");
         console.log(s3);
+        const params = {
+            Bucket: 'strapi-shadows-auth0',
+            Key: 'test.txt'
+        };
+        console.log("hi");
+        await s3.getObject(params, function (err, data) {
+            if (err) console.log(err, err.stack); // an error occurred
+            else console.log(data);           // successful response
+        });
     }
-    //     const params = {
-    //         Bucket: 'strapi-shadows-auth0',
-    //         Key: 'test.txt'
-    //     };
-    //     console.log("hi");
-    //     await s3.getObject(params, function (err, data) {
-    //         if (err) console.log(err, err.stack); // an error occurred
-    //         else console.log(data);           // successful response
-    //     });
-    // }
 
 
 }

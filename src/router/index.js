@@ -8,10 +8,16 @@ import Login from '../views/Login.vue'
 import SearchResultsView from '../views/SearchResultsView.vue'
 import DevicesView from '../views/DevicesView.vue'
 import LoginRedirect from '../views/LoginRedirect.vue'
+import S3Read from '../components/S3Read.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+    {
+        path: '/s3Read',
+        name: 'S3Read',
+        component: S3Read
+    },
     {
         path: '/',
         name: 'Login',
