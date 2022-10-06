@@ -30,8 +30,10 @@ export default {
             accessKeyId: `${process.env.VUE_APP_AWS_ACCESS_KEY_ID}`,
             secretAccessKey: `${process.env.VUE_APP_AWS_SECRET_ACCESS_KEY}`,
         })
-        const s3 = new AWS.S3();
-        console.log("hi");
+        var ep = new AWS.Endpoint('awsproxy.example.com');
+        const s3 = new AWS.S3({endpoint: ep});
+        console.log(s3.endpoint);
+        // console.log("hi");
         console.log(s3);
         const params = {
             Bucket: 'strapi-shadows-auth0',
@@ -42,8 +44,18 @@ export default {
             if (err) console.log(err, err.stack); // an error occurred
             else console.log(data);           // successful response
         });
-    }
-
+    },
+    methods: {
+        async getImage(s3) {
+            const data = s3.getObject(
+                {
+                    Bucket: 'companyimages',
+                    Key: 'your stored image'
+                }
+            ).promise();
+            return data;
+        }
+    },
 
 }
 </script>
