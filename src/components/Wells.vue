@@ -31,7 +31,7 @@ export default {
             images: [],
             uuid: "",
             groupID: "",
-            endpoint: "https://s3-west.nrp-nautilus.io/braingeneers/imaging",
+            endpoint: `${process.env.VUE_APP_S3_ENDPOINT}/braingeneers/imaging`,
             manifest: {
                 stack_size: 0,
                 captures: [],
@@ -52,9 +52,11 @@ export default {
     },
     async mounted() {
         try {
-            console.log(process.env.VUE_APP_API_ENDPOINT)
-            console.log(this.filter_params)
-            console.log(this.plate_name)
+            // console.log(process.env.VUE_APP_API_ENDPOINT)
+            // console.log("endpoint",  this.endpoint)
+            // console.log(process.env.VUE_APP_S3_ENDPOINT)
+            // console.log(this.filter_params)
+            // console.log(this.plate_name)
             if (!this.plate_name) {
                 this.filter_params = ""
             } else {
