@@ -3,7 +3,7 @@ import axios from 'axios'
 import $ from 'jquery'
 import { Annotorious } from '@recogito/annotorious';
 import '@recogito/annotorious/dist/annotorious.min.css';
-import  SelectorPack  from '@recogito/annotorious-selector-pack';
+import SelectorPack from '@recogito/annotorious-selector-pack';
 // import '@recogito/annotorious-selector-pack/dist/annotorious-selector-pack.min.css';
 
 import DirectionalPad from '@/components/DirectionalPad.vue'
@@ -65,16 +65,27 @@ export default {
 
             const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
             this.wells = response.data.data
-            const response2 = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/plates?filters[name][$eq]=${this.plate_name}`)
-            this.plate = response2.data.data[0]
-            console.log("plate", JSON.stringify(this.plate.attributes.image_parameters.images, 0, 2))
-            this.rows = this.plate.attributes.rows
-            this.columns = this.plate.attributes.columns
-            if (this.plate.attributes.image_parameters.images) {
-                this.uuid = this.plate.attributes.image_parameters.uuids[0]
-                this.groupID = this.plate.attributes.image_parameters.group_id
-                this.loader("oldest")
-            }
+            await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/plates?filters[name][$eq]=${this.plate_name}`).then((response) => {
+                this.plate = response.data.data[0]
+                this.rows = this.plate.attributes.rows
+                this.columns = this.plate.attributes.columns
+                if (this.hasImages()) {
+                    
+                    console.log("first load uuid:", Object.keys(this.plate.attributes.image_parameters.uuids)[0])
+                    this.uuid = Object.keys(this.plate.attributes.image_parameters.uuids)[0]
+                    this.groupID = this.plate.attributes.image_parameters.uuids[this.uuid]
+                    this.loader("oldest")
+                }
+            })
+            // this.plate = response2.data.data[0]
+            // // console.log("plate", JSON.stringify(this.plate.attributes.image_parameters.images, 0, 2))
+            // this.rows = this.plate.attributes.rows
+            // this.columns = this.plate.attributes.columns
+            // if (this.hasImages()) {
+            //     this.uuid = this.plate.attributes.image_parameters.uuids
+            //     // this.groupID = this.plate.attributes.image_parameters.group_id
+            //     this.loader("oldest")
+            // }
             // this.initAnno();
             // console.log("wells", JSON.stringify(this.wells, 0, 2))
             // console.log(this.wells)
@@ -84,6 +95,16 @@ export default {
         }
     },
     methods: {
+        hasImages() {
+            // console.log("cond 1",Object.prototype.hasOwnProperty.call(this.plate.attributes.image_parameters, "uuids"))
+            // console.log("cond 2", JSON.stringify(this.plate.attributes.image_parameters.uuids, 0, 2))
+            // console.log("cond 3", this.plate.attributes.image_parameters["uuids"] != {})
+            if (Object.prototype.hasOwnProperty.call(this.plate.attributes.image_parameters, "uuids") && this.plate.attributes.image_parameters["uuids"] != {}) {
+                return true
+            }
+            return false
+        },
+
         initAnno() {
             if (!this.anno) {
                 this.anno = new Annotorious({
@@ -232,8 +253,8 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
-            
-            if (sample.attributes.annotation){
+
+            if (sample.attributes.annotation) {
                 console.log(sample.attributes.annotation.id)
                 this.anno.removeAnnotation(sample.attributes.annotation.id)
             }
@@ -276,9 +297,9 @@ export default {
                     alert("Unable to load experiment, does the uuid exist?")
                 })
         },
-        changeImageSet(uuid) {
+        changeImageSet(uuid, group_id) {
             this.uuid = uuid
-            this.groupID = this.plate.attributes.image_parameters.group_id
+            this.groupID = group_id
             this.loader("newest")
         },
         missing(event) {
@@ -512,9 +533,9 @@ export default {
                                                         <b-button v-b-toggle="'collapse-sample' + sample.id"
                                                             @click="loadAnno(sample.attributes.annotation)"
                                                             variant="secondary"> {{sample.attributes.name}} </b-button>
-                                                        <b-button v-on:click="deleteSample(sample)"
-                                                            class="float-right" v-bind:id="'delete-sample-'+sample.id"
-                                                            variant="danger"> X </b-button>
+                                                        <b-button v-on:click="deleteSample(sample)" class="float-right"
+                                                            v-bind:id="'delete-sample-'+sample.id" variant="danger"> X
+                                                        </b-button>
                                                         <b-collapse v-bind:id="'collapse-sample' + sample.id"
                                                             class="mt-2">
                                                             <b-card>
@@ -572,12 +593,12 @@ export default {
         </div>
         <div>
             <!-- if this.plate has attribute image, show dropdown -->
-            <b-row v-if="plate.attributes.image_parameters.images">
+            <b-row v-if="hasImages()">
                 <!-- <b-row v-if="plate_name"> -->
                 <b-col>
                     <b-dropdown id="dropdown-1" text="Select Image Set" block variant="outline-primary" class="m-2">
-                        <b-dropdown-item v-for="uuid in plate.attributes.image_parameters.uuids" :key="uuid"
-                            v-on:click="changeImageSet(uuid)">
+                        <b-dropdown-item v-for=" ( group_id, uuid ) in plate.attributes.image_parameters.uuids" :key="uuid"
+                            v-on:click="changeImageSet(uuid, group_id)">
                             {{uuid}}
                         </b-dropdown-item>
                     </b-dropdown>
