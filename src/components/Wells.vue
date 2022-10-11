@@ -70,7 +70,7 @@ export default {
                 this.rows = this.plate.attributes.rows
                 this.columns = this.plate.attributes.columns
                 if (this.hasImages()) {
-                    
+
                     console.log("first load uuid:", Object.keys(this.plate.attributes.image_parameters.uuids)[0])
                     this.uuid = Object.keys(this.plate.attributes.image_parameters.uuids)[0]
                     this.groupID = this.plate.attributes.image_parameters.uuids[this.uuid]
@@ -596,9 +596,15 @@ export default {
             <b-row v-if="hasImages()">
                 <!-- <b-row v-if="plate_name"> -->
                 <b-col>
-                    <b-dropdown id="dropdown-1" text="Select Image Set" block variant="outline-primary" class="m-2">
-                        <b-dropdown-item v-for=" ( group_id, uuid ) in plate.attributes.image_parameters.uuids" :key="uuid"
-                            v-on:click="changeImageSet(uuid, group_id)">
+                    <b-button @click="loader('oldest')" variant="primary">Load Beginning</b-button>
+                    <b-button @click="loader('newest')" variant="primary">Load Latest</b-button>
+                </b-col>
+                <b-col>
+                    <!-- button to load beginning -->
+
+                    <b-dropdown id="dropdown-1" :text="uuid" block variant="outline-primary" class="m-2">
+                        <b-dropdown-item v-for=" ( group_id, uuid ) in plate.attributes.image_parameters.uuids"
+                            :key="uuid" v-on:click="changeImageSet(uuid, group_id)">
                             {{uuid}}
                         </b-dropdown-item>
                     </b-dropdown>
