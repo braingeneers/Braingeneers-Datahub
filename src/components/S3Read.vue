@@ -32,7 +32,8 @@ export default {
         //     secretAccessKey: `${process.env.S3_SECRET_KEY}`,
         // })
         // var ep = new AWS.Endpoint('https://nrp-nautilus.io');
-        const s3 = new AWS.S3({ endpoint: "https://s3-west.nrp-nautilus.io", accessKeyId: `${process.env.S3_ACCESS_KEY}`, secretAccessKey: `${process.env.S3_SECRET_KEY}`, s3ForcePathStyle: true });
+        const s3 = new AWS.S3({ endpoint: "https://s3-west.nrp-nautilus.io", accessKeyId: `${process.env.VUE_APP_S3_ACCESS_KEY_ID}`, secretAccessKey: `${process.env.VUE_APP_S3_SECRET_KEY}`, s3ForcePathStyle: true });
+        // console.log("access key id: ", `${process.env.VUE_APP_S3_ACCESS_KEY_ID}`);
         console.log(s3.endpoint);
         // console.log("hi");
         // console.log(s3);
