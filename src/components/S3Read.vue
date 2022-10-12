@@ -32,6 +32,7 @@ export default {
     },
     data() {
         return {
+            metadata : {},
             trace1 : {
                     x: [1, 2, 3, 4],
                     y: [10, 15, 13, 17],
@@ -71,16 +72,23 @@ export default {
         //     if (err) return console.log(err)
         //     console.log('buckets :', buckets)
         // })
-        s3.getObject(params, function (err) {
-            if (err) return console.log(err)
-            console.log('File downloaded successfully')
-        })
-        // await s3.getObject(params, function (err, data) {
-        //     if (err) console.log(err); // an error occurred
-        //     else console.log(data);           // successful response
-        // });
+
+        // s3.getObject(params, function (err) {
+        //     if (err) return console.log(err)
+        //     console.log('File downloaded successfully')
+        // })
+        await s3.getObject(params, function (err, data) {
+            if (err) console.log(err); // an error occurred
+            else {
+                // console.log(JSON.stringify(data, 0, 2));  
+                this.metadata = data
+                console.log(JSON.stringify(this.metadata, 0, 2));
+                }         // successful response
+        });
+        // console.log(JSON.stringify(this.metadata, 0, 2));
     },
     methods: {
+        // async load_metadata(uuid)
         async getImage(s3) {
             const data = s3.getObject(
                 {
