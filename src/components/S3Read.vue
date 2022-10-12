@@ -49,7 +49,7 @@ export default {
             layout: {
                 title: "My graph"
             },
-            s3: new AWS.S3({ endpoint: "https://s3-west.nrp-nautilus.io", accessKeyId: `${process.env.VUE_APP_S3_ACCESS_KEY_ID}`, secretAccessKey: `${process.env.VUE_APP_S3_SECRET_KEY}`, s3ForcePathStyle: true })
+            s3: new AWS.S3({ endpoint: `${process.env.VUE_APP_S3_ENDPOINT}`, accessKeyId: `${process.env.VUE_APP_S3_ACCESS_KEY_ID}`, secretAccessKey: `${process.env.VUE_APP_S3_SECRET_KEY}`, s3ForcePathStyle: true })
         }
     },
     async mounted() {
@@ -81,6 +81,16 @@ export default {
         // JSON.parse(this.metadata.body.data)
     },
     methods: {
+        async load_object(key){
+            const params = {
+                Bucket: 'braingeneers',
+                Key: key
+            };
+            console.log("Key", params.Key);
+            const response = await this.s3.getObject(params).promise();
+            return response
+
+        },
         async load_metadata(uuid) {
             const params = {
                 Bucket: 'braingeneers',
@@ -138,14 +148,55 @@ export default {
             const hardware = experiment_data.hardware
 
             console.log(channels, hardware, batch_uuid, experiment_name, offset, data_length, parallelism)
-            await this.load_data_maxwell(experiment_data)
+            await this.load_data_maxwell(experiment_data, batch_uuid, offset, -1)
 
             // return data
 
         },
-        async load_data_maxwell(experiment_reference_data ) {
+        
+        /* eslint-disable */
+        async load_data_maxwell(experiment_reference_data, uuid, start, data_length ) {
+            console.log("start: ", start);
             var experiment_stem = experiment_reference_data.blocks[0].path
+            var filename = experiment_stem.split("/").pop()
             console.log("experiment stem: ", experiment_stem);
+            console.log("filename: ", filename);
+            var datafile = `ephys/${uuid}/original/data/${filename}`
+            console.log("datafile: ", datafile);
+            // const params = {
+            //     Bucket: 'braingeneers',
+            //     Key: datafile
+            // };
+            var start_block = 0
+            var end_block
+            var frame_end
+            const upper_frame_limit = experiment_reference_data.blocks[0].num_frames/experiment_reference_data.num_channels
+            console.log("upper frame limit: ", upper_frame_limit);
+            for (var index = 0; index < experiment_reference_data.blocks.length; index++) {
+                if (start < experiment_reference_data.blocks[index].num_frames/experiment_reference_data.num_channels) {
+                    start_block = index
+                    break
+                } else {
+                    start -= experiment_reference_data.blocks[index].num_frames/experiment_reference_data.num_channels
+                }
+            }
+            if (data_length === -1){
+                end_block = experiment_reference_data.blocks.length - 1
+                frame_end = 0
+                for (var block in experiment_reference_data.blocks){
+                    // console.log("dl -1 block: ", experiment_reference_data.blocks[block]);
+                    frame_end += experiment_reference_data.blocks[block].num_frames/experiment_reference_data.num_channels
+                }
+            }else {
+                frame_end = start + data_length
+            }
+            console.log("start block: ", start_block);
+            const real_data_file = await this.load_object(datafile)
+            console.log("real data file: ", real_data_file);
+
+            // key = `ephy
+            
+            // var datafile = `${process.env.VUE_APP_S3_ENDPOINT}`
             // const data = await this.load_data_maxwell(metadata, batch_uuid, experiment_name, channels, offset, length)
             // return data
         },
