@@ -1,8 +1,11 @@
 <template>
     <div>
+        <Navbar />
 
         <!-- <b-jumbotron header="Bootstrap + Vue2" :lead="msg"> -->
-        <p>For more information visit website</p>
+        <b-container fluid>
+            <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+        </b-container>
         <!-- <b-button variant="primary" @click="showDismissibleAlert=true" :disabled="showDismissibleAlert">More Info</b-button> -->
         <!-- </b-jumbotron> -->
     </div>
@@ -17,28 +20,48 @@
 //    });
 // import AWS from 'aws-sdk';
 const AWS = require('aws-sdk');
+// import { AWS } from 'aws-sdk';
+import { Plotly } from 'vue-plotly'
 import axios from 'axios';
+import Navbar from './Navbar.vue';
+
 export default {
     name: 'S3Read',
+    components: {
+        Navbar,
+        Plotly
+    },
     data() {
         return {
+            trace1 : {
+                    x: [1, 2, 3, 4],
+                    y: [10, 15, 13, 17],
+                    mode: 'markers',
+                    type: 'scatter'
+                },
+            trace2 : {
+                    x: [2, 3, 4, 5],
+                    y: [16, 5, 11, 9],
+                    mode: 'lines',
+                    type: 'scatter'
+                },
+            data : [],
+            layout: {
+                title: "My graph"
+            },
             foo: true,
             // s3: new AWS.S3()
         }
     },
     async mounted() {
-        // AWS.config.update({
-        //     accessKeyId: `${process.env.S3_ACCESS_KEY}`,
-        //     secretAccessKey: `${process.env.S3_SECRET_KEY}`,
-        // })
-        // var ep = new AWS.Endpoint('https://nrp-nautilus.io');
+        this.data = [this.trace1, this.trace2]
         const s3 = new AWS.S3({ endpoint: "https://s3-west.nrp-nautilus.io", accessKeyId: `${process.env.VUE_APP_S3_ACCESS_KEY_ID}`, secretAccessKey: `${process.env.VUE_APP_S3_SECRET_KEY}`, s3ForcePathStyle: true });
         // console.log("access key id: ", `${process.env.VUE_APP_S3_ACCESS_KEY_ID}`);
         console.log(s3.endpoint);
         // console.log("hi");
         // console.log(s3);
         const params = {
-            
+
             Bucket: 'braingeneers',
             Key: 'imaging/2022-03-23-i-UCB-bio/images/manifest.json'
             //Key: 'braingeneers/ephys/2022-09-02-e-hebbian/original/data/hebbian_0log.csv'
