@@ -22,7 +22,6 @@
 const AWS = require('aws-sdk');
 // import { AWS } from 'aws-sdk';
 import { Plotly } from 'vue-plotly'
-import axios from 'axios';
 import Navbar from './Navbar.vue';
 
 export default {
@@ -63,7 +62,8 @@ export default {
         const params = {
 
             Bucket: 'braingeneers',
-            Key: 'imaging/2022-03-23-i-UCB-bio/images/manifest.json'
+            Key: 'ephys/2022-09-02-e-hebbian/metadata.json'
+            // Key: 'imaging/2022-03-23-i-UCB-bio/images/manifest.json'
             //Key: 'braingeneers/ephys/2022-09-02-e-hebbian/original/data/hebbian_0log.csv'
         };
         console.log("hi");
@@ -75,31 +75,6 @@ export default {
             if (err) return console.log(err)
             console.log('File downloaded successfully')
         })
-        fetch('https://s3-west.nrp-nautilus.io/braingeneers/imaging/2022-03-23-i-UCB-bio/images/manifest.json')
-            .then(stream => stream.json())
-            .then(data => {
-                console.log('File fetched')
-                console.log(JSON.stringify(data, 0, 2));
-                // console.log(this.loadTrigger)
-
-            })
-            .catch(error => {
-                console.log(error)
-                alert("Unable to load experiment, does the uuid exist?")
-            })
-        //get the file with axios
-        await axios.get('https://s3-west.nrp-nautilus.io/braingeneers/imaging/2022-03-23-i-UCB-bio/images/manifest.json')
-            .then(response => {
-                console.log('File axiosed fetched')
-                console.log(JSON.stringify(response.data, 0, 2));
-                // console.log(this.loadTrigger)
-
-            })
-            .catch(error => {
-                console.log(error)
-                alert("Unable to load experiment, does the uuid exist?")
-            })
-
         // await s3.getObject(params, function (err, data) {
         //     if (err) console.log(err); // an error occurred
         //     else console.log(data);           // successful response
