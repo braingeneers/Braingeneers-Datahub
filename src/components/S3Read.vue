@@ -49,46 +49,57 @@ export default {
             layout: {
                 title: "My graph"
             },
-            foo: true,
-            // s3: new AWS.S3()
+            s3: new AWS.S3({ endpoint: "https://s3-west.nrp-nautilus.io", accessKeyId: `${process.env.VUE_APP_S3_ACCESS_KEY_ID}`, secretAccessKey: `${process.env.VUE_APP_S3_SECRET_KEY}`, s3ForcePathStyle: true })
         }
     },
     async mounted() {
         this.data = [this.trace1, this.trace2]
-        const s3 = new AWS.S3({ endpoint: "https://s3-west.nrp-nautilus.io", accessKeyId: `${process.env.VUE_APP_S3_ACCESS_KEY_ID}`, secretAccessKey: `${process.env.VUE_APP_S3_SECRET_KEY}`, s3ForcePathStyle: true });
+        // const s3 = new AWS.S3({ endpoint: "https://s3-west.nrp-nautilus.io", accessKeyId: `${process.env.VUE_APP_S3_ACCESS_KEY_ID}`, secretAccessKey: `${process.env.VUE_APP_S3_SECRET_KEY}`, s3ForcePathStyle: true });
         // console.log("access key id: ", `${process.env.VUE_APP_S3_ACCESS_KEY_ID}`);
-        console.log(s3.endpoint);
+        console.log(this.s3.endpoint);
         // console.log("hi");
         // console.log(s3);
-        const params = {
+        // console.log("hi");
 
-            Bucket: 'braingeneers',
-            Key: 'ephys/2022-09-02-e-hebbian/metadata.json'
-            // Key: 'imaging/2022-03-23-i-UCB-bio/images/manifest.json'
-            //Key: 'braingeneers/ephys/2022-09-02-e-hebbian/original/data/hebbian_0log.csv'
-        };
-        console.log("hi");
-        // s3.listBuckets(function (err, buckets) {
-        //     if (err) return console.log(err)
-        //     console.log('buckets :', buckets)
-        // })
-
-        // s3.getObject(params, function (err) {
-        //     if (err) return console.log(err)
-        //     console.log('File downloaded successfully')
-        // })
-        await s3.getObject(params, function (err, data) {
-            if (err) console.log(err); // an error occurred
-            else {
-                // console.log(JSON.stringify(data, 0, 2));  
-                this.metadata = data
-                console.log(JSON.stringify(this.metadata, 0, 2));
-                }         // successful response
-        });
-        // console.log(JSON.stringify(this.metadata, 0, 2));
+        // await this.s3.getObject(params, function (err, data) {
+        //     if (err) console.log(err); // an error occurred
+        //     else {
+        //         // console.log(JSON.stringify(data, 0, 2));  
+        //         this.metadata = data
+        //         console.log(JSON.stringify(this.metadata, 0, 2));
+        //         }         // successful response
+        // });
+        const metadata_response = await this.load_metadata("2022-09-02-e-hebbian")
+        this.metadata = metadata_response
+        console.log(this.metadata);
+        //     console.log("boof");
+        //     console.log(data);
+        //     this.metadata = data;
+        // });
+        console.log(JSON.stringify(this.metadata, 0, 2));
     },
     methods: {
-        // async load_metadata(uuid)
+        async load_metadata(uuid){
+            const params = {
+                Bucket: 'braingeneers',
+                Key: `ephys/${uuid}/metadata.json`
+            };
+            const response = await this.s3.getObject(params).promise();
+            
+            // , function (err, data) {
+            //     if (err){
+            //         console.error(err); // an error occurred
+            //         return null
+            //     }
+            //     else {
+            //         console.log(JSON.stringify(data, 0, 2));  
+            //         return data
+            //         // console.log(JSON.stringify(this.metadata, 0, 2));
+            //         }         // successful response
+            // });
+            // console.log("inner response: ", response);
+            return response
+        },
         async getImage(s3) {
             const data = s3.getObject(
                 {
