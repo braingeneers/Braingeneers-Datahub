@@ -70,13 +70,14 @@ export default {
         //         }         // successful response
         // });
         const metadata_response = await this.load_metadata("2022-09-02-e-hebbian")
-        this.metadata = metadata_response
-        console.log(this.metadata);
+        this.metadata = JSON.parse(metadata_response.Body)
+        // console.log(this.metadata);
         //     console.log("boof");
         //     console.log(data);
         //     this.metadata = data;
         // });
         console.log(JSON.stringify(this.metadata, 0, 2));
+        // JSON.parse(this.metadata.body.data)
     },
     methods: {
         async load_metadata(uuid){
