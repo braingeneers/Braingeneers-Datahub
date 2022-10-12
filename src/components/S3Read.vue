@@ -138,10 +138,16 @@ export default {
             const hardware = experiment_data.hardware
 
             console.log(channels, hardware, batch_uuid, experiment_name, offset, data_length, parallelism)
-            // const data = await this.load_data_maxwell(metadata, batch_uuid, experiment_name, channels, offset, length)
+            await this.load_data_maxwell(experiment_data)
 
             // return data
 
+        },
+        async load_data_maxwell(experiment_reference_data ) {
+            var experiment_stem = experiment_reference_data.blocks[0].path
+            console.log("experiment stem: ", experiment_stem);
+            // const data = await this.load_data_maxwell(metadata, batch_uuid, experiment_name, channels, offset, length)
+            // return data
         },
 
         async getImage(s3) {
