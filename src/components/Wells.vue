@@ -64,10 +64,18 @@ export default {
             }
             // ${this.plate_name}
             //added populate=* to get all the associated nested data
-
-            const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
+            var token = localStorage.getItem('token')
+            const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             this.wells = response.data.data
-            await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/plates?filters[name][$eq]=${this.plate_name}`).then((response) => {
+            await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/plates?filters[name][$eq]=${this.plate_name}`, { 
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+                }).then((response) => {
                 this.plate = response.data.data[0]
                 this.rows = this.plate.attributes.rows
                 this.columns = this.plate.attributes.columns
@@ -201,7 +209,7 @@ export default {
                     console.log(JSON.stringify(response, 0, 2));
                     if (response.status == 200) {
                         //refresh the wells
-                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
+                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`, { headers: { 'Authorization': `Bearer ${token}` } })
                             .then(response => {
                                 // console.log(JSON.stringify(response, 0, 2));
                                 this.wells = []
@@ -220,7 +228,7 @@ export default {
             console.log("get samples")
             console.log(well_id)
             // post with api_token
-            axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/samples?filters[well][id][$eq]=${well_id}`)
+            axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/samples?filters[well][id][$eq]=${well_id}`, { headers: { 'Authorization': `Bearer ${window.localStorage.getItem('jwt')}` } })
                 .then(function (response) {
                     console.log(response);
                 })
@@ -241,7 +249,7 @@ export default {
                 .then(response => {
                     console.log(response);
                     if (response.status == 200) {
-                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
+                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`, { headers: { 'Authorization': `Bearer ${token}` } })
                             .then(response => {
                                 console.log(response);
                                 this.wells = []
