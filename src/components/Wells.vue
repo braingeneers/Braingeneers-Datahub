@@ -57,8 +57,6 @@ export default {
             // console.log(process.env.VUE_APP_S3_ENDPOINT)
             // console.log(this.filter_params)
             // console.log(this.plate_name)
-            // var token = window.localStorage.getItem('jwt');
-
             if (!this.plate_name) {
                 this.filter_params = ""
             } else {
@@ -67,17 +65,9 @@ export default {
             // ${this.plate_name}
             //added populate=* to get all the associated nested data
 
-            const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+            const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
             this.wells = response.data.data
-            await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/plates?filters[name][$eq]=${this.plate_name}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            }).then((response) => {
+            await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/plates?filters[name][$eq]=${this.plate_name}`).then((response) => {
                 this.plate = response.data.data[0]
                 this.rows = this.plate.attributes.rows
                 this.columns = this.plate.attributes.columns
@@ -211,11 +201,7 @@ export default {
                     console.log(JSON.stringify(response, 0, 2));
                     if (response.status == 200) {
                         //refresh the wells
-                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`, {
-                            headers: {
-                                'Authorization': `Bearer ${token}`
-                            }
-                        })
+                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
                             .then(response => {
                                 // console.log(JSON.stringify(response, 0, 2));
                                 this.wells = []
@@ -234,11 +220,7 @@ export default {
             console.log("get samples")
             console.log(well_id)
             // post with api_token
-            axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/samples?filters[well][id][$eq]=${well_id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+            axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/samples?filters[well][id][$eq]=${well_id}`)
                 .then(function (response) {
                     console.log(response);
                 })
@@ -259,11 +241,7 @@ export default {
                 .then(response => {
                     console.log(response);
                     if (response.status == 200) {
-                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`, {
-                            headers: {
-                                'Authorization': `Bearer ${token}`
-                            }
-                        })
+                        axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`)
                             .then(response => {
                                 console.log(response);
                                 this.wells = []
@@ -495,7 +473,7 @@ export default {
         <!-- <img id="example" src="https://placekitten.com/g/560/420" /> -->
         <!-- display plate name header -->
         <b-row>
-            <h1>Plate: {{ plate_name }}</h1>
+            <h1>Plate: {{plate_name}}</h1>
         </b-row>
         <div v-if="wells.length">
             <!-- <b-row> -->
@@ -504,27 +482,25 @@ export default {
                 <b-row>
                     <b-col class="column-padding" v-for="col in columns" :key="row * 10 + col">
                         <img class="responsive"
-                            v-on:click="showModal('boof' + wells[((row - 1) * columns + col) - 1].id); curWell_id = wells[((row - 1) * columns + col) - 1].id"
+                            v-on:click="showModal('boof' + wells[((row-1)*columns+col)-1].id); curWell_id=wells[((row-1)*columns+col)-1].id"
                             @error="missing($event)"
                             :src="`${endpoint}/${uuid}/images/${manifest.captures[firstLoadIndex]}/camera${groupID}${row}${col}/${0 + 1}.jpg`" />
                         <div>
                             <!-- <b-button  id="indirect-button" @click="showModal('boof' + wells[((row-1)*columns+col)-1].id)" > indirect</b-button> -->
-                            <b-button style="display:none"
-                                v-bind:id="'boof' + wells[((row - 1) * columns + col) - 1].id"
-                                v-b-modal="'modal-centere' + wells[((row - 1) * columns + col) - 1].id">Launch centered
-                                modal
+                            <b-button style="display:none" v-bind:id="'boof'+ wells[((row-1)*columns+col)-1].id"
+                                v-b-modal="'modal-centere' + wells[((row-1)*columns+col)-1].id">Launch centered modal
                             </b-button>
-                            <b-modal size="lg" v-bind:id="'modal-centere' + wells[((row - 1) * columns + col) - 1].id"
-                                centered v-bind:title=wells[((row - 1) * columns + col) - 1].attributes.name>
+                            <b-modal size="lg" v-bind:id="'modal-centere' + wells[((row-1)*columns+col)-1].id" centered
+                                v-bind:title=wells[((row-1)*columns+col)-1].attributes.name>
                                 <b-row>
-                                    Current Timestamp: {{ curTimestampIndex + 1 }}/{{ manifest.captures.length }}
+                                    Current Timestamp: {{curTimestampIndex+1}}/{{manifest.captures.length}}
                                 </b-row>
                                 <!-- new line -->
                                 <b-row>
-                                    T: {{ manifest.captures[curTimestampIndex] | luxon }}
+                                    T: {{ manifest.captures[curTimestampIndex] | luxon}}
                                 </b-row>
                                 <b-row>
-                                    Z: {{ curZ + 1 }}/{{ manifest.stack_size }}
+                                    Z: {{ curZ+1 }}/{{manifest.stack_size}}
                                 </b-row>
                                 <img id="well-image" class="responsive" @error="missing($event)"
                                     :src="`${endpoint}/${uuid}/images/${manifest.captures[curTimestampIndex]}/camera${groupID}${row}${col}/${curZ + 1}.jpg`">
@@ -547,29 +523,27 @@ export default {
                                             </b-row>
                                         </div>
                                         <b-button pill style="display:block;"
-                                            v-b-toggle="'collapse-samples-' + wells[((row - 1) * columns + col) - 1].id"
+                                            v-b-toggle="'collapse-samples-' + wells[((row-1)*columns+col)-1].id"
                                             variant="primary"> List Samples</b-button>
-                                        <b-collapse
-                                            v-bind:id="'collapse-samples-' + wells[((row - 1) * columns + col) - 1].id"
+                                        <b-collapse v-bind:id="'collapse-samples-' + wells[((row-1)*columns+col)-1].id"
                                             class="mt-2">
                                             <b-list-group>
                                                 <b-list-group-item
-                                                    v-for="sample in wells[((row - 1) * columns + col) - 1].attributes.samples.data"
+                                                    v-for="sample in wells[((row-1)*columns+col)-1].attributes.samples.data"
                                                     :key="sample.id">
-                                                    <div v-bind:id="'sample-' + sample.id">
+                                                    <div v-bind:id="'sample-' +sample.id">
                                                         <b-button v-b-toggle="'collapse-sample' + sample.id"
                                                             @click="loadAnno(sample.attributes.annotation)"
-                                                            variant="secondary"> {{ sample.attributes.name }}
-                                                        </b-button>
+                                                            variant="secondary"> {{sample.attributes.name}} </b-button>
                                                         <b-button v-on:click="deleteSample(sample)" class="float-right"
-                                                            v-bind:id="'delete-sample-' + sample.id" variant="danger"> X
+                                                            v-bind:id="'delete-sample-'+sample.id" variant="danger"> X
                                                         </b-button>
                                                         <b-collapse v-bind:id="'collapse-sample' + sample.id"
                                                             class="mt-2">
                                                             <b-card>
                                                                 <!-- <b-card-text>{{sample.attributes.description}} -->
                                                                 <b-card-text>
-                                                                    {{ JSON.stringify(sample.attributes.annotation) }}
+                                                                    {{JSON.stringify(sample.attributes.annotation)}}
                                                                 </b-card-text>
                                                             </b-card>
                                                         </b-collapse>
@@ -579,10 +553,10 @@ export default {
                                             </b-list-group>
                                         </b-collapse>
                                         <b-button pill style="display:block;" @click="initAnno();"
-                                            v-b-toggle="'collapse-create-sample-' + wells[((row - 1) * columns + col) - 1].id"
+                                            v-b-toggle="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id"
                                             variant="success"> Label new sample</b-button>
                                         <b-collapse
-                                            v-bind:id="'collapse-create-sample-' + wells[((row - 1) * columns + col) - 1].id"
+                                            v-bind:id="'collapse-create-sample-' + wells[((row-1)*columns+col)-1].id"
                                             class="mt-2">
                                             <div>
                                                 <!-- button and text field to add sample to the database via restAPI call -->
@@ -633,7 +607,7 @@ export default {
                     <b-dropdown id="dropdown-1" :text="uuid" block variant="outline-primary" class="m-2">
                         <b-dropdown-item v-for=" ( group_id, uuid ) in plate.attributes.image_parameters.uuids"
                             :key="uuid" v-on:click="changeImageSet(uuid, group_id)">
-                            {{ uuid }}
+                            {{uuid}}
                         </b-dropdown-item>
                     </b-dropdown>
                 </b-col>
