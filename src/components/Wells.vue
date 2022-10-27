@@ -64,7 +64,7 @@ export default {
             }
             // ${this.plate_name}
             //added populate=* to get all the associated nested data
-            var token = localStorage.getItem('token')
+            var token = localStorage.getItem('jwt')
             const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
