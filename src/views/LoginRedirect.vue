@@ -32,10 +32,13 @@ export default {
                     const { jwt, user } = res.data;
                     console.log(jwt);
                     console.log(user);
+                    //if successful, set this.$auth.isAuthenticated = true
+                    this.$auth.isAuthenticated = true;
                     // console.log(this.password);
                     // console.log(this.email);
                     window.localStorage.setItem("jwt", jwt);
                     window.localStorage.setItem("userData", JSON.stringify(user));
+
                     // window.localStorage.setItem('bookmarks', JSON.stringify(user.bookmarks))
                     //emit user
                     // this.$emit('user', user)

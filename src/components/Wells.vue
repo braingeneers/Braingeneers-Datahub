@@ -52,6 +52,11 @@ export default {
     },
     async mounted() {
         try {
+            var token = window.localStorage.getItem('jwt');
+            //   console.log("is authenticated?", this.$auth.isAuthenticated)
+            if (!token){
+                this.$router.push("/");
+            }
             // console.log(process.env.VUE_APP_API_ENDPOINT)
             // console.log("endpoint",  this.endpoint)
             // console.log(process.env.VUE_APP_S3_ENDPOINT)
@@ -64,7 +69,6 @@ export default {
             }
             // ${this.plate_name}
             //added populate=* to get all the associated nested data
-            var token = localStorage.getItem('jwt')
             const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/wells${this.filter_params}&populate=*`, {
                 headers: {
                     'Authorization': `Bearer ${token}`

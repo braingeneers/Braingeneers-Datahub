@@ -24,6 +24,10 @@ export default {
 //     }
 //   }
     async mounted() {
+        var token = window.localStorage.getItem('jwt');
+        if (!token){
+            this.$router.push("/");
+        }
         try {
             console.log(this.filter_params)
             console.log(this.experiment_name)
@@ -34,6 +38,7 @@ export default {
             }
             // ${this.plate_name}
             const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/plates${this.filter_params}`)
+
             this.plates = response.data.data
         } catch (error) {
             this.error = error;

@@ -91,8 +91,10 @@ export default {
         logout() {
             window.localStorage.removeItem("jwt");
             window.localStorage.removeItem("userData");
+            this.user = { "username": "user" }
+            this.$auth.isAuthenticated = false;
             this.$auth.logout({
-                returnTo: window.location.origin
+                returnTo: window.location.origin + "/datahub"
             });
         },
         // logout() {

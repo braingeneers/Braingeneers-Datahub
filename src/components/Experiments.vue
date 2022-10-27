@@ -21,6 +21,10 @@ export default {
   async mounted () {
     try {
       var token = window.localStorage.getItem('jwt');
+    //   console.log("is authenticated?", this.$auth.isAuthenticated)
+      if (!token){
+        this.$router.push("/");
+      }
       const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/experiments?populate=%2A`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
