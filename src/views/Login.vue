@@ -38,7 +38,7 @@ export default {
             //set one second timeout to allow auth0 to load
             setTimeout(() => {
                 this.$auth.loginWithRedirect({
-                    redirect_uri: `${process.env.VUE_APP_API_ENDPOINT}/api/connect/auth0`,  
+                    redirect_uri: `${process.env.VUE_APP_API_AUTH_ENDPOINT}/api/connect/auth0`,  
                 });
             }, 1000);
 
@@ -62,7 +62,7 @@ export default {
         // Log the user in
         login() {
             this.$auth.loginWithRedirect({
-                redirect_uri: `${process.env.VUE_APP_API_ENDPOINT}/api/connect/auth0`,
+                redirect_uri: `${process.env.VUE_APP_API_AUTH_ENDPOINT}/api/connect/auth0`,
             });
         },
         // Log the user out
