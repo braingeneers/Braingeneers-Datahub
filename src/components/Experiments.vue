@@ -20,7 +20,12 @@ export default {
   },
   async mounted () {
     try {
-      const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/experiments?populate=%2A`)
+      var token = window.localStorage.getItem('jwt');
+      const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/experiments?populate=%2A`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
       this.experiments = response.data.data
     } catch (error) {
       this.error = error;
