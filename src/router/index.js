@@ -10,7 +10,7 @@ import DevicesView from '../views/DevicesView.vue'
 import LoginRedirect from '../views/LoginRedirect.vue'
 
 Vue.use(VueRouter)
-
+// /* eslint-disable */
 const routes = [
     {
         path: '/',
@@ -176,7 +176,8 @@ const routes = [
 // })
 const router = new VueRouter({
     mode: 'history',
-    base: process.env.BASE_URL,
+    base: '/datahub/',
+    // base: process.env.VUE_APP_BASE_URL,
     routes
 })
 
