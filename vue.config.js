@@ -1,10 +1,13 @@
+// const path = require('path');
+
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
-  publicPath: "/datahub/"
-//   assetsSubDirectory: 'your-subdirectoy-here/static',
+  publicPath: "/datahub/",
+  outputDir: "./dist/datahub/",
 //   baseUrl: "/braingeneers-hub/"
 })
+
 
 // module.exports = {
 //     build: {
@@ -12,3 +15,7 @@ module.exports = defineConfig({
 //         assetsPublicPath: '/',
 //     }
 // }
+
+
+// const publicPath = path.join(__dirname, 'datahub');
+// this.express.use('/datahub', express.static(publicPath));
