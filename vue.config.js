@@ -5,6 +5,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   publicPath: "/datahub/",
   outputDir: "./dist/datahub/",
+//   assetsDir: "./datahub/",
 //   baseUrl: "/braingeneers-hub/"
 })
 
