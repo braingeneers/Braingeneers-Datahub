@@ -57,7 +57,7 @@ export default {
             // console.log(process.env.VUE_APP_S3_ENDPOINT)
             // console.log(this.filter_params)
             // console.log(this.plate_name)
-            var token = window.localStorage.getItem('jwt');
+            // var token = window.localStorage.getItem('jwt');
 
             if (!this.plate_name) {
                 this.filter_params = ""
@@ -234,7 +234,6 @@ export default {
             console.log("get samples")
             console.log(well_id)
             // post with api_token
-            var token = window.localStorage.getItem('jwt');
             axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/samples?filters[well][id][$eq]=${well_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
