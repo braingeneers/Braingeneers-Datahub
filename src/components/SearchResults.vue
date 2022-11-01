@@ -27,7 +27,11 @@ export default {
                 this.$router.push("/");
             }
             console.log(this.query)
-            const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/fuzzy-search/search?query=${this.query}`)
+            const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/fuzzy-search/search?query=${this.query}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             this.experiments = response.data.experiments
             console.log(JSON.stringify(this.experiments))
         } catch (error) {

@@ -51,7 +51,11 @@ export default {
     },
     async mounted() {
         try {
-            const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/interaction-things?populate=%2A`)
+            const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/interaction-things?populate=%2A`, {
+                headers: {
+                    Authorization: `Bearer ${window.localStorage.getItem('jwt')}`
+                }
+            });
             this.interaction_things = response.data.data
         } catch (error) {
             console.log(error)
