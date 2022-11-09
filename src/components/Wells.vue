@@ -407,6 +407,13 @@ export default {
 
             })
         },
+        stopLoading() {
+            for (var i = 0; i < this.images.length; i++) {
+                this.images[i].src = ""
+            }
+            this.images = []
+            this.progress = 0
+        },
         playTimelapse() {
             // this.break_timelapse = false
             var self = this
@@ -522,6 +529,9 @@ export default {
                                             <b-button class="btn btn-secondary btn-sm"
                                                 v-on:click="loadAllImagesFromLayer(row, col, curZ)">
                                                 Load All Images
+                                            </b-button>
+                                            <b-button class="btn btn-secondary btn-sm" v-on:click="stopLoading()">
+                                                Stop Loading
                                             </b-button>
                                             <vue-ellipse-progress class="float-right" :size="30" :progress="progress"
                                                 animation="default 0 0" />
