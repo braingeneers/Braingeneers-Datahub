@@ -364,6 +364,7 @@ export default {
         },
         OnPreviousFocalViewClick() {
             if (this.curZ > 0) {
+                this.stopLoading()
                 console.log("this.curZ: " + this.curZ)
                 this.startZ = this.curZ
                 this.curZ = this.startZ - 1
@@ -374,6 +375,7 @@ export default {
         },
         OnNextFocalViewClick() {
             if (this.curZ < this.manifest.stack_size - 1) {
+                this.stopLoading()
                 console.log("this.curZ: " + this.curZ)
                 this.startZ = this.curZ
                 this.curZ = this.startZ + 1
@@ -528,13 +530,13 @@ export default {
                                         <div class="p-1">
                                             <b-button class="btn btn-secondary btn-sm"
                                                 v-on:click="loadAllImagesFromLayer(row, col, curZ)">
-                                                Load All Images
-                                            </b-button>
-                                            <b-button class="btn btn-secondary btn-sm" v-on:click="stopLoading()">
-                                                Stop Loading
+                                                Load all images for current layer
                                             </b-button>
                                             <vue-ellipse-progress class="float-right" :size="30" :progress="progress"
                                                 animation="default 0 0" />
+                                            <b-button class="btn btn-secondary btn-sm" v-on:click="stopLoading()">
+                                                Stop Loading
+                                            </b-button>
                                         </div>
                                         <div class="p-1">
                                             <b-row>
