@@ -5,6 +5,6 @@ services:
     build: .
     image: shadows_viewer:latest
     restart: unless-stopped
-    network_mode: shadows-network
+#    network_mode: shadows-network
     ports:
       - "127.0.0.1:8057:80"
