@@ -6,7 +6,7 @@ A vue based web application for viewing data from the shadows database
 
 ## For local development
 - configure .env file with appropriate location of shadows API endpoint
-- npm run serve
+- docker compose -f local.docker-compose.yaml up
 
 ##  For deployment on server
 - configure .env file with appropriate endpoint location
