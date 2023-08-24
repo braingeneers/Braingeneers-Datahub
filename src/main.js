@@ -16,6 +16,13 @@ import '../src/assets/css/styles.css';
 import { domain, clientId} from '../auth_config.json';
 import { Auth0Plugin } from '@/auth/auth0-plugin';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(faSpinner);
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(BootstrapVue);
 Vue.use(VueEllipseProgress);
