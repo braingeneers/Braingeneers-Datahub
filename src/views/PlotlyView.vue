@@ -29,7 +29,7 @@
 import PlotlyGraph from '@/components/PlotlyGraph.vue'
 import draggable from 'vuedraggable'
 import Navbar from '@/components/Navbar.vue'
-// import axios from 'axios';
+import axios from 'axios';
 
 export default {
   name: 'PlotlyView',
@@ -46,18 +46,6 @@ export default {
         // myList: ["https://placekitten.com/200/300", "https://placekitten.com/400/300", "https://placekitten.com/200/500"],
     };
   },
-  mounted() {
-    const baseUrl = window.location.origin;
-    const path = baseUrl + '/links_to_plots.txt';
-    fetch(path)
-    .then((response) => response.text())
-    .then((text) => {
-      this.options = text.split('\n');
-      console.log(this.options);
-    });
-
-  },
-  methods: {
     async mounted() {
         try {
             var token = window.localStorage.getItem('jwt');
@@ -70,30 +58,37 @@ export default {
                             'Authorization': `Bearer ${token}`
                         }
                     })
-            this.options = response.data.data
+            console.log("success")
+            console.log(response.data.data)
+            for (var i = 0; i < response.data.data.length; i++) {
+                this.options.push(response.data.data[i].attributes.url)
+            }
+            console.log(this.options)
         } catch (error) {
-        this.error = error;
+            this.error = error;
+            console.log(error)
         }
     },
-    addPlotlyGraph() {
-      // Create a new PlotlyGraph object with a random source URL
-      if (!this.selectedOption) {
-            throw new Error('No option selected');
-        } 
+    methods: {
+        addPlotlyGraph() {
+        // Create a new PlotlyGraph object with a random source URL
+        if (!this.selectedOption) {
+                throw new Error('No option selected');
+            } 
 
-      const newPlotlyGraph = {
-        //throw exception if selectedOption is null
-        source: this.selectedOption,
-      };
+        const newPlotlyGraph = {
+            //throw exception if selectedOption is null
+            source: this.selectedOption,
+        };
 
-      // Add the new PlotlyGraph object to the array
-      this.plotlyGraphs.push(newPlotlyGraph);
+        // Add the new PlotlyGraph object to the array
+        this.plotlyGraphs.push(newPlotlyGraph);
+        },
+        removePlotlyGraph(index) {
+        // Remove the PlotlyGraph object at the specified index from the array
+        this.plotlyGraphs.splice(index, 1);
+        },
     },
-    removePlotlyGraph(index) {
-      // Remove the PlotlyGraph object at the specified index from the array
-      this.plotlyGraphs.splice(index, 1);
-    },
-  },
 };
 </script>
 
