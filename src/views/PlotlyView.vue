@@ -27,12 +27,14 @@
 <script>
 
 import PlotlyGraph from '@/components/PlotlyGraph.vue'
-import draggable from 'vuedraggable';
+import draggable from 'vuedraggable'
+import Navbar from '@/components/Navbar.vue'
 // import axios from 'axios';
 
 export default {
   name: 'PlotlyView',
   components: {
+    Navbar,
     draggable,
     PlotlyGraph,
   },
@@ -53,18 +55,26 @@ export default {
       this.options = text.split('\n');
       console.log(this.options);
     });
-    // const file = require('./assets/links_to_plots.txt');
-    // const reader = new FileReader();
-    // reader.onload = (e) => {
-    //     this.options = e.target.result.split('\n');
-    //     console.log(this.options);
-    // };
-    // reader.readAsText(file);
-    // axios.get("./assets/links_to_plots.txt").then((response) => {
-    //   this.options = response.data.split('\n');
-    // });
+
   },
   methods: {
+    async mounted() {
+        try {
+            var token = window.localStorage.getItem('jwt');
+            //   console.log("is authenticated?", this.$auth.isAuthenticated)
+            if (!token){
+                this.$router.push("/");
+            }
+            const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/api/test-lists?populate=%2A`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+            this.options = response.data.data
+        } catch (error) {
+        this.error = error;
+        }
+    },
     addPlotlyGraph() {
       // Create a new PlotlyGraph object with a random source URL
       if (!this.selectedOption) {
