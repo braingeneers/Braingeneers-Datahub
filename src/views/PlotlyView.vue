@@ -1,26 +1,27 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <div class="dropdown">
-        <select v-model="selectedOption">
-        <option v-for="(option, index) in options" :key="index" :value="option">{{ option }}</option>
-        </select>
+    <div class="home">
+        <Navbar />
+
+        <div class="dropdown">
+            <select v-model="selectedOption">
+            <option v-for="(option, index) in options" :key="index" :value="option">{{ option }}</option>
+            </select>
+        </div>
+
+
+        <button class="add-button" @click="addPlotlyGraph">+</button>
+        <div class="plotly-graphs">
+            <draggable v-model="plotlyGraphs">   
+                <div v-for="(plotlyGraph, index) in plotlyGraphs" :key="index">
+
+                        <div class="drag-handle">Drag here</div>
+                        <!-- placekitten image -->
+                        <!-- <img src="https://placekitten.com/200/300" alt="placekitten image" /> -->
+                        <PlotlyGraph :source="plotlyGraph.source" @remove="removePlotlyGraph(index)"/>
+                </div>
+            </draggable>
+        </div>
     </div>
-
-
-    <button class="add-button" @click="addPlotlyGraph">+</button>
-    <div class="plotly-graphs">
-        <draggable v-model="plotlyGraphs">   
-            <div v-for="(plotlyGraph, index) in plotlyGraphs" :key="index">
-
-                    <div class="drag-handle">Drag here</div>
-                    <!-- placekitten image -->
-                    <!-- <img src="https://placekitten.com/200/300" alt="placekitten image" /> -->
-                    <PlotlyGraph :source="plotlyGraph.source" @remove="removePlotlyGraph(index)"/>
-            </div>
-        </draggable>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -30,11 +31,10 @@ import draggable from 'vuedraggable';
 // import axios from 'axios';
 
 export default {
-  name: 'PlotlyViewer',
+  name: 'PlotlyView',
   components: {
     draggable,
     PlotlyGraph,
-    // HelloWorld
   },
   data() {
     return {

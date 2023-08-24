@@ -8,6 +8,7 @@ import Login from '../views/Login.vue'
 import SearchResultsView from '../views/SearchResultsView.vue'
 import DevicesView from '../views/DevicesView.vue'
 import LoginRedirect from '../views/LoginRedirect.vue'
+import PlotlyView from '../views/PlotlyView.vue'
 
 Vue.use(VueRouter)
 // /* eslint-disable */
@@ -35,7 +36,25 @@ const routes = [
         name: 'Register',
         component: Register
     },
-
+    {
+        path: '/ephys',
+        name: 'ephys',
+        component: PlotlyView,
+        props: true,
+        meta: {
+            title: 'Ephys - Braingeneers Hub',
+            metaTags: [
+                {
+                    name: 'description',
+                    content: 'spectrograms page'
+                },
+                {
+                    property: 'og:description',
+                    content: 'spectrograms page'
+                }
+            ]
+        }
+    },
     {
         path: '/plates',
         name: 'plates',
